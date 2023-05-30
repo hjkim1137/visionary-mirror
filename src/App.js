@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import GetSampleBoard from './components/createVisionBoard/getSampleBoard';
 import MakeBoardName from './components/createVisionBoard/makeBoardName';
-import MyVisionBoard from './components/getMyVisionBoard/myVisionBoard';
+import MyVisionBoard from './components/MyVisionBoard/myVisionBoard';
 
 function App() {
   return (
