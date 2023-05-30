@@ -1,9 +1,8 @@
-import React from 'react';
+import React from "react";
+import BoardCollection from "./boardCollection";
 
 function MyVisionBoard() {
-  return (
-    <div>MyVisionBoard Page</div>
-  );
+  return <BoardCollection></BoardCollection>;
 }
 
 export default MyVisionBoard;
