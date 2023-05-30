@@ -1,9 +1,9 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import GetSampleBoard from './components/getSampleBoard/getSampleBoard';
-import MakeBoardName from './components/makeBoardName/makeBoardName';
-import MyVisionBoard from './components/myVisionBoard/myVisionBoard';
+import GetSampleBoard from "./components/getSampleBoard/getSampleBoard";
+import MakeBoardName from "./components/makeBoardName/makeBoardName";
+import MyVisionBoard from "./components/myVisionBoard/myVisionBoard";
 
 function App() {
   return (

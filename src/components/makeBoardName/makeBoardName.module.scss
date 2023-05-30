@@ -1,32 +1,32 @@
 .container {
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-    height: 100vh;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  justify-content: center;
 }
 
 .title {
-    font-size: 25px;
-    color: darkblue;
+  font-size: 25px;
+  color: darkblue;
 }
 
 .inputName {
-    margin-top: 20px;
-    width: 100%;
-    height: 35px;
-    border: 1px solid gray;
-    border-radius: 5px;
-    font-size: 25px;
+  margin-top: 20px;
+  width: 100%;
+  height: 35px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  font-size: 25px;
 }
 
 .inputName:focus {
-    background-color: lightgray;
-    font-size: 25px;
+  background-color: lightgray;
+  font-size: 25px;
 }
 
 .nextBtn {
-    width: 200px;
-    margin-top: 30px;
-    font-size: 20px;
+  width: 200px;
+  margin-top: 30px;
+  font-size: 20px;
 }

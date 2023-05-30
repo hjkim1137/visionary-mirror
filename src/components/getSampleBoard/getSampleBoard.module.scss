@@ -1,24 +1,24 @@
 .container {
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-    height: 100vh;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  justify-content: center;
 }
 
 .samplePage {
-    width: 500px;
-    height: 700px;
-    background-color: lightgray;
-    font-size: 20px;
+  width: 500px;
+  height: 700px;
+  background-color: lightgray;
+  font-size: 20px;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .visionStartBtn {
-    width: 200px;
-    margin-top: 30px;
-    font-size: 20px;
+  width: 200px;
+  margin-top: 30px;
+  font-size: 20px;
 }
