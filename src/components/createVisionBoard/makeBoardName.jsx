@@ -11,15 +11,17 @@ function MakeBoardName() {
     if(boardName) {
       navigate(`/visionboardgrid`);
     } else {
-      alert("보드 이름을 입력해주세요.");
+      alert("비전보드 이름을 입력해주세요.");
     }
   }
 
   return (
     <div className={styles.container}>
       <div className={styles.inputContent}>
-        <div>비전보드 이름을 지정해주세요.</div>
-        <input className={styles.inputName}></input>
+        <div className={styles.title}>비전보드 이름을 지정해주세요.</div>
+        <input 
+          className={styles.inputName}
+          placeholder="나의 비전보드"></input>
       </div>
       <button 
         className={styles.nextBtn}
