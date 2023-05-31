@@ -1,0 +1,40 @@
+* {
+  margin: 0;
+}
+
+.header {
+  position: relative;
+  z-index: 1001;
+}
+
+.header ul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+
+  height: 60px;
+  width: 100%;
+
+  list-style: none;
+  background-color: rgb(190, 189, 189);
+  padding: 5px;
+}
+
+.header ul li:nth-child(1) {
+  margin: 20px;
+}
+
+.header ul li:nth-child(3) {
+  margin: 20px;
+}
+
+.header ul li:nth-child(2) {
+  margin-top: 10px;
+  font-size: 35px;
+}
+@media (min-width: 768px) {
+  .header {
+    justify-content: center;
+  }
+}

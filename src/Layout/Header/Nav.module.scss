@@ -1,0 +1,44 @@
+.Nav {
+  position: absolute;
+  top: 100%;
+  left: 0;
+
+  height: 100vh;
+  margin: 0;
+
+  font-size: 20px;
+  background: rgb(50, 47, 47);
+  z-index: 1;
+  transform: translateX(-100%); /* 메뉴를 왼쪽으로 이동 */
+  transition: transform 1s ease-out;
+}
+
+.NavOpen {
+  transform: translateX(0);
+}
+
+.Nav .NavListWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  width: 250px;
+  height: 100%;
+  margin-left: 0;
+}
+
+.Nav .NavListWrapper li {
+  margin: 20px;
+}
+
+.NavLink {
+  display: flex;
+  align-items: center;
+
+  padding-right: 10px;
+
+  text-decoration: none;
+  color: rgb(66, 65, 65);
+  font-size: 20px;
+}
