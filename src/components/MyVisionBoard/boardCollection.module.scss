@@ -1,10 +1,12 @@
 .wrapper {
+  width: 1200px;
   display: flex;
   overflow-x: hidden;
   align-items: center;
   flex-direction: column;
-  height: 100vh;
   justify-content: center;
+  margin: 0 auto;
+  position: relative;
 }
 
 .container {
@@ -18,7 +20,7 @@
 }
 
 .row {
-  width: 100vw;
+  // width: 100vw;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -43,86 +45,90 @@
   position: relative;
 }
 
-.imgDes {
-  position: absolute;
-  z-index: 5;
-  width: 330px;
-  height: 150px;
-  border-radius: 5px;
-  background-color: white;
-  left: 30px;
-  bottom: 25px;
+
+.leftButton {
+  margin-left: 20px;
   display: flex;
-  flex-direction: column;
+  cursor: pointer;
+  align-items: flex-start;
+  position: absolute;
   justify-content: flex-start;
-  padding: 27px 0 20px;
+  border: none;
+  border-radius: 60px;
+  padding: 25px 10px;
+  opacity: 0.5;
+  z-index: 2;
+  transition: all 0.5s ease-in-out;
+  left: 0; 
 }
 
-.leftButton,
 .rightButton {
+  margin-right: 20px;
   display: flex;
   cursor: pointer;
   align-items: center;
   position: absolute;
   justify-content: center;
   border: none;
-  font-size: 12px;
-  height: 50px;
   border-radius: 60px;
   padding: 25px 10px;
   opacity: 0.5;
   z-index: 2;
   transition: all 0.5s ease-in-out;
+  right: 0; 
+}
+
+.imgDes {
+  position: absolute;
+  z-index: 5;
+  width: 150px;
+  height: 50px;
+  border-radius: 5px;
+  background-color: white;
+  left: 30px;
+  bottom: 25px;
+  display: flex;
+  align-items: center;
+  padding: 27px 0 20px;
 }
 
 .title {
   padding-left: 20px;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
   margin-bottom: 14px;
 }
 
-.des {
-  padding-left: 20px;
-  padding-bottom: 24px;
-  font-size: 14px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+.buttonBox {
+  width: 30%;
+  display: flex;
+  justify-content: space-between;
 }
 
-.linkSpan {
-  padding-left: 20px;
-  padding-top: 16px;
+.deleteButton {
+  margin-top: 20px;
+  background-color: transparent;
+  border: lightgray solid 1px;
+  border-radius: 5px;
+  padding: 10px;
   color: #3366ff;
   display: flex;
   align-items: center;
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: 500;
+  font-size: 15px;
   cursor: pointer;
-
-  i {
-    margin-left: 5px;
-  }
 }
 
-.miniWrapper {
+.linkSpanBig {
+  margin-top: 20px;
+  background-color: transparent;
+  border: lightgray solid 1px;
+  border-radius: 5px;
+  padding: 10px;
+  color: #3366ff;
   display: flex;
-  position: relative;
-  flex-direction: column;
   align-items: center;
-  transition: all 0.1s ease-in-out;
-}
-
-.miniTitle {
-  font-size: 20px;
-  font-weight: 600;
-  margin-top: 22px;
-  margin-bottom: 10px;
-  text-align: center;
-  color: rgba(0, 0, 0, 0.75);
-}
-
-.miniDes {
-  font-size: 14px;
-  text-align: center;
-  color: rgba(0, 0, 0, 0.6);
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
 }

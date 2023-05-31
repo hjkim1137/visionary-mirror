@@ -1,46 +1,54 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./boardCollection.module.scss";
-import { FiChevronLeft } from "react-icons/fi";
-import { FiChevronRight } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import useDeleteCollection from './deleteCollection';
 
-const collectionImg = [
-  "https://static.wanted.co.kr/images/banners/1489/312a0c29.jpg",
-  "https://static.wanted.co.kr/images/banners/1486/fba2df30.jpg",
-  "https://static.wanted.co.kr/images/banners/1468/3df61cbc.jpg",
-  "https://static.wanted.co.kr/images/banners/1490/0b775035.jpg",
-  "https://static.wanted.co.kr/images/banners/1484/b2853456.jpg",
-  "https://static.wanted.co.kr/images/banners/1460/619f3af7.jpg",
-  "https://static.wanted.co.kr/images/banners/1473/41f7b36e.jpg",
-  "https://static.wanted.co.kr/images/banners/1487/0d36f0b5.jpg",
-  "https://static.wanted.co.kr/images/banners/1488/baa54448.jpg",
-];
-
-const collectionTitle = [
-  "컬렉션1",
-  "컬렉션2",
-  "컬렉션3",
-  "컬렉션4",
-  "컬렉션5",
-  "컬렉션6",
-  "컬렉션7",
-  "컬렉션8",
-  "컬렉션9",
-];
+const mockAPI = 'http://localhost:9999/collection';
 
 function BoardCollection() {
-  //슬라이드
+  // db에서 컬렉션 정보 불러오기
+  const [collectionImg, setCollectionImg] = useState([]);
+  const [collectionTitle, setCollectionTitle] = useState([]);
+  const [collectionId, setCollectionId] = useState([]);
+
+  useEffect(() => {
+    fetch(mockAPI)
+      .then(response => response.json())
+      .then(items => {
+        const imgUrls = items.map(item => item.url);
+        const imgTitles = items.map(item => item.title);
+        const imgIds = items.map(item => item.id); // 
+        setCollectionImg(imgUrls);
+        setCollectionTitle(imgTitles);
+        setCollectionId(imgIds); // 
+      });
+  }, []);
+
+  // 컬렉션 상세보기 페이지 넘어가기
+  const navigate = useNavigate();
+  const handleBtnForBoardDetail = (id) => {
+    navigate(`/boarddetail/${id}`);
+    console.log("상세보기클릭", id)
+  };
+  
+  // useDeleteCollection 불러오기
+  const handleDeleteButtonClick = useDeleteCollection(
+    collectionTitle, collectionId, collectionImg,
+    setCollectionImg, setCollectionTitle, setCollectionId, mockAPI
+  );
+
+
+  //슬라이드 관련
   const slideRef = useRef(null);
   const [index, setIndex] = useState(0); // 슬라이드 인덱스
-  const [isSlide, setIsSlide] = useState(false); // 슬라이드 중인지 체크해줍니다. 슬라이드 중에 여러번 빠르게 클릭 못하게 하는 역할
+  const [isSlide, setIsSlide] = useState(false); // 슬라이드 중 여부 체크, 여러번 빠르게 클릭 못하게 하는 역할
   const [x, setX] = useState(0); // 슬라이드 애니메이션 효과를 주기위한 x만큼 이동
 
-  //드래그로 슬라이드 넘기기
+  //버튼 클릭으로 슬라이드 넘기기
   const [isClick, setIsClick] = useState(false); // 드래그를 시작하는지 체크해줍니다.
-  const [mouseDownClientX, setMouseDownClientX] = useState(0); // 마우스를 클릭한 지점의 x 좌료를 저장합니다
-  const [mouseUpClientX, setMouseUpClientX] = useState(0); // 마우스를 땐 지점의 x 좌표를 저장합니다.
-
-  //반응형 사이트
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth); // 반응형 사이트 상태관리
+  const [mouseDownClientX, setMouseDownClientX] = useState(0); // 마우스를 클릭한 지점의 x 좌표를 저장
+  const [mouseUpClientX, setMouseUpClientX] = useState(0); // 마우스를 땐 지점의 x 좌표를 저장
 
   //오른쪽 버튼 함수
   const increaseClick = async () => {
@@ -51,11 +59,10 @@ function BoardCollection() {
     setIsSlide(true);
 
     await setTimeout(() => {
-      setIndex((prev) => (prev === 8 ? 0 : prev + 1));
+      setIndex((prev) => (prev === 7 ? 0 : prev + 1));
       setX(0);
       setIsSlide(false);
     }, 500);
-    //setIndex((prev) => (prev === 7 ? 0 : prev + 1));
   };
 
   //왼쪽 버튼 함수
@@ -67,34 +74,39 @@ function BoardCollection() {
     setIsSlide(true);
 
     await setTimeout(() => {
-      setIndex((prev) => (prev === 0 ? 8 : prev - 1));
+      setIndex((prev) => (prev === 0 ? 7 : prev - 1));
       setX(0);
       setIsSlide(false);
     }, 500);
   };
 
-  // 슬라이드 인덱스 및 개수(이미지 총 9장, 인덱스 0~8)
-  const morePrevImg = index === 1 ? 8 : index === 0 ? 7 : index - 2;
-  const PrevImg = index === 0 ? 8 : index - 1; // 다음 슬라이드 이동
-  const NextImg = index === 8 ? 0 : index + 1; // 이전 슬라이드 이동
-  const moreNextImg = index === 8 ? 1 : index === 7 ? 0 : index + 2;
-  //console.log(slideRef.current);
-  console.log(index);
+  // 슬라이드 인덱스 및 개수(이미지 총 8장, 인덱스 0~7)
+  const morePrevImg = index === 1 ? 7 : index === 0 ? 6 : index - 2; //두 슬라이드 전
+  const PrevImg = index === 0 ? 7 : index - 1; // 이전 슬라이드 이동(첫 슬라이드에서 왼쪽-> 마지막 슬라이드)
+  const NextImg = index === 7 ? 0 : index + 1; // 다음 슬라이드 이동(마지막 슬라이드 오른쪽 -> 첫 슬라이드)
+  const moreNextImg = index === 7 ? 1 : index === 6 ? 0 : index + 2; //두 슬라이드 뒤
 
+  console.log('슬라이드 인덱스', index);
+
+  // 버튼 클릭으로 슬라이드 넘기기 시작
+  // 마우스 버튼 눌렀을 때
   const onMouseDown = (event) => {
     setIsClick(true);
     setMouseDownClientX(event.pageX);
-    console.log(slideRef);
+    // console.log('슬라이드 ref', slideRef);
   };
 
+  // 마우스가 범위 밖일 때
   const onMouseLeave = (event) => {
     setIsClick(false);
   };
 
+  // 마우스 버튼 뗐을 때
   const onMouseUp = (event) => {
     setIsClick(false);
     const imgX = mouseDownClientX - mouseUpClientX;
     // console.log(imgX);
+
     if (imgX < -100) {
       slideRef.current.style.transform = `translateX(${imgX}px)`;
       increaseClick();
@@ -104,26 +116,18 @@ function BoardCollection() {
     }
   };
 
+  // 마우스가 범위 안 일 때
   const onMouseMove = (event) => {
     if (!isClick) return;
     event.preventDefault();
     setMouseUpClientX(event.pageX);
     const imgX = mouseDownClientX - mouseUpClientX;
     if (Math.abs(imgX) > 100) {
-      // slideRef.current.style.transform = `translateX(${imgX}px)`;
+      slideRef.current.style.transform = `translateX(${imgX}px)`;
     }
   };
+  // 버튼 클릭으로 슬라이드 넘기기 끝
 
-  const resizeWidth = () => {
-    setWindowWidth(window.innerWidth);
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", resizeWidth);
-    return () => {
-      window.removeEventListener("resize", resizeWidth);
-    };
-  }, []);
 
   useEffect(() => {
     const autoPage = setTimeout(() => {
@@ -139,30 +143,28 @@ function BoardCollection() {
       clearTimeout(autoPage);
     };
   }, [index, isClick]);
-  console.log(`브라우저 사이즈 : ${windowWidth}`);
+
 
   // 리턴
   return (
     <div className={styles.wrapper}>
+
       {/* 왼쪽 버튼 */}
       <button
         className={styles.leftButton}
-        style={{
-          left:
-            windowWidth > 1800
-              ? `18.5%`
-              : windowWidth > 1500
-              ? `10%`
-              : windowWidth > 1300
-              ? `5%`
-              : `0%`,
-          visibility: windowWidth < 1335 ? "hidden" : "visible",
-        }}
         onClick={decreaseClick}
-      >
-        <FiChevronLeft />
+      ><FiChevronLeft />
       </button>
 
+      {/* 오른쪽 버튼 */}
+      <button
+        className={styles.rightButton}
+        onClick={increaseClick}
+      ><FiChevronRight />
+      </button>
+
+
+      {/* 가로 정렬 등 전체 스타일 시작  */}
       <div
         className={styles.row}
         key={index}
@@ -175,126 +177,69 @@ function BoardCollection() {
           transform: `translateX(${x}vw)`,
         }}
       >
+        {/* 전전 슬라이드에 적용 */}
         <div className={styles.container}>
           <img
             className={styles.priviewImg}
-            style={{
-              opacity: 0.5,
-              width: windowWidth > 1200 ? null : `80vw`,
-              height:
-                windowWidth > 1200
-                  ? null
-                  : windowWidth < 770
-                  ? "185px"
-                  : "250px",
-            }}
             src={collectionImg[morePrevImg]}
           ></img>
         </div>
 
+        {/* 전 슬라이드에 적용 */}
         <div className={styles.container}>
           <img
             className={styles.priviewImg}
-            style={{
-              opacity: 0.5,
-              width: windowWidth > 1200 ? null : `80vw`,
-              height:
-                windowWidth > 1200
-                  ? null
-                  : windowWidth < 770
-                  ? "185px"
-                  : "250px",
-            }}
             src={collectionImg[PrevImg]}
           ></img>
         </div>
 
-        {/* 반응형 스타일 시작  */}
+        
+        {/* 이미지 섹션 시작 */}
         <div className={styles.imgWrapper}>
+          {/* 한 화면에 세 개 슬라이드 보이게 */}
           <img
             className={styles.img}
-            style={{
-              opacity: 1,
-              width: windowWidth > 1200 ? null : `80vw`,
-              height:
-                windowWidth > 1200
-                  ? null
-                  : windowWidth < 770
-                  ? "185px"
-                  : "250px",
-            }}
             src={collectionImg[index]}
           ></img>
 
-          {!isSlide && windowWidth > 1200 ? (
-            <div className={styles.imgDes}>
-              <div className={styles.title}>{collectionTitle[index]}</div>
-              <div className={styles.linkSpan}>바로가기</div>
-            </div>
-          ) : null}
-
-          {!isSlide && windowWidth <= 1200 ? (
-            <div className={styles.miniWrapper}>
-              <div className={styles.miniTitle}>{collectionTitle[index]}</div>
-              <div className={styles.linkSpan}>바로가기</div>
-            </div>
-          ) : null}
+          {/* 네임 태그 섹션 */}
+            {!isSlide ? ( //슬라이딩 중이 아니면
+              <div className={styles.imgDes}>
+                <div className={styles.title}>{collectionTitle[index]}</div>
+              </div>
+            ) : null}
         </div>
+        {/* 이미지 섹션 끝 */}
 
+        {/* 다음 슬라이드에 적용 */}
         <div className={styles.container}>
           <img
             className={styles.priviewImg}
-            style={{
-              opacity: 0.5,
-              width: windowWidth > 1200 ? null : `80vw`,
-              height:
-                windowWidth > 1200
-                  ? null
-                  : windowWidth < 770
-                  ? "185px"
-                  : "250px",
-            }}
             src={collectionImg[NextImg]}
           ></img>
         </div>
 
+        {/* 다다음 슬라이드에 적용 */}
         <div className={styles.container}>
           <img
             className={styles.priviewImg}
-            style={{
-              opacity: 0.5,
-              width: windowWidth > 1200 ? null : `80vw`,
-              height:
-                windowWidth > 1200
-                  ? null
-                  : windowWidth < 770
-                  ? "185px"
-                  : "250px",
-            }}
             src={collectionImg[moreNextImg]}
           ></img>
         </div>
-        {/* 반응형 스타일 끝  */}
       </div>
+      {/* 가로 정렬 등 전체 스타일 끝  */}
 
-      {/* 오른쪽 버튼 */}
-      <button
-        className={styles.rightButton}
-        style={{
-          right:
-            windowWidth > 1800
-              ? `18.5%`
-              : windowWidth > 1500
-              ? `10%`
-              : windowWidth > 1200
-              ? `5%`
-              : `0%`,
-          visibility: windowWidth < 1335 ? "hidden" : "visible",
-        }}
-        onClick={increaseClick}
-      >
-        <FiChevronRight />
-      </button>
+      <div className={styles.buttonBox}>
+        <button 
+          className={styles.deleteButton}
+          onClick={() => handleDeleteButtonClick(index)}
+            >선택 컬렉션 삭제하기</button>
+
+        <button 
+          className={styles.linkSpanBig}
+          onClick={() => handleBtnForBoardDetail(collectionId[index])}
+            >선택 컬렉션 상세보기</button>
+      </div>
     </div>
   );
 }
