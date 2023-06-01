@@ -1,18 +1,15 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import styles from "./makeBoardName.module.scss";
-import { FiFastForward } from "react-icons/fi";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import styles from './MakeBoardName.module.scss';
 
 function MakeBoardName() {
   const navigate = useNavigate();
-
   const handleBtnForBoardImg = () => {
-    const boardName = "";
-
+    const boardName = '';
     if (boardName) {
       navigate(`/visionboardgrid`);
     } else {
-      alert("비전보드 이름을 입력해주세요.");
+      alert('비전보드 이름을 입력해주세요.');
     }
   };
 

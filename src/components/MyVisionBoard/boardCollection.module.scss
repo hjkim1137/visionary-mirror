@@ -45,7 +45,6 @@
   position: relative;
 }
 
-
 .leftButton {
   margin-left: 20px;
   display: flex;
@@ -59,7 +58,7 @@
   opacity: 0.5;
   z-index: 2;
   transition: all 0.5s ease-in-out;
-  left: 0; 
+  left: 0;
 }
 
 .rightButton {
@@ -75,7 +74,7 @@
   opacity: 0.5;
   z-index: 2;
   transition: all 0.5s ease-in-out;
-  right: 0; 
+  right: 0;
 }
 
 .imgDes {
@@ -97,12 +96,6 @@
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 14px;
-}
-
-.buttonBox {
-  width: 30%;
-  display: flex;
-  justify-content: space-between;
 }
 
 .deleteButton {
