@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { auth } from './firebase/firebase';
 import SignIn from './pages/SignIn/SignIn';
+import SignUp from './pages/SignUp/SignUp';
 import Home from './pages/Home/Home';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
               element={isLogin ? <Home /> : <Navigate replace to="/login" />}
             />
             <Route path="/login" element={<SignIn isLogin={isLogin} />} />
+            <Route path="/register" element={<SignUp isLogin={isLogin} />} />
           </Routes>
         </BrowserRouter>
       ) : (
