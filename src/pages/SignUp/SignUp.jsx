@@ -1,18 +1,40 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebase/firebase';
 
-function SignUp() {
+function SignUp({ isLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  // 로그인 되어있으면 홈('/')으로 이동
+  const navigate = useNavigate();
+  useEffect(() => {
+    isLogin && navigate('/');
+  }, [isLogin, navigate]);
+
   /** 회원가입 기능 수행 */
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      const data = await createUserWithEmailAndPassword(auth, email, password);
+      data && navigate('/'); // 가입 완료 후 홈('/') 리다이렉트
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   /** 필드 입력시 해당 값 갱신 */
   const onChange = (e) => {
     const {
       target: { name, value },
     } = e;
+
+    if (name === 'email') {
+      setEmail(value);
+    } else if (name === 'password') {
+      setPassword(value);
+    }
   };
 
   return (
