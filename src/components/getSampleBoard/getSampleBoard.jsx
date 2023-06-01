@@ -1,14 +1,14 @@
 // branch: feat/#3/get-sample-board
 
-import React from "react";
-import styles from "./getSampleBoard.module.scss";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import styles from './GetSampleBoard.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 function GetSampleBoard() {
   const navigate = useNavigate();
 
   const handleBtnForBoardName = () => {
-    navigate("/makeboardname");
+    navigate('/makeboardname');
   };
 
   return (
