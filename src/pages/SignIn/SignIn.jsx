@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
 
 function SignIn({ isLogin }) {
@@ -16,6 +20,13 @@ function SignIn({ isLogin }) {
   /** 로그인 기능 수행 */
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      const data = await signInWithEmailAndPassword(auth, email, password);
+      data && navigate('/'); // 로그인 완료 후 홈('/') 리다이렉트
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   /** 필드 입력시 해당 값 갱신 */
   const onChange = (e) => {
@@ -42,7 +53,7 @@ function SignIn({ isLogin }) {
 
     try {
       const data = await signInWithPopup(auth, provider);
-      data && navigate('/'); // 가입 완료 후 홈('/') 리다이렉트
+      data && navigate('/'); // 가입 또는 로그인 완료 후 홈('/') 리다이렉트
     } catch (error) {
       console.log(error.message);
     }
