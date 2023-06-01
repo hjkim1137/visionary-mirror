@@ -5,7 +5,7 @@
 // import Logo from './Logo';
 // import Hamburger from './Hamburger';
 // import Nav from './Nav';
-// import styles from './Header.module.scss';
+// import styles from '../components/Layout/Header/Header.module.scss';
 
 // function Header() {
 //   const navigate = useNavigate();
@@ -81,7 +81,8 @@
 // import Logo from './Logo';
 // import Hamburger from './Hamburger';
 // import Nav from './Nav';
-// import styles from './Header.module.scss';
+// import styles from '../components/Layout/Header/Header.module.scss';
+//
 
 // function Header() {
 //   const navigate = useNavigate();
@@ -154,7 +155,7 @@
 // import Logo from './Logo';
 // import Hamburger from './Hamburger';
 // import Nav from './Nav';
-// import styles from './Header.module.scss';
+// import styles from '../components/Layout/Header/Header.module.scss';
 
 // function Header() {
 //   const navigate = useNavigate();
@@ -174,14 +175,14 @@
 //   const login = () => {
 //     // 로그인이 성공했다고 가정하고, 임의의 토큰을 로컬 스토리지에 저장
 //     localStorage.setItem('token', 'YOUR_TOKEN');
-//     setIsLoggedIn(true); // 로그인 상태를 true로 설정합니다.
+//     setIsLoggedIn(true); // 로그인 상태 true로 설정.
 //   };
 
 //   // 가상의 로그아웃 함수
 //   const logout = () => {
 //     // 로그아웃 시 토큰 제거
 //     localStorage.removeItem('token');
-//     setIsLoggedIn(false); // 로그인 상태를 false로 설정합니다.
+//     setIsLoggedIn(false); // 로그인 상태 false로 설정
 //   };
 
 //   return (
@@ -208,7 +209,7 @@
 //     <a onClick={() => navigate('/login')}>
 //       로그인
 //     </a>
-//  </button> // 로그인 버튼을 누르면 login 함수가 호출됩니다.
+//  </button>
 //             )}
 //           </li>
 //         </ul>
@@ -224,18 +225,18 @@
 // 사용자가 로그인하면 서버는 쿠키를 생성하고 HTTP 응답 헤더를 통해 클라이언트에 전송
 
 // Header.js
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Logo from './Logo';
-import Hamburger from './Hamburger';
-import Nav from './Nav';
-import styles from './Header.module.scss';
+import Logo from '../components/Layout/Header/Logo';
+import Hamburger from '../components/Layout/Header/Hamburger';
+import Nav from '../components/Layout/Header/Nav';
+import styles from '../components/Layout/Header/Header.module.scss';
 
 function Header() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(!!document.cookie); // 로그인 상태를 체크하여 useState에 설정합니다.
+  const [isLoggedIn, setIsLoggedIn] = useState(!!document.cookie); // 로그인 상태를 체크하여 useState에 설정
 
   // Nav 열림 조절
   const handleMenu = () => {
@@ -250,7 +251,7 @@ function Header() {
   const login = () => {
     // 로그인이 성공했다고 가정하고, 쿠키를 설정
     document.cookie = 'session=YOUR_SESSION_ID';
-    setIsLoggedIn(true); // 로그인 상태를 true로 설정합니다.
+    setIsLoggedIn(true); // 로그인 상태 true로 설정
   };
 
   // 가상의 로그아웃 함수
@@ -258,7 +259,7 @@ function Header() {
     // 로그아웃 시 쿠키 제거
     document.cookie =
       'session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    setIsLoggedIn(false); // 로그인 상태를 false로 설정합니다.
+    setIsLoggedIn(false); // 로그인 상태 false로 설정
   };
 
   return (
@@ -283,7 +284,7 @@ function Header() {
             ) : (
               <button onClick={login}>
                 <a onClick={() => navigate('/login')}>로그인</a>
-              </button> // 로그인 버튼을 누르면 login 함수가 호출됩니다.
+              </button>
             )}
           </li>
         </ul>
