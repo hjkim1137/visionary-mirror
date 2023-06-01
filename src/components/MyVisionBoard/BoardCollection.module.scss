@@ -20,11 +20,11 @@
 }
 
 .row {
-  // width: 100vw;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  transition: all 0.5s ease-in-out;
+  overflow: hidden;
+  transition: transform 0.6s ease-out;
 }
 
 .img {
@@ -100,30 +100,56 @@
   margin-bottom: 14px;
 }
 
+.buttonBox {
+  display: flex;
+}
+
 .deleteButton {
   margin-top: 20px;
+  margin-right: 25px;
   background-color: transparent;
-  border: lightgray solid 1px;
+  border: lightgray solid 2px;
   border-radius: 5px;
   padding: 10px;
   color: #3366ff;
   display: flex;
   align-items: center;
-  font-weight: 500;
+  font-weight: 700;
   font-size: 15px;
   cursor: pointer;
 }
 
 .detailButton {
   margin-top: 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: transparent;
-  border: lightgray solid 1px;
+  border: lightgray solid 2px;
   border-radius: 5px;
   padding: 10px;
   color: #3366ff;
-  display: flex;
-  align-items: center;
-  font-weight: 500;
+  font-weight: 700;
   font-size: 15px;
   cursor: pointer;
+}
+
+.dotWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.dot {
+  height: 15px;
+  width: 15px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 5px 10px 5px 0;
+}
+
+.dot.active {
+  background-color: #3366ff;
 }
