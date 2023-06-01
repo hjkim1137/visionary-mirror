@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './MakeBoardName.module.scss';
+import styles from '../components/MakeBoardName/MakeBoardName.module.scss';
 
 function MakeBoardName() {
   const navigate = useNavigate();
