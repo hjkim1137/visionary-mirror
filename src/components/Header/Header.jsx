@@ -228,10 +228,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Logo from '../components/Layout/Header/Logo';
-import Hamburger from '../components/Layout/Header/Hamburger';
-import Nav from '../components/Layout/Header/Nav';
-import styles from '../components/Layout/Header/Header.module.scss';
+import Logo from './Logo';
+import Hamburger from './Hamburger';
+import Nav from './Nav';
+import styles from './Header.module.scss';
 
 function Header() {
   const navigate = useNavigate();
@@ -263,33 +263,38 @@ function Header() {
   };
 
   return (
-    <header className={styles.header}>
-      <div className={styles.listWrapper}>
-        <ul>
-          <li>
-            <Hamburger clickHandler={handleMenu} />
-            <Nav isOpen={isOpen} />
-          </li>
-          <li onClick={navigateHome}>
-            <div className={styles.iconWrapper}>
-              <Logo />
-            </div>
-          </li>
-          <li>
-            {isLoggedIn ? (
-              <div>
-                <button onClick={logout}>로그아웃</button>
-                <a onClick={() => navigate('/mypage')}>마이페이지</a>
+    <>
+      <header className={styles.header}>
+        <div className={styles.listWrapper}>
+          <ul>
+            <li>
+              <Hamburger clickHandler={handleMenu} />
+              <Nav isOpen={isOpen} />
+            </li>
+            <li onClick={navigateHome}>
+              <div className={styles.iconWrapper}>
+                <Logo />
               </div>
-            ) : (
-              <button onClick={login}>
-                <a onClick={() => navigate('/login')}>로그인</a>
-              </button>
-            )}
-          </li>
-        </ul>
+            </li>
+            <li>
+              {isLoggedIn ? (
+                <div>
+                  <button onClick={logout}>로그아웃</button>
+                  <a onClick={() => navigate('/mypage')}>마이페이지</a>
+                </div>
+              ) : (
+                <button onClick={login}>
+                  <a onClick={() => navigate('/login')}>로그인</a>
+                </button>
+              )}
+            </li>
+          </ul>
+        </div>
+      </header>
+      <div className={styles.test}>
+        <h1 className={styles.test1}>1</h1>
       </div>
-    </header>
+    </>
   );
 }
 

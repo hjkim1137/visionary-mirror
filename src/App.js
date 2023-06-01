@@ -1,14 +1,29 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes } from 'react-router-dom';
-import Header from './pages/Header';
-// import Home from "./Home";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import Layout from './pages/Layout';
+// import GetSampleBoard from './pages/GetSampleBoard';
+// import MakeBoardName from './pages/MakeBoardName';
+// import MyVisionBoard from './pages/MyVisionBoard';
+// import MyVisionBoardGrid from './pages/MyVisionBoardGrid';
+// import SignIn from './pages/SignIn';
+// import SignUp from './pages/SignUp';
+// import VisionBoardGrid from './pages/VisionBoardGrid ';
 
 function App() {
   return (
-    <Router>
-      <Header />
-      <Routes>{/* <Route path="/" element={<Home />} /> */}</Routes>
-    </Router>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />} />
+        {/* <Route path="/getsampleboard" element={<GetSampleBoard />} />
+        <Route path="/makeBoardName" element={<MakeBoardName />} />
+        <Route path="/myvisionboard" element={<MyVisionBoard />} />
+        <Route path="/myvisionboardgrid/:id" element={<MyVisionBoardGrid />} />
+        <Route path="/login" element={<SignIn />} />
+        <Route path="/register" element={<SignUp />} />
+        <Route path="/visionboardgrid" element={<VisionBoardGrid />} /> */}
+      </Routes>
+    </BrowserRouter>
   );
 }
 

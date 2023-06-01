@@ -16,24 +16,26 @@ function Nav({ isOpen }) {
       <ul className={styles.NavListWrapper}>
         <li>
           <Link to="/" className={styles.NavLink}>
-            <AiFillHome size={32} />홈
+            <AiFillHome size={32} />
+            <span>홈</span>
           </Link>
         </li>
-        <li>
+        <li id={styles.NavMake}>
           <Link to="/makeboardname" className={styles.NavLink}>
             <MdDashboardCustomize size={32} />
-            비전보드 만들기
+            <span>비전보드 만들기</span>
           </Link>
         </li>
         <li>
           <Link to="/myvisionboard" className={styles.NavLink}>
-            <IoImages size={32} />내 비전보드
+            <IoImages size={32} />
+            <span>내 비전보드</span>
           </Link>
         </li>
         <li>
           <Link to="/search" className={styles.NavLink}>
             <FaSearch size={32} />
-            탐색
+            <span>탐색</span>
           </Link>
         </li>
       </ul>
