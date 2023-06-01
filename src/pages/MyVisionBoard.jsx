@@ -1,5 +1,5 @@
-import React from "react";
-import BoardCollection from "./boardCollection";
+import React from 'react';
+import BoardCollection from '../components/MyVisionBoard/BoardCollection';
 
 function MyVisionBoard() {
   return <BoardCollection></BoardCollection>;
