@@ -1,9 +1,17 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { auth } from '../../firebase/firebase';
 
-function SignIn() {
+function SignIn({ isLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // 로그인 되어있으면 홈('/')으로 이동
+  const navigate = useNavigate();
+  useEffect(() => {
+    isLogin && navigate('/');
+  }, [isLogin, navigate]);
 
   /** 로그인 기능 수행 */
   const onSubmit = async (e) => {
@@ -14,12 +22,30 @@ function SignIn() {
     const {
       target: { name, value },
     } = e;
+
+    if (name === 'email') {
+      setEmail(value);
+    } else if (name === 'password') {
+      setPassword(value);
+    }
   };
   /** 다른 계정으로 가입 및 로그인 */
   const onClick = async (e) => {
     const {
       target: { name },
     } = e;
+    let provider;
+
+    if (name === 'google') {
+      provider = new GoogleAuthProvider();
+    }
+
+    try {
+      const data = await signInWithPopup(auth, provider);
+      data && navigate('/'); // 가입 완료 후 홈('/') 리다이렉트
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
