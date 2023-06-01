@@ -33,6 +33,12 @@
   margin-top: 10px;
   font-size: 35px;
 }
+
+button,
+a {
+  font-size: 18px;
+}
+
 @media (min-width: 768px) {
   .header {
     justify-content: center;
