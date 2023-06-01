@@ -328,7 +328,7 @@ function BoardCollection() {
         </button>
 
         <button
-          className={styles.linkSpanBig}
+          className={styles.detailButton}
           onClick={() => handleBtnForBoardDetail(collectionId[index])}
         >
           선택 컬렉션 상세보기
