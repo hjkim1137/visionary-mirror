@@ -1,8 +1,3 @@
-function SignIn(){
-
-    return(
-        <div>
-            Sign in
-        </div>
-    )
+function SignIn() {
+  return <div>Sign In</div>;
 }
