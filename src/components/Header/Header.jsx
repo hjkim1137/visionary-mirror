@@ -226,7 +226,7 @@
 
 // Header.js
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Logo from './Logo';
 import Hamburger from './Hamburger';
@@ -237,7 +237,7 @@ function Header() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(!!document.cookie); // 로그인 상태를 체크하여 useState에 설정
-  const [showModal, setShowModal] = useState(true); // 로그아웃 모달
+  // const [showModal, setShowModal] = useState(true); // 로그아웃 모달
 
   // Nav 열림 조절
   const handleMenu = () => {
@@ -256,23 +256,23 @@ function Header() {
     navigate('/login');
   };
 
-  const confirmLogout = () => {
-    setShowModal(true); // 모달 보임
-  };
+  // const confirmLogout = () => {
+  //   setShowModal(true); // 모달 보임
+  // };
 
-  const closeModal = () => {
-    setShowModal(false); // 모달 숨김
-  };
+  // const closeModal = () => {
+  //   setShowModal(false); // 모달 숨김
+  // };
 
   // 가상의 로그아웃 함수
-  const logout = () => {
-    // 로그아웃 시 쿠키 제거
-    document.cookie =
-      'session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    setIsLoggedIn(false); // 로그인 상태 false로 설정
+  // const logout = () => {
+  //   // 로그아웃 시 쿠키 제거
+  //   document.cookie =
+  //     'session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  //   setIsLoggedIn(false); // 로그인 상태 false로 설정
 
-    closeModal(); // 로그아웃 후 모달 숨김
-  };
+  //   // closeModal(); // 로그아웃 후 모달 숨김
+  // };
 
   return (
     <>
@@ -292,7 +292,7 @@ function Header() {
             <li>
               {isLoggedIn ? (
                 <div className={styles.spacing}>
-                  <button onClick={confirmLogout}>Logout</button>
+                  <button>Logout</button>
                   <a onClick={() => navigate('/accountedit')}>My page</a>
                 </div>
               ) : (
@@ -302,7 +302,7 @@ function Header() {
           </ul>
         </div>
       </header>
-      {showModal && (
+      {/* {showModal && (
         <div className="modalOverlay">
           <div className="modalContent">
             <p>로그아웃하시겠습니까?</p>
@@ -310,7 +310,7 @@ function Header() {
             <button onClick={closeModal}>취소</button>
           </div>
         </div>
-      )}
+      )} */}
       {/* <div className={styles.test}>
         <h1 className={styles.test1}>1</h1>
       </div> */}
