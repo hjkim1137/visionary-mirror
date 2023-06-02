@@ -2,23 +2,76 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
+  width: 1200px;
+  height: 420px;
   justify-content: center;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
-.samplePage {
-  width: 500px;
-  height: 700px;
-  background-color: lightgray;
-  font-size: 20px;
+.imgContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
 
+@keyframes rotateClockwise {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+}
+
+@keyframes rotateCounterClockwise {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-6deg);
+  }
+}
+
+.imageGroup1,
+.imageGroup3 {
+  animation: rotateClockwise 2s linear infinite;
+}
+
+.imageGroup2 {
+  animation: rotateCounterClockwise 3s linear infinite;
+}
+
+.imageGroup1,
+.imageGroup2 {
+  margin-right: 15px;
+}
+
+.imgGroupItem {
+  max-width: 100%;
+  height: auto;
+  border-radius: 40px;
+}
+
+.buttonBox {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 4px;
 }
 
 .visionStartBtn {
-  width: 200px;
-  margin-top: 30px;
+  width: 170px;
   font-size: 20px;
+  text-align: center;
+  background-color: transparent;
+  border: lightgray solid 2px;
+  border-radius: 5px;
+  padding: 10px;
+  color: #184ff5;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
 }
