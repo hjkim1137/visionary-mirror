@@ -5,8 +5,9 @@ import Layout from './Layout';
 function MakeBoardName() {
   return (
     <>
-      <Layout></Layout>
-      <MakeBoardNameCompo></MakeBoardNameCompo>;
+      <Layout>
+        <MakeBoardNameCompo></MakeBoardNameCompo>;
+      </Layout>
     </>
   );
 }
