@@ -1,8 +1,12 @@
 import React from 'react';
 import GetSampleBoardCompo from '../components/GetSampleBoard/GetSampleBoardCompo';
+import Layout from './Layout';
 
 function GetSampleBoard() {
-  return <GetSampleBoardCompo></GetSampleBoardCompo>;
+  return;
+  <Layout>
+    <GetSampleBoardCompo></GetSampleBoardCompo>
+  </Layout>;
 }
 
 export default GetSampleBoard;
