@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-// import Header from './pages/Header';
-import GetSampleBoard from './pages/GetSampleBoard';
-import MakeBoardName from './pages/MakeBoardName';
-import MyVisionBoard from './pages/MyVisionBoard';
+import Layout from './pages/Layout';
+// import GetSampleBoard from './pages/GetSampleBoard';
+// import MakeBoardName from './pages/MakeBoardName';
+// import MyVisionBoard from './pages/MyVisionBoard';
 // import MyVisionBoardGrid from './pages/MyVisionBoardGrid';
 // import SignIn from './pages/SignIn';
 // import SignUp from './pages/SignUp';
@@ -14,8 +14,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route path="/" element={<Header />} /> */}
-        <Route path="/getsampleboard" element={<GetSampleBoard />} />
+        <Route path="/" element={<Layout />} />
+        {/* <Route path="/getsampleboard" element={<GetSampleBoard />} />
         <Route path="/makeBoardName" element={<MakeBoardName />} />
         <Route path="/myvisionboard" element={<MyVisionBoard />} />
         {/* <Route path="/myvisionboardgrid/:id" element={<MyVisionBoardGrid />} /> */}
