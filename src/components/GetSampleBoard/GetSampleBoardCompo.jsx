@@ -42,15 +42,15 @@ function GetSampleBoardCompo() {
             ></img>
           </div>
         </div>
-      </div>
 
-      <div className={styles.buttonBox}>
-        <button
-          className={styles.visionStartBtn}
-          onClick={handleBtnForBoardName}
-        >
-          Create VisionBoard
-        </button>
+        <div className={styles.buttonBox}>
+          <button
+            className={styles.visionStartBtn}
+            onClick={handleBtnForBoardName}
+          >
+            비전보드 시작하기
+          </button>
+        </div>
       </div>
     </>
   );
