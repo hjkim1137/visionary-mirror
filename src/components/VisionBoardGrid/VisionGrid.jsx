@@ -1,7 +1,7 @@
 import styles from './VisionGrid.module.scss';
 
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+// import { useNavigate, useLocation } from 'react-router-dom';
 import CreateVisionBoardModal from './../CreateVisionBoardModal/CreateVisionBoardModal';
 
 export default function VisionGrid() {
