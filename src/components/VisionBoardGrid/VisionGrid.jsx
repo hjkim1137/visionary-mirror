@@ -1,9 +1,23 @@
 import styles from './VisionGrid.module.scss';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import CreateVisionBoardModal from './../CreateVisionBoardModal/CreateVisionBoardModal';
 
 export default function VisionGrid() {
+  // const navigate = useNavigate();
+  // const location = useLocation();
+
+  // useEffect(() => {
+  //   const params = new URLSearchParams(location.search);
+  //   const boardName = params.get('boardName');
+
+  //   if (!boardName) {
+  //     alert('비전보드 이름을 먼저 입력해주세요.');
+  //     navigate('/makeboardname');
+  //   }
+  // }, [navigate, location]);
+
   const [gridItems, setGridItems] = useState([
     { id: '1', img: null, isChecked: false },
     { id: '2', img: null, isChecked: false },
@@ -68,7 +82,7 @@ export default function VisionGrid() {
               <img
                 src={item.img}
                 alt="Selected"
-                style={{ maxWidth: '100px', maxHeight: '100px' }}
+                style={{ maxWidth: '210px', maxHeight: '210px' }}
               />
             )}
             {item.id !== 'name' && (
