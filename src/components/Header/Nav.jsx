@@ -6,35 +6,39 @@ import { IoImages } from 'react-icons/io5';
 import { FaSearch } from 'react-icons/fa';
 import styles from './Nav.module.scss';
 
-function Nav({ isOpen }) {
+function Nav({ isOpen, isLoggedIn }) {
   if (!isOpen) {
     return null;
   }
 
   return (
-    <nav className={isOpen ? `${styles.Nav} ${styles.NavOpen}` : styles.Nav}>
-      <ul className={styles.NavListWrapper}>
+    <nav className={isOpen ? `${styles.nav} ${styles.navOpen}` : styles.nav}>
+      <ul className={styles.navListWrapper}>
         <li>
-          <Link to="/" className={styles.NavLink}>
-            <AiFillHome size={32} />
+          <Link to="/" className={styles.navLink}>
+            <AiFillHome size={29} />
             <span>홈</span>
           </Link>
         </li>
-        <li id={styles.NavMake}>
-          <Link to="/makeboardname" className={styles.NavLink}>
-            <MdDashboardCustomize size={32} />
-            <span>비전보드 만들기</span>
-          </Link>
-        </li>
+        {isLoggedIn && (
+          <>
+            <li id={styles.navMake}>
+              <Link to="/makeboardname" className={styles.navLink}>
+                <MdDashboardCustomize size={29} />
+                <span>비전보드 만들기</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/myvisionboard" className={styles.navLink}>
+                <IoImages size={29} />
+                <span>내 비전보드</span>
+              </Link>
+            </li>
+          </>
+        )}
         <li>
-          <Link to="/myvisionboard" className={styles.NavLink}>
-            <IoImages size={32} />
-            <span>내 비전보드</span>
-          </Link>
-        </li>
-        <li>
-          <Link to="/search" className={styles.NavLink}>
-            <FaSearch size={32} />
+          <Link to="/search" className={styles.navLink}>
+            <FaSearch size={29} />
             <span>탐색</span>
           </Link>
         </li>

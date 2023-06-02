@@ -23,7 +23,7 @@
 
 .header {
   position: relative;
-  z-index: 1001;
+  z-index: 1;
 }
 
 .header ul {
@@ -36,8 +36,12 @@
   width: 100%;
 
   list-style: none;
-  background-color: rgb(190, 189, 189);
-  padding: 5px;
+  background-color: rgb(190, 190, 190);
+  padding: 5px 0;
+
+  li {
+    cursor: pointer;
+  }
 }
 
 .header ul li:nth-child(1) {
@@ -48,18 +52,70 @@
   margin: 20px;
 }
 
-.header ul li:nth-child(2) {
-  margin-top: 10px;
+.iconWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-top: 5px;
   font-size: 35px;
 }
 
 button,
 a {
-  font-size: 18px;
+  font-size: 16px;
+  color: rgb(96, 96, 96);
 }
 
-@media (min-width: 768px) {
-  .header {
-    justify-content: center;
+button,
+a:hover {
+  cursor: pointer;
+}
+
+.spacing {
+  letter-spacing: -0.05em;
+}
+
+.spacing > * {
+  padding-left: 8px;
+}
+
+.hamburger {
+  padding: 0;
+}
+
+// modal
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+//media
+
+@media (max-width: 768px) {
+  // 768px 이하: 햄버거 메뉴와 로그인/로그아웃/마이페이지 숨김
+  .header ul li:nth-child(1),
+  .header ul li:nth-child(3) {
+    display: none;
+  }
+
+  .header ul li:nth-child(2) {
+    position: static;
+    transform: none;
+    padding-left: 10px;
   }
 }

@@ -226,7 +226,7 @@
 
 // Header.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 import Logo from './Logo';
 import Hamburger from './Hamburger';
@@ -237,6 +237,7 @@ function Header() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(!!document.cookie); // 로그인 상태를 체크하여 useState에 설정
+  const [showModal, setShowModal] = useState(true); // 로그아웃 모달
 
   // Nav 열림 조절
   const handleMenu = () => {
@@ -248,10 +249,19 @@ function Header() {
   };
 
   // 가상의 로그인 함수
-  const login = () => {
+  const loginBtn = () => {
     // 로그인이 성공했다고 가정하고, 쿠키를 설정
     document.cookie = 'session=YOUR_SESSION_ID';
     setIsLoggedIn(true); // 로그인 상태 true로 설정
+    navigate('/login');
+  };
+
+  const confirmLogout = () => {
+    setShowModal(true); // 모달 보임
+  };
+
+  const closeModal = () => {
+    setShowModal(false); // 모달 숨김
   };
 
   // 가상의 로그아웃 함수
@@ -260,6 +270,8 @@ function Header() {
     document.cookie =
       'session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     setIsLoggedIn(false); // 로그인 상태 false로 설정
+
+    closeModal(); // 로그아웃 후 모달 숨김
   };
 
   return (
@@ -268,32 +280,40 @@ function Header() {
         <div className={styles.listWrapper}>
           <ul>
             <li>
-              <Hamburger clickHandler={handleMenu} />
-              <Nav isOpen={isOpen} />
+              <Hamburger
+                className={styles.hamburger}
+                clickHandler={handleMenu}
+              />
+              <Nav isOpen={isOpen} isLoggedIn={isLoggedIn} />
             </li>
             <li onClick={navigateHome}>
-              <div className={styles.iconWrapper}>
-                <Logo />
-              </div>
+              <Logo className={styles.iconWrapper} />
             </li>
             <li>
               {isLoggedIn ? (
-                <div>
-                  <button onClick={logout}>로그아웃</button>
-                  <a onClick={() => navigate('/mypage')}>마이페이지</a>
+                <div className={styles.spacing}>
+                  <button onClick={confirmLogout}>Logout</button>
+                  <a onClick={() => navigate('/accountedit')}>My page</a>
                 </div>
               ) : (
-                <button onClick={login}>
-                  <a onClick={() => navigate('/login')}>로그인</a>
-                </button>
+                <button onClick={loginBtn}>Login</button>
               )}
             </li>
           </ul>
         </div>
       </header>
-      <div className={styles.test}>
+      {showModal && (
+        <div className="modalOverlay">
+          <div className="modalContent">
+            <p>로그아웃하시겠습니까?</p>
+            <button onClick={logout}>확인</button>
+            <button onClick={closeModal}>취소</button>
+          </div>
+        </div>
+      )}
+      {/* <div className={styles.test}>
         <h1 className={styles.test1}>1</h1>
-      </div>
+      </div> */}
     </>
   );
 }
