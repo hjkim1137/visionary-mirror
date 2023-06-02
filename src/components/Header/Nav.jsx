@@ -23,7 +23,7 @@ function Nav({ isOpen, isLoggedIn }) {
         {isLoggedIn && (
           <>
             <li id={styles.navMake}>
-              <Link to="/makeboardname" className={styles.navLink}>
+              <Link to="/getsampleboard" className={styles.navLink}>
                 <MdDashboardCustomize size={29} />
                 <span>비전보드 만들기</span>
               </Link>
