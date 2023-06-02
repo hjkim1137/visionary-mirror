@@ -24,3 +24,7 @@ yarn-error.log*
 
 # env
 .env
+
+#db.json
+.prettierrc
+db.json

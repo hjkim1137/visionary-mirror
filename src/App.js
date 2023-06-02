@@ -18,8 +18,8 @@ function App() {
         {/* <Route path="/getsampleboard" element={<GetSampleBoard />} />
         <Route path="/makeBoardName" element={<MakeBoardName />} />
         <Route path="/myvisionboard" element={<MyVisionBoard />} />
-        <Route path="/myvisionboardgrid/:id" element={<MyVisionBoardGrid />} />
-        <Route path="/login" element={<SignIn />} />
+        {/* <Route path="/myvisionboardgrid/:id" element={<MyVisionBoardGrid />} /> */}
+        {/* <Route path="/login" element={<SignIn />} />
         <Route path="/register" element={<SignUp />} />
         <Route path="/visionboardgrid" element={<VisionBoardGrid />} /> */}
       </Routes>
