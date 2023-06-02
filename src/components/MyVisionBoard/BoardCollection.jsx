@@ -15,7 +15,12 @@ function BoardCollection() {
   useEffect(() => {
     try {
       fetch(mockAPI)
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('네트워크 응답이 정상적이지 않습니다');
+          }
+          return response.json();
+        })
         .then((items) => {
           const imgUrls = items.map((item) => item.url);
           const imgTitles = items.map((item) => item.title);
@@ -28,7 +33,6 @@ function BoardCollection() {
       console.error('비동기 처리 중 오류가 발생했습니다:', err);
     }
   }, []);
-
   // 컬렉션 상세보기 페이지 넘어가기
   const navigate = useNavigate();
   const handleBtnForBoardDetail = (id) => {

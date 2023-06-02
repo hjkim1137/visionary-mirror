@@ -1,15 +1,8 @@
 import React from 'react';
 import BoardCollection from '../components/MyVisionBoard/BoardCollection';
-import Layout from './Layout';
 
 function MyVisionBoard() {
-  return (
-    <>
-      <Layout>
-        <BoardCollection></BoardCollection>
-      </Layout>
-    </>
-  );
+  return <BoardCollection></BoardCollection>;
 }
 
 export default MyVisionBoard;
