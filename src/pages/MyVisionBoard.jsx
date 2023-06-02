@@ -5,8 +5,9 @@ import Layout from './Layout';
 function MyVisionBoard() {
   return (
     <>
-      <Layout></Layout>
-      <BoardCollection></BoardCollection>
+      <Layout>
+        <BoardCollection></BoardCollection>
+      </Layout>
     </>
   );
 }
