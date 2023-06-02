@@ -2,11 +2,7 @@ import React from 'react';
 import Header from '../components/Header/Header';
 
 function Layout() {
-  return (
-    <div>
-      <Header></Header>
-    </div>
-  );
+  return <Header></Header>;
 }
 
 export default Layout;
