@@ -5,8 +5,9 @@ import Layout from './Layout';
 function GetSampleBoard() {
   return (
     <>
-      <Layout></Layout>
-      <GetSampleBoardCompo></GetSampleBoardCompo>
+      <Layout>
+        <GetSampleBoardCompo></GetSampleBoardCompo>
+      </Layout>
     </>
   );
 }
