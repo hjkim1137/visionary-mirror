@@ -1,0 +1,155 @@
+.wrapper {
+  width: 1200px;
+  display: flex;
+  overflow-x: hidden;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
+  position: relative;
+}
+
+.container {
+  background-color: rgba(0, 0, 0, 1);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  margin: 0 12.5px;
+  cursor: pointer;
+  position: relative;
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.6s ease-out;
+}
+
+.img {
+  border-radius: 7px;
+  margin: 0;
+  margin: 0 12.5px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.5s linear;
+}
+
+.priviewImg {
+  transition: all 1s linear;
+  border-radius: 7px;
+}
+
+.imgWrapper {
+  position: relative;
+}
+
+.leftButton {
+  display: flex;
+  align-items: center;
+
+  margin-left: 20px;
+  margin-bottom: 120px;
+  cursor: pointer;
+  position: absolute;
+  border: none;
+  border-radius: 60px;
+  padding: 25px 10px;
+  opacity: 0.5;
+  z-index: 2;
+  transition: all 0.5s ease-in-out;
+  left: 0;
+}
+
+.rightButton {
+  display: flex;
+  align-items: center;
+
+  margin-right: 20px;
+  margin-bottom: 120px;
+  cursor: pointer;
+  position: absolute;
+  border: none;
+  border-radius: 60px;
+  padding: 25px 10px;
+  opacity: 0.5;
+  z-index: 2;
+  transition: all 0.5s ease-in-out;
+  right: 0;
+}
+
+.imgDes {
+  position: absolute;
+  z-index: 5;
+  width: 150px;
+  height: 50px;
+  border-radius: 5px;
+  background-color: white;
+  left: 30px;
+  bottom: 25px;
+  display: flex;
+  align-items: center;
+  padding: 27px 0 20px;
+}
+
+.title {
+  padding-left: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.buttonBox {
+  display: flex;
+}
+
+.deleteButton {
+  margin-top: 20px;
+  margin-right: 25px;
+  background-color: transparent;
+  border: lightgray solid 2px;
+  border-radius: 5px;
+  padding: 10px;
+  color: #3366ff;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.detailButton {
+  margin-top: 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: lightgray solid 2px;
+  border-radius: 5px;
+  padding: 10px;
+  color: #3366ff;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.dotWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.dot {
+  height: 15px;
+  width: 15px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 5px 10px 5px 0;
+}
+
+.dot.active {
+  background-color: #3366ff;
+}
