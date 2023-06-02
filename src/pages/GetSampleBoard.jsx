@@ -3,10 +3,12 @@ import GetSampleBoardCompo from '../components/GetSampleBoard/GetSampleBoardComp
 import Layout from './Layout';
 
 function GetSampleBoard() {
-  return;
-  <Layout>
-    <GetSampleBoardCompo></GetSampleBoardCompo>
-  </Layout>;
+  return (
+    <>
+      <Layout></Layout>
+      <GetSampleBoardCompo></GetSampleBoardCompo>
+    </>
+  );
 }
 
 export default GetSampleBoard;

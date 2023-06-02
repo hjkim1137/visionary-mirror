@@ -3,10 +3,12 @@ import MakeBoardNameCompo from '../components/MakeBoardName/MakeBoardNameCompo';
 import Layout from './Layout';
 
 function MakeBoardName() {
-  return;
-  <Layout>
-    <MakeBoardNameCompo></MakeBoardNameCompo>;
-  </Layout>;
+  return (
+    <>
+      <Layout></Layout>
+      <MakeBoardNameCompo></MakeBoardNameCompo>;
+    </>
+  );
 }
 
 export default MakeBoardName;
