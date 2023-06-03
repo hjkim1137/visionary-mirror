@@ -1,15 +1,8 @@
 import React from 'react';
 import MakeBoardNameCompo from '../components/MakeBoardName/MakeBoardNameCompo';
-import Layout from './Layout';
 
 function MakeBoardName() {
-  return (
-    <>
-      <Layout>
-        <MakeBoardNameCompo></MakeBoardNameCompo>;
-      </Layout>
-    </>
-  );
+  return <MakeBoardNameCompo></MakeBoardNameCompo>;
 }
 
 export default MakeBoardName;
