@@ -1,10 +1,11 @@
 .container {
-  width: 1200px;
+  // max-width: 1200px;
+  width: 65%; // 부모요소에 비례해 수정
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  // overflow: visible;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -13,42 +14,58 @@
 
 .imgContainer {
   width: 100%;
-  height: 100%;
   display: flex;
+  position: relative;
 }
 
-@keyframes rotateClockwise {
-  0%,
-  100% {
-    transform: rotate(0deg);
+.blinking1 {
+  animation: blink1 1.3s ease-in-out infinite alternate;
+}
+
+@keyframes blink1 {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
   }
-  50% {
-    transform: rotate(6deg);
+  100% {
+    opacity: 1;
+    transform: scale(1.04);
   }
 }
 
-@keyframes rotateCounterClockwise {
-  0%,
-  100% {
-    transform: rotate(0deg);
+.blinking2 {
+  animation: blink2 0.9s ease-in-out infinite alternate;
+}
+
+@keyframes blink2 {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
   }
-  50% {
-    transform: rotate(-6deg);
+  100% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+.blinking3 {
+  animation: blink3 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes blink3 {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.04);
   }
 }
 
 .imageGroup1,
-.imageGroup3 {
-  animation: rotateClockwise 2s linear infinite;
-}
-
 .imageGroup2 {
-  animation: rotateCounterClockwise 3s linear infinite;
-}
-
-.imageGroup1,
-.imageGroup2 {
-  margin-right: 15px;
+  margin-right: 30px;
 }
 
 .imgGroupItem {
@@ -65,7 +82,7 @@
 }
 
 .visionStartBtn {
-  margin-top: 80px;
+  margin-top: 60px;
   font-size: 20px;
   width: 230px;
   height: 60px;
