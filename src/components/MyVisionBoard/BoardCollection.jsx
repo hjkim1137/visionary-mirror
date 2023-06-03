@@ -3,6 +3,7 @@ import styles from './BoardCollection.module.scss';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import useDeleteCollection from './DeleteCollection';
+import useCarousel from './Carousel';
 
 const mockAPI = 'http://localhost:9999/collection';
 
@@ -46,71 +47,23 @@ function BoardCollection() {
   };
 
   // useDeleteCollection 커스텀훅 클릭 핸들러
-  const handleDeleteButtonClick = useDeleteCollection(
+  const [handleDeleteButtonClick, loading] = useDeleteCollection(
     collection,
     setCollection,
     mockAPI
   );
 
-  //슬라이드 관련
-  const [index, setIndex] = useState(0); // 표시되고 있는 슬라이드 인덱스
-  const [isSlide, setIsSlide] = useState(false); // 슬라이드 중 여부 체크, 여러번 빠르게 클릭 못하게 하는 역할
-  const [x, setX] = useState(0); // 슬라이드 애니메이션 효과를 주기위한 x만큼 이동
-
-  // 자동으로 슬라이드 넘기기 기능
-  useEffect(() => {
-    let autoSlide;
-
-    if (index < collection.img.length - 1) {
-      // 마지막 슬라이드가 아닐 때만 작동
-      autoSlide = setTimeout(() => {
-        increaseClick();
-      }, 2500); //
-    }
-    // Component가 unmount 되거나 업데이트 되기 전에 타이머를 정리
-    return () => {
-      clearTimeout(autoSlide);
-    };
-  }, [index, collection.img.length]); // 의존성 배열에 index, collectionImg.length 추가
-
-  // 오른쪽 버튼 함수-일방향
-  const increaseClick = async () => {
-    if (isSlide || index === collection.length - 1) {
-      // 마지막 슬라이드일 경우 이동을 멈춤
-      return;
-    }
-    setX(-56);
-    setIsSlide(true);
-
-    await setTimeout(() => {
-      setIndex((prev) => prev + 1);
-      setX(0);
-      setIsSlide(false);
-    }, 500);
-  };
-
-  //왼쪽 버튼 함수- 일방향
-  const decreaseClick = async () => {
-    if (isSlide || index === 0) {
-      // 첫 슬라이드일 경우 이동을 멈춤
-      return;
-    }
-    setX(+56);
-    setIsSlide(true);
-
-    await setTimeout(() => {
-      setIndex((prev) => prev - 1);
-      setX(0);
-      setIsSlide(false);
-    }, 500);
-  };
-
-  // 캐러셀 원형논리 적용 + 이미지가 8개보다 적을 경우 이미지 인덱스가 실제 이미지 수를 넘어가지 않게 함
-  const morePrevImg =
-    (index + collection.img.length - 2) % collection.img.length; //두 슬라이드 전
-  const PrevImg = (index + collection.img.length - 1) % collection.img.length; // 이전 슬라이드
-  const NextImg = (index + 1) % collection.img.length; // 다음 슬라이드
-  const moreNextImg = (index + 2) % collection.img.length; //두 슬라이드 뒤
+  // useCarousel 커스텀훅
+  const {
+    index,
+    increaseClick,
+    decreaseClick,
+    x,
+    morePrevImg,
+    PrevImg,
+    NextImg,
+    moreNextImg,
+  } = useCarousel(collection);
 
   // 리턴
   return (
