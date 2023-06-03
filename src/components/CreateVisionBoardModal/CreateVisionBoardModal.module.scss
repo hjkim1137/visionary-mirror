@@ -1,0 +1,67 @@
+.modalHeader {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+
+  border-bottom: 1px gray solid;
+
+  .modalCloseButton {
+    border: none;
+    background-color: white;
+    cursor: pointer;
+  }
+
+  .modalTitle {
+    margin-right: 30px;
+    margin-bottom: 20px;
+    flex-grow: 1;
+    text-align: center;
+
+    font-size: 15px;
+  }
+}
+
+.modalMain {
+  
+  color: black;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .modalUploadFile {
+    
+    position : relative;
+    width : 100%;
+    height : 478px;
+
+    display:flex;
+    justify-content: center;
+    align-items: center;
+
+    .modalUploadImg{
+      position: absolute;
+      // top:0;
+      // left:0;
+    }
+  }
+
+
+  .modalPostWrite {
+   
+    &>textarea {
+      border: 1px solid #d1d0d0;
+      width: 643px;
+      // 100%로 조정 필요
+      height: 150px;
+      resize: none;
+    }
+  }
+
+  .modalPostButton {
+    width: 650px;
+    border: 1px solid;
+    margin-top : 20px;
+  }
+}
