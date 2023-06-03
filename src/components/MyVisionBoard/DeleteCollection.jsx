@@ -1,18 +1,12 @@
+// 컬렉션 삭제 custom hook
+
 import { useCallback } from 'react';
 
-const useDeleteCollection = (
-  collectionTitle,
-  collectionId,
-  collectionImg,
-  setCollectionImg,
-  setCollectionTitle,
-  setCollectionId,
-  mockAPI
-) => {
+const useDeleteCollection = (collection, setCollection, mockAPI) => {
   const handleDeleteButtonClick = useCallback(
     async (index) => {
       // 선택한 컬렉션 제목 및 삭제 확인
-      const itemTitle = collectionTitle[index];
+      const itemTitle = collection.title[index];
       const confirmDelete = window.confirm(
         `${itemTitle} 컬렉션을 삭제하시겠습니까?`
       );
@@ -21,7 +15,7 @@ const useDeleteCollection = (
       }
 
       // 선택한 컬렉션 삭제 API 호출
-      const response = await fetch(`${mockAPI}/${collectionId[index]}`, {
+      const response = await fetch(`${mockAPI}/${collection.id[index]}`, {
         method: 'DELETE',
       });
 
@@ -35,24 +29,15 @@ const useDeleteCollection = (
       alert(`${itemTitle} 컬렉션이 정상적으로 삭제되었습니다.`);
 
       // 삭제 후 컬렉션 업데이트
-      const remainingItems = collectionImg.filter((_, idx) => idx !== index);
-      setCollectionImg(remainingItems);
+      const remainingItems = {
+        img: collection.img.filter((_, idx) => idx !== index),
+        title: collection.title.filter((_, idx) => idx !== index),
+        id: collection.id.filter((_, idx) => idx !== index),
+      };
 
-      const remainingTitles = collectionTitle.filter((_, idx) => idx !== index);
-      setCollectionTitle(remainingTitles);
-
-      const remainingIds = collectionId.filter((_, idx) => idx !== index);
-      setCollectionId(remainingIds);
+      setCollection(remainingItems);
     },
-    [
-      collectionTitle,
-      collectionId,
-      collectionImg,
-      setCollectionTitle,
-      setCollectionId,
-      setCollectionImg,
-      mockAPI,
-    ]
+    [collection, setCollection, mockAPI]
   );
 
   return handleDeleteButtonClick;
