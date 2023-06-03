@@ -12,6 +12,17 @@
   transform: translate(-50%, -50%);
 }
 
+.noCollection {
+  border: 2px solid lightgray;
+  font-size: 25px;
+  color: #3366ff;
+  padding: 50px;
+  border-radius: 7px;
+  align-items: center;
+  height: 400px;
+  display: flex;
+}
+
 .container {
   background-color: rgba(0, 0, 0, 1);
   border-radius: 7px;

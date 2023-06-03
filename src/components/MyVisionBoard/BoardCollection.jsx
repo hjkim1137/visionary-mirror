@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './BoardCollection.module.scss';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
@@ -11,12 +11,16 @@ function BoardCollection() {
   const [collectionImg, setCollectionImg] = useState([]);
   const [collectionTitle, setCollectionTitle] = useState([]);
   const [collectionId, setCollectionId] = useState([]);
-  // const [totalSlides, setTotalSlides] = useState(0);
 
   useEffect(() => {
     try {
       fetch(mockAPI)
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('네트워크 응답이 정상적이지 않습니다');
+          }
+          return response.json();
+        })
         .then((items) => {
           const imgUrls = items.map((item) => item.url);
           const imgTitles = items.map((item) => item.title);
@@ -29,16 +33,6 @@ function BoardCollection() {
       console.error('비동기 처리 중 오류가 발생했습니다:', err);
     }
   }, []);
-
-  // 슬라이드 개수 가져오기(4 or 8)
-  // useEffect(() => {
-  //   fetch(mockAPI)
-  //     .then((response) => response.json())
-  //     .then((slides) => {
-  //       setTotalSlides(slides.length);
-  //     });
-  // }, []);
-
   // 컬렉션 상세보기 페이지 넘어가기
   const navigate = useNavigate();
   const handleBtnForBoardDetail = (id) => {
@@ -58,7 +52,7 @@ function BoardCollection() {
   );
 
   //슬라이드 관련
-  const slideRef = useRef(null);
+  // const slideRef = useRef(null);
   const [index, setIndex] = useState(0); // 표시되고 있는 슬라이드 인덱스
   const [isSlide, setIsSlide] = useState(false); // 슬라이드 중 여부 체크, 여러번 빠르게 클릭 못하게 하는 역할
   const [x, setX] = useState(0); // 슬라이드 애니메이션 효과를 주기위한 x만큼 이동
@@ -120,103 +114,120 @@ function BoardCollection() {
   // 리턴
   return (
     <div className={styles.wrapper}>
-      {/* 왼쪽 버튼 */}
-      <button
-        className={styles.leftButton}
-        onClick={decreaseClick}
-        // 첫번째 페이지 도달 시 버튼 숨김
-        style={{ display: index === 0 ? 'none' : 'block' }}
-      >
-        <FiChevronLeft />
-      </button>
-
-      {/* 오른쪽 버튼 */}
-      <button
-        className={styles.rightButton}
-        onClick={increaseClick}
-        // 마지막 페이지 도달 시 버튼 숨김
-        style={{
-          display: index === collectionImg.length - 1 ? 'none' : 'block',
-        }}
-      >
-        <FiChevronRight />
-      </button>
-
-      {/* 가로 정렬 등 전체 스타일 시작  */}
-      <div
-        className={styles.row}
-        key={index}
-        ref={slideRef}
-        style={{
-          transform: `translateX(${x}vw)`,
-        }}
-      >
-        {/* 전전 슬라이드에 적용 */}
-        <div className={styles.container}>
-          <img
-            className={styles.priviewImg}
-            src={collectionImg[morePrevImg]}
-          ></img>
+      {/* 보유한 컬렉션 없으면 문구 제외 모든 기능 숨김 */}
+      {collectionImg.length === 0 ? (
+        <div className={styles.noCollection}>
+          보유한 컬렉션이 없습니다. 비전보드를 만들어보세요!
         </div>
+      ) : (
+        <>
+          {/* 왼쪽 버튼 */}
+          <button
+            className={styles.leftButton}
+            onClick={decreaseClick}
+            // 첫번째 페이지 도달 시 버튼 숨김
+            style={{ display: index === 0 ? 'none' : 'block' }}
+          >
+            <FiChevronLeft />
+          </button>
 
-        {/* 전 슬라이드에 적용 */}
-        <div className={styles.container}>
-          <img className={styles.priviewImg} src={collectionImg[PrevImg]}></img>
-        </div>
+          {/* 오른쪽 버튼 */}
+          <button
+            className={styles.rightButton}
+            onClick={increaseClick}
+            // 마지막 페이지 도달 시 버튼 숨김
+            style={{
+              display: index === collectionImg.length - 1 ? 'none' : 'block',
+            }}
+          >
+            <FiChevronRight />
+          </button>
 
-        {/* 현재 슬라이드 시작 */}
-        <div className={styles.imgWrapper}>
-          <img className={styles.img} src={collectionImg[index]}></img>
-
-          {/* 이미지 설명 박스 */}
-          <div className={styles.imgDes}>
-            <div className={styles.title}>{collectionTitle[index]}</div>
-          </div>
-        </div>
-        {/* 현재 슬라이드  끝 */}
-
-        {/* 다음 슬라이드에 적용 */}
-        <div className={styles.container}>
-          <img className={styles.priviewImg} src={collectionImg[NextImg]}></img>
-        </div>
-
-        {/* 다다음 슬라이드에 적용 */}
-        <div className={styles.container}>
-          <img
-            className={styles.priviewImg}
-            src={collectionImg[moreNextImg]}
-          ></img>
-        </div>
-      </div>
-
-      {/* 가로 정렬 등 전체 스타일 끝  */}
-
-      {/* 현재 슬라이드 위치 표시 */}
-      <div className={styles.dotWrapper}>
-        {collectionImg.map((_, idx) => (
+          {/* 가로 정렬 등 전체 스타일 시작  */}
           <div
-            key={idx}
-            className={styles.dot + (idx === index ? ' ' + styles.active : '')}
-          ></div>
-        ))}
-      </div>
+            className={styles.row}
+            key={index}
+            // ref={slideRef}
+            style={{
+              transform: `translateX(${x}vw)`,
+            }}
+          >
+            {/* 전전 슬라이드에 적용 */}
+            <div className={styles.container}>
+              <img
+                className={styles.priviewImg}
+                src={collectionImg[morePrevImg]}
+              ></img>
+            </div>
 
-      {/* 버튼박스 */}
-      <div className={styles.buttonBox}>
-        <button
-          className={styles.deleteButton}
-          onClick={() => handleDeleteButtonClick(index)}
-        >
-          컬렉션 삭제
-        </button>
+            {/* 전 슬라이드에 적용 */}
+            <div className={styles.container}>
+              <img
+                className={styles.priviewImg}
+                src={collectionImg[PrevImg]}
+              ></img>
+            </div>
 
-        <button
-          className={styles.detailButton}
-          onClick={() => handleBtnForBoardDetail(collectionId[index])}
-        >
-          컬렉션 상세보기
-        </button>
-      </div>
+            {/* 현재 슬라이드 시작 */}
+            <div className={styles.imgWrapper}>
+              <img className={styles.img} src={collectionImg[index]}></img>
+
+              {/* 이미지 설명 박스 */}
+              <div className={styles.imgDes}>
+                <div className={styles.title}>{collectionTitle[index]}</div>
+              </div>
+            </div>
+            {/* 현재 슬라이드  끝 */}
+
+            {/* 다음 슬라이드에 적용 */}
+            <div className={styles.container}>
+              <img
+                className={styles.priviewImg}
+                src={collectionImg[NextImg]}
+              ></img>
+            </div>
+
+            {/* 다다음 슬라이드에 적용 */}
+            <div className={styles.container}>
+              <img
+                className={styles.priviewImg}
+                src={collectionImg[moreNextImg]}
+              ></img>
+            </div>
+          </div>
+
+          {/* 가로 정렬 등 전체 스타일 끝  */}
+
+          {/* 현재 슬라이드 위치 표시 */}
+          <div className={styles.dotWrapper}>
+            {collectionImg.map((_, idx) => (
+              <div
+                key={idx}
+                className={
+                  styles.dot + (idx === index ? ' ' + styles.active : '')
+                }
+              ></div>
+            ))}
+          </div>
+
+          {/* 버튼박스 */}
+          <div className={styles.buttonBox}>
+            <button
+              className={styles.deleteButton}
+              onClick={() => handleDeleteButtonClick(index)}
+            >
+              컬렉션 삭제
+            </button>
+
+            <button
+              className={styles.detailButton}
+              onClick={() => handleBtnForBoardDetail(collectionId[index])}
+            >
+              컬렉션 상세보기
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
