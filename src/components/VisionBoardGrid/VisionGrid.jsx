@@ -40,6 +40,34 @@ export default function VisionGrid() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('1');
   const [uploadedText, setUploadedText] = useState(null);
+  const [isUploadComplete, setIsUploadComplete] = useState(false);
+
+  useEffect(() => {
+    checkUploadComplete();
+  }, [gridItems, selectedOption]);
+
+  const checkUploadComplete = () => {
+    let uploadCount = 0;
+    if (selectedOption === '1') {
+      for (const item of gridItems) {
+        if (item.img && item.text) {
+          uploadCount++;
+        }
+      }
+    } else if (selectedOption === '2') {
+      for (let i = 0; i < gridItems.length; i += 2) {
+        if (gridItems[i].img && gridItems[i].text) {
+          uploadCount++;
+        }
+      }
+    }
+
+    setIsUploadComplete(uploadCount === getRequiredUploadCount());
+  };
+
+  const getRequiredUploadCount = () => {
+    return selectedOption === '1' ? 8 : 4;
+  };
 
   const handleGridItemClick = (index) => {
     if (gridItems[index].id !== 'name') {
@@ -85,7 +113,34 @@ export default function VisionGrid() {
   };
 
   const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
+    const newSelectedOption = event.target.value;
+    setSelectedOption(newSelectedOption);
+
+    if (newSelectedOption === '2') {
+      setGridItems((prevGridItems) => {
+        const updatedGridItems = [...prevGridItems];
+
+        // 8개 업로드에서 4개 업로드로 변경될 때, 1, 3, 5, 7번째 항목 초기화
+        updatedGridItems[1].img = null;
+        updatedGridItems[1].text = null;
+        updatedGridItems[3].img = null;
+        updatedGridItems[3].text = null;
+        updatedGridItems[5].img = null;
+        updatedGridItems[5].text = null;
+        updatedGridItems[7].img = null;
+        updatedGridItems[7].text = null;
+
+        return updatedGridItems;
+      });
+    }
+  };
+
+  const handleCompleteButtonClick = () => {
+    if (isUploadComplete) {
+      // 완료 버튼을 누른 후의 동작을 수행
+    } else {
+      alert('이미지와 문구를 모두 업로드해야 합니다.');
+    }
   };
 
   return (
@@ -160,7 +215,12 @@ export default function VisionGrid() {
         <button className={styles.prevBtn} onClick={handleForMakeBoardName}>
           이전
         </button>
-        <button className={styles.completeBtn}>완료</button>
+        <button
+          className={styles.completeBtn}
+          onClick={handleCompleteButtonClick}
+        >
+          완료
+        </button>
         <select
           className={styles.selectBtn}
           value={selectedOption}
