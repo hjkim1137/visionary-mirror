@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styles from './MakeBoardName.module.scss';
 
 function MakeBoardNameCompo() {
   const navigate = useNavigate();
   const [boardName, setBoardName] = useState('');
+
   const handleBoardNameChange = (e) => {
     setBoardName(e.target.value);
   };
+
   const handleBtnForBoardGrid = () => {
     if (boardName) {
       navigate(`/visionboardgrid?boardName=${encodeURIComponent(boardName)}`);
@@ -25,7 +27,7 @@ function MakeBoardNameCompo() {
           placeholder="나의 비전보드"
           value={boardName}
           onChange={handleBoardNameChange}
-        ></input>
+        />
       </div>
       <button className={styles.nextBtn} onClick={handleBtnForBoardGrid}>
         다 음
