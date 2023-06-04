@@ -3,7 +3,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 700px;
+  width: 750px;
   height: 750px;
   border: 3px solid red;
   display: flex;
@@ -19,25 +19,57 @@
     grid-template-rows: repeat(3, 1fr);
     grid-gap: 10px;
 
-    .gridItemHide {
-      display: none;
-    }
-
     .gridItem {
       color: blue;
       border: 1px solid black;
       font-size: 20px;
       display: flex;
-      justify-content: center;
       align-items: center;
-      text-align: center;
+      justify-content: center;
       position: relative;
       border-radius: 15px;
+      transition: transform 0.5s;
+
       input {
         position: absolute;
-        top: 10px;
-        left: 10px;
+        top: 20px;
+        left: 20px;
         transform: scale(2);
+      }
+
+      &.hidden {
+        visibility: hidden;
+      }
+
+      img {
+        max-width: 210px;
+        max-height: 210px;
+        transition: transform 0.5s;
+        backface-visibility: hidden;
+      }
+
+      .gridItemText {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+        transform: rotateY(180deg);
+        backface-visibility: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        transition: transform 0.5s;
+      }
+
+      &:hover {
+        img {
+          transform: rotateY(-180deg);
+        }
+
+        .gridItemText {
+          opacity: 1;
+          transform: rotateY(0);
+        }
       }
     }
 
@@ -60,23 +92,30 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
     .deleteBtn {
       width: 100px;
       font-size: 20px;
       margin-top: 20px;
+      border: 1px solid red;
     }
+
     .prevBtn {
       width: 100px;
       font-size: 20px;
       margin-left: 20px;
       margin-top: 20px;
+      border: 1px solid red;
     }
-    .nextBtn {
+
+    .completeBtn {
       width: 100px;
       font-size: 20px;
       margin-left: 20px;
       margin-top: 20px;
+      border: 1px solid red;
     }
+
     .selectBtn {
       width: 100px;
       font-size: 20px;
