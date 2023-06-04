@@ -8,9 +8,11 @@ import styles from './CreateVisionBoardModal.module.scss';
 export default function CreateVisionBoardModal({
   isOpen,
   closeModal,
-  handleImageSelect,
+  handleImageAndTextSelect,
 }) {
   const [imgFile, setImgFile] = useState('');
+  const [text, setText] = useState('');
+
   const imgRef = useRef(null);
 
   const handleModalClose = () => {
@@ -34,9 +36,13 @@ export default function CreateVisionBoardModal({
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       const selectedImg = reader.result;
-      handleImageSelect(selectedImg);
+      handleImageAndTextSelect(selectedImg, text);
     };
     closeModal();
+  };
+
+  const handleTextChange = (event) => {
+    setText(event.target.value);
   };
 
   return (
@@ -88,7 +94,11 @@ export default function CreateVisionBoardModal({
                 onChange={saveImgFile}
               />
               <div className={styles.modalPostWrite}>
-                <textarea placeholder={'문구입력...'} />
+                <textarea
+                  placeholder={'문구입력...'}
+                  value={text}
+                  onChange={handleTextChange}
+                />
               </div>
               <button className={styles.modalPostButton} onClick={handleSelect}>
                 이미지 선택 완료
