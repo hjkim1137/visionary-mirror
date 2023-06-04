@@ -1,0 +1,59 @@
+.nav {
+  position: absolute;
+  top: 100%;
+  left: 0;
+
+  height: 100vh;
+  margin: 0;
+
+  font-size: 20px;
+  background: rgb(50, 47, 47);
+  z-index: 1;
+  transform: translateX(-100%); /* 메뉴를 왼쪽으로 이동 */
+  transition: transform 1s ease-out;
+}
+
+.navOpen {
+  transform: translateX(0);
+}
+
+.nav .navListWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  width: 225px;
+  height: 100%;
+  margin-left: 0;
+}
+
+.nav .navListWrapper li {
+  margin: 20px;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+
+  padding-right: 10px;
+
+  text-decoration: none;
+  color: rgb(66, 65, 65);
+  font-size: 16px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.navLink:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease-in-out;
+}
+
+#navMake {
+  margin-top: 20px;
+}
+
+span {
+  cursor: pointer;
+  padding-left: 10px;
+}
