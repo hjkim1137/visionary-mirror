@@ -1,32 +1,36 @@
 import styles from './VisionGrid.module.scss';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CreateVisionBoardModal from './../CreateVisionBoardModal/CreateVisionBoardModal';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function VisionGrid() {
   const navigate = useNavigate();
   const handleForMakeBoardName = () => {
-    navigate(`/makeboardname`);
+    navigate('/makeboardname');
   };
-  // const location = useLocation();
+  const location = useLocation();
+  const [boardName, setBoardName] = useState('');
 
-  // useEffect(() => {
-  //   const params = new URLSearchParams(location.search);
-  //   const boardName = params.get('boardName');
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const queryBoardName = params.get('boardName');
 
-  //   if (!boardName) {
-  //     alert('비전보드 이름을 먼저 입력해주세요.');
-  //     navigate('/makeboardname');
-  //   }
-  // }, [navigate, location]);
+    if (!queryBoardName) {
+      alert('비전보드 이름을 먼저 입력해주세요.');
+      navigate('/makeboardname');
+    } else {
+      setBoardName(queryBoardName);
+    }
+    console.log(queryBoardName);
+  }, [navigate, location]);
 
   const [gridItems, setGridItems] = useState([
     { id: '1', img: null, text: null, isChecked: false },
     { id: '2', img: null, text: null, isChecked: false },
     { id: '3', img: null, text: null, isChecked: false },
     { id: '4', img: null, text: null, isChecked: false },
-    { id: 'name', img: null, text: null, isChecked: false },
+    { id: 'name' },
     { id: '5', img: null, text: null, isChecked: false },
     { id: '6', img: null, text: null, isChecked: false },
     { id: '7', img: null, text: null, isChecked: false },
@@ -92,13 +96,30 @@ export default function VisionGrid() {
             selectedOption === '2' && [1, 3, 5, 7].includes(index);
           const gridItemClassName = `${styles.gridItem} ${
             isHidden ? styles.hidden : ''
-          }`;
+          } ${item.img ? styles.hiddenBorder : ''}`;
+
+          if (item.id === 'name') {
+            return (
+              <div
+                key={item.id}
+                onClick={() => handleGridItemClick(index)}
+                className={styles.gridItemName}
+              >
+                <div>
+                  {item.text || boardName}
+                  {item.id === selectedItemIndex && uploadedText && (
+                    <div>{uploadedText}</div>
+                  )}
+                </div>
+              </div>
+            );
+          }
           return (
             <div
               key={item.id}
               className={
                 item.id === 'name'
-                  ? styles.gridItemName
+                  ? ''
                   : `${gridItemClassName} ${styles.hoverable}`
               }
               onClick={() => handleGridItemClick(index)}
