@@ -31,14 +31,19 @@ export default function CreateVisionBoardModal({
   };
 
   const handleSelect = () => {
-    const file = imgRef.current.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      const selectedImg = reader.result;
-      handleImageAndTextSelect(selectedImg, text);
-    };
-    closeModal();
+    if (imgFile && text) {
+      // 이미지와 문구 모두 등록되어 있는지 확인
+      const file = imgRef.current.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        const selectedImg = reader.result;
+        handleImageAndTextSelect(selectedImg, text);
+      };
+      closeModal();
+    } else {
+      alert('이미지와 문구를 모두 등록해 주세요.'); // 경고 메시지 표시
+    }
   };
 
   const handleTextChange = (event) => {
