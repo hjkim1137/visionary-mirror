@@ -7,7 +7,10 @@ function MakeBoardNameCompo() {
   const [boardName, setBoardName] = useState('');
 
   const handleBoardNameChange = (e) => {
-    setBoardName(e.target.value);
+    const inputName = e.target.value;
+    if (inputName.length <= 10) {
+      setBoardName(inputName);
+    }
   };
 
   const handleBtnForBoardGrid = () => {
@@ -17,6 +20,9 @@ function MakeBoardNameCompo() {
       alert('비전보드 이름을 입력해주세요.');
     }
   };
+
+  const boardNameCount = boardName.length;
+  const boardNameLimit = 10;
 
   return (
     <div className={styles.container}>
@@ -28,6 +34,9 @@ function MakeBoardNameCompo() {
           value={boardName}
           onChange={handleBoardNameChange}
         />
+        <p>
+          {boardNameCount}/{boardNameLimit}
+        </p>
       </div>
       <button className={styles.nextBtn} onClick={handleBtnForBoardGrid}>
         다 음
