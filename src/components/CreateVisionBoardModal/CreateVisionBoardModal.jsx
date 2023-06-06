@@ -62,8 +62,8 @@ export default function CreateVisionBoardModal({
         <Modal
           open={isOpen}
           onClose={handleModalClose}
-          aria-labelledby="modal-title"
-          aria-describedby="modal-description"
+          ariaLabelledBy="modal-title"
+          ariaDescribedBy="modal-description"
         >
           <Box
             sx={{
