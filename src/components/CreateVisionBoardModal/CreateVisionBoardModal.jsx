@@ -47,8 +47,14 @@ export default function CreateVisionBoardModal({
   };
 
   const handleTextChange = (event) => {
-    setText(event.target.value);
+    const inputText = event.target.value;
+    if (inputText.length <= 70) {
+      setText(inputText);
+    }
   };
+
+  const characterCount = text.length;
+  const characterLimit = 70;
 
   return (
     <div>
@@ -104,6 +110,9 @@ export default function CreateVisionBoardModal({
                   value={text}
                   onChange={handleTextChange}
                 />
+                <p>
+                  {characterCount}/{characterLimit} 글자수
+                </p>
               </div>
               <button className={styles.modalPostButton} onClick={handleSelect}>
                 이미지 선택 완료
