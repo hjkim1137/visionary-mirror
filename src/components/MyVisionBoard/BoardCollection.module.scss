@@ -1,5 +1,5 @@
 .wrapper {
-  margin-top: 25px;
+  margin-top: 35px;
   width: 65%;
   display: flex;
   overflow-x: hidden;
@@ -128,11 +128,11 @@
   margin-top: 20px;
 
   margin-right: 25px;
-  background-color: #5431d2;
+  background-color: #116a7b;
   border: none;
   color: white;
-  border-radius: 5px;
-  padding: 10px;
+  border-radius: 10px;
+  padding: 10px 15px;
   display: flex;
   align-items: center;
 
@@ -158,26 +158,40 @@
 }
 
 .dot.active {
-  background-color: #5431d2;
+  background-color: #116a7b;
 }
 
 // 현재 컬렉션 정보
+.buttonBox2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
 
 .publicCollectionInfo {
   width: 150px;
   font-weight: 700;
   text-align: center;
-  margin-top: 20px;
   font-size: 15px;
   background-color: transparent;
-  color: #5431d2;
-  border: #5431d2 1px solid;
+  color: #116a7b;
+  border: #116a7b 1px solid;
   padding: 15px;
-  border-radius: 10px;
+  border-radius: 3px;
 }
 
+.publicPage {
+  margin-left: 25px;
+  height: 50px;
+  width: 200px;
+  background-color: #cdc2ae;
+  border: none;
+  color: white;
+  border-radius: 50px;
+}
 .publicCollectionInfo2 {
-  color: #5431d2;
+  color: #116a7b;
   margin-top: 15px;
   display: flex;
 }

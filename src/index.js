@@ -6,7 +6,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import GetSampleBoard from './pages/GetSampleBoard';
 import MakeBoardName from './pages/MakeBoardName';
 import MyVisionBoard from './pages/MyVisionBoard';
-import MyOpenVisionBoard from './pages/MyOpenVisionBoard';
 import MyVisionBoardGrid from './pages/MyVisionBoardGrid';
 import Home from './pages/Home';
 // import SignIn from './pages/SignIn';
@@ -22,7 +21,6 @@ const router = createBrowserRouter([
       { path: '/getsampleboard', element: <GetSampleBoard /> },
       { path: '/makeboardName', element: <MakeBoardName /> },
       { path: '/myvisionboard', element: <MyVisionBoard /> },
-      { path: '/myopenvisionboard/:id', element: <MyOpenVisionBoard /> },
       // { path: '/login', element: <SignIn /> },
       // { path: '/register', element: <SignUp /> },
       { path: '/myvisionboardgrid/:id', element: <MyVisionBoardGrid /> },
