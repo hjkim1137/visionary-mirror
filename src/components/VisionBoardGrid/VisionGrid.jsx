@@ -22,7 +22,6 @@ export default function VisionGrid() {
     } else {
       setBoardName(queryBoardName);
     }
-    console.log(queryBoardName);
   }, [navigate, location]);
 
   const [gridItems, setGridItems] = useState([
