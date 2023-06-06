@@ -148,24 +148,15 @@ export default function VisionGrid() {
       <div className={styles.gridContainer}>
         {gridItems.map((item, index) => {
           const isHidden =
-            selectedOption === '2' && [1, 3, 5, 7].includes(index);
+            selectedOption === '2' && [0, 2, 6, 8].includes(index);
           const gridItemClassName = `${styles.gridItem} ${
             isHidden ? styles.hidden : ''
           } ${item.img ? styles.hiddenBorder : ''}`;
 
           if (item.id === 'name') {
             return (
-              <div
-                key={item.id}
-                onClick={() => handleGridItemClick(index)}
-                className={styles.gridItemName}
-              >
-                <div>
-                  {item.text || boardName}
-                  {item.id === selectedItemIndex && uploadedText && (
-                    <div>{uploadedText}</div>
-                  )}
-                </div>
+              <div className={styles.gridBoardName}>
+                <div>{boardName}</div>
               </div>
             );
           }
@@ -181,13 +172,7 @@ export default function VisionGrid() {
             >
               {item.id !== 'name' && (
                 <>
-                  {item.img && (
-                    <img
-                      src={item.img}
-                      alt="Selected"
-                      style={{ maxWidth: '210px', maxHeight: '210px' }}
-                    />
-                  )}
+                  {item.img && <img src={item.img} alt="Selected" />}
                   {item.text && (
                     <div className={styles.gridItemText}>
                       {item.text}
