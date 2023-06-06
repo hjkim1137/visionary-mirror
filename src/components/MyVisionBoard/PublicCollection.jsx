@@ -1,7 +1,20 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const usePublicCollection = (setCollection, collection) => {
   const publicAPI = 'http://localhost:8888/publiccollection';
+
+  // 공개 컬렉션 페이지 넘어가기
+  const navigate = useNavigate();
+  const handleBtnForPublicPage = (publicCollection) => {
+    if (!publicCollection) {
+      alert('공개 컬렉션을 설정해주세요.');
+      console.error('publicCollection is undefined');
+      return;
+    }
+    navigate(`/myopenvisionboard/${publicCollection.id}`);
+    console.log('공개 컬렉션 페이지 클릭', publicCollection);
+  };
 
   const [loading, setLoading] = useState(false);
   const [publicCollection, setPublicCollection] = useState();
@@ -108,7 +121,12 @@ const usePublicCollection = (setCollection, collection) => {
     }
   };
 
-  return [handleBtnForPublicOpen, handleBtnForPublicClose, loading];
+  return [
+    handleBtnForPublicOpen,
+    handleBtnForPublicClose,
+    handleBtnForPublicPage,
+    loading,
+  ];
 };
 
 export default usePublicCollection;

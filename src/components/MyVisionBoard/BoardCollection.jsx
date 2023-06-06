@@ -4,7 +4,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import useDeleteCollection from './DeleteCollection';
 import useCarousel from './Carousel';
-import usePublicCollection from '../MyOpenVisionBoard/PublicCollection';
+import usePublicCollection from './PublicCollection';
 
 const mockAPI = 'http://localhost:9999/collection';
 
@@ -67,10 +67,12 @@ function BoardCollection() {
   } = useCarousel(collection);
 
   //usePublicCollection 커스텀 훅
-  const [handleBtnForPublicOpen, handleBtnForPublicClose] = usePublicCollection(
-    setCollection,
-    collection
-  );
+  const [
+    handleBtnForPublicOpen,
+    handleBtnForPublicClose,
+    handleBtnForPublicPage,
+    // ] = usePublicCollection(setCollection, collection);
+  ] = usePublicCollection(setCollection, collection);
 
   // 리턴
   return (
@@ -215,8 +217,10 @@ function BoardCollection() {
           </div>
 
           {/* 현재 공개 컬렉션 정보 */}
-          <div className={styles.publicCollectionInfo}>
-            공개 설정한 컬렉션 :<div id="collectionInfo"></div>
+          <div className={styles.buttonBox2}>
+            <div className={styles.publicCollectionInfo}>
+              공개 설정한 컬렉션 :<div id="collectionInfo"></div>
+            </div>
           </div>
           <div className={styles.publicCollectionInfo2}>
             *공개 컬렉션은 최대 1개까지 설정 가능
