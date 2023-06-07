@@ -10,6 +10,7 @@ import MyVisionBoardGrid from './pages/MyVisionBoardGrid';
 // import SignIn from './pages/SignIn';
 // import SignUp from './pages/SignUp';
 import VisionBoardGrid from './pages/VisionBoardGrid';
+import SavedUserVisionBoard from './pages/SavedUserVisionBoard'
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
       // { path: '/register', element: <SignUp /> },
       { path: '/myvisionboardgrid', element: <MyVisionBoardGrid /> },
       { path: '/visionboardgrid', element: <VisionBoardGrid /> },
+      { path: '/saveduservisionboard', element: <SavedUserVisionBoard /> },
     ],
   },
 ]);
