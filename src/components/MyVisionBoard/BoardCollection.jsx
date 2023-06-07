@@ -125,14 +125,7 @@ function BoardCollection() {
           </button>
 
           {/* 가로 정렬 등 전체 스타일 시작  */}
-          <div
-            className={styles.row}
-            key={index}
-            // ref={slideRef}
-            style={{
-              transform: `translateX(${x}vw)`,
-            }}
-          >
+          <div className={styles.row} key={index}>
             {/* 전전 슬라이드에 적용 */}
             <div className={styles.container}>
               <img
