@@ -17,9 +17,42 @@ function SignIn({ isLogin }) {
     isLogin && navigate('/');
   }, [isLogin, navigate]);
 
-  /** 로그인 기능 수행 */
+  // 내부 유효성 검사
+  // 이메일 형식 체크 함수
+  const isEmailValid = (loginEmail) => {
+    return String(loginEmail)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
+  // 비밀번호 길이 체크 함수
+  const isPasswordValid = (loginPassword) => {
+    return loginPassword.length >= 4;
+  };
+
+  // 로그인 기능 수행
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    // 이메일과 비밀번호 입력 확인
+    if (email === '' || password === '') {
+      alert('이메일과 비밀번호를 모두 입력해주세요.');
+      return;
+    }
+
+    // 이메일 검사
+    if (!isEmailValid(email)) {
+      alert('올바른 이메일 형식이 아닙니다.');
+      return;
+    }
+
+    // 비밀번호 길이 검사
+    if (!isPasswordValid(password)) {
+      alert('비밀번호는 4글자 이상이어야 합니다.');
+      return;
+    }
 
     try {
       const data = await signInWithEmailAndPassword(auth, email, password);
@@ -67,7 +100,7 @@ function SignIn({ isLogin }) {
           <input
             name="email"
             type="text"
-            placeholder="이메일"
+            placeholder="test@test.com"
             value={email}
             onChange={onChange}
             required
@@ -77,7 +110,7 @@ function SignIn({ isLogin }) {
           <input
             name="password"
             type="password"
-            placeholder="비밀번호"
+            placeholder="4글자 이상 입력해주세요."
             value={password}
             onChange={onChange}
             required

@@ -25,17 +25,17 @@ function App() {
   return (
     <>
       {isInit ? (
-        <BrowserRouter>
-          <Routes>
-            <Route
-              path="/"
-              element={isLogin ? <Home /> : <Navigate replace to="/login" />}
-            />
-            <Route path="/login" element={<SignIn isLogin={isLogin} />} />
-            <Route path="/register" element={<SignUp isLogin={isLogin} />} />
-          </Routes>
-        </BrowserRouter>
+        // <BrowserRouter>
+        <Routes>
+          <Route
+            path="*"
+            element={isLogin ? <Home /> : <Navigate replace to="/login" />}
+          />
+          <Route path="/login" element={<SignIn isLogin={isLogin} />} />
+          <Route path="/register" element={<SignUp isLogin={isLogin} />} />
+        </Routes>
       ) : (
+        // </BrowserRouter>
         'Loading...'
       )}
     </>
