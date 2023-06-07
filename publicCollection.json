@@ -4,6 +4,11 @@
       "id": 6,
       "title": "6.healing",
       "img": "https://picsum.photos/id/31/300/300"
+    },
+    {
+      "id": 4,
+      "title": "4.NewYork",
+      "img": "https://picsum.photos/id/43/300/300"
     }
   ]
 }
