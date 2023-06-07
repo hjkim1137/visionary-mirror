@@ -1,8 +1,8 @@
 import React from 'react';
-import SignUo from '../components/SignUp/SignUpCompo';
+import SignUpCompo from '../components/SignUp/SignUpCompo';
 
 function SignUp() {
-  return <SignUp></SignUp>;
+  return <SignUpCompo></SignUpCompo>;
 }
 
 export default SignUp;
