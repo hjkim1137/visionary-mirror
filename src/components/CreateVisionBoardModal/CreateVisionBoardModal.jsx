@@ -46,10 +46,17 @@ export default function CreateVisionBoardModal({
     }
   };
 
-  const handleTextChange = (event) => {
-    const inputText = event.target.value;
+  const handleTextChange = (e) => {
+    const inputText = e.target.value;
     if (inputText.length <= 70) {
       setText(inputText);
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      setText((prevText) => prevText + '\n');
     }
   };
 
@@ -59,12 +66,7 @@ export default function CreateVisionBoardModal({
   return (
     <div>
       {isOpen && (
-        <Modal
-          open={isOpen}
-          onClose={handleModalClose}
-          ariaLabelledBy="modal-title"
-          ariaDescribedBy="modal-description"
-        >
+        <Modal open={isOpen} onClose={handleModalClose}>
           <Box
             sx={{
               position: 'absolute',
@@ -109,6 +111,7 @@ export default function CreateVisionBoardModal({
                   placeholder={'문구입력...'}
                   value={text}
                   onChange={handleTextChange}
+                  onKeyDown={handleKeyDown}
                 />
                 <p>
                   {characterCount}/{characterLimit} 글자수

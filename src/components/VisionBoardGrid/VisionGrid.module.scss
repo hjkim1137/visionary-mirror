@@ -39,6 +39,7 @@
       position: relative;
       border-radius: 15px;
       transition: transform 0.5s;
+      word-break: break-all;
 
       &.hidden {
         visibility: hidden;
@@ -83,7 +84,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        text-align: justify;
+        text-align: center;
+        white-space: pre-wrap; // 줄바꿈이 적용된 텍스트 출력
         transition: transform 0.5s;
       }
 
