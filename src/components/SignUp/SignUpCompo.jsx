@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
+import styles from './SignUpCompo.module.scss';
 
 function SignUpCompo({ isLogin }) {
   const [email, setEmail] = useState('');
@@ -39,32 +40,40 @@ function SignUpCompo({ isLogin }) {
 
   return (
     <>
-      <div>회원가입</div>
-      <form onSubmit={onSubmit}>
-        <div>
-          <input
-            name="email"
-            type="text"
-            placeholder="이메일"
-            value={email}
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div>
-          <input
-            name="password"
-            type="password"
-            placeholder="비밀번호"
-            value={password}
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div>
-          <input type="submit" value="회원가입" />
-        </div>
-      </form>
+      <div className={styles.container}>
+        <div className={styles.title}>회원가입</div>
+        <form onSubmit={onSubmit}>
+          <div>
+            <input
+              name="email"
+              type="text"
+              placeholder="이메일"
+              value={email}
+              onChange={onChange}
+              required
+              className={styles.inputBox}
+            />
+          </div>
+          <div>
+            <input
+              name="password"
+              type="password"
+              placeholder="비밀번호"
+              value={password}
+              onChange={onChange}
+              required
+              className={styles.inputBox}
+            />
+          </div>
+          <div>
+            <input
+              type="submit"
+              value="회원가입"
+              className={styles.registerBtn}
+            />
+          </div>
+        </form>
+      </div>
     </>
   );
 }
