@@ -4,9 +4,27 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import useDeleteCollection from './DeleteCollection';
 import useCarousel from './Carousel';
-import usePublicCollection from './PublicCollection';
+// import usePublicCollection from './PublicCollection';
 
 const mockAPI = 'http://localhost:9999/collection';
+// const getVisionboards = /api/v1/visionboards
+
+// {
+//   error: null,
+//   data:
+//   {
+//      id: Integer,
+//      title: string,
+//      collection:
+//      [
+//         {
+//            sequence:Integer,
+//            imagePath:string(이미지 path),
+//            description:string,
+//          }
+//      ]
+//  }
+// }
 
 function BoardCollection() {
   const [collection, setCollection] = useState({
@@ -26,11 +44,11 @@ function BoardCollection() {
           return response.json();
         })
         .then((items) => {
-          const imgUrls = items.map((item) => item.url);
+          const imgPaths = items.map((item) => item.imagePath);
           const imgTitles = items.map((item) => item.title);
           const imgIds = items.map((item) => item.id);
           setCollection({
-            img: imgUrls,
+            img: imgPaths,
             title: imgTitles,
             id: imgIds,
           });
@@ -67,12 +85,12 @@ function BoardCollection() {
   } = useCarousel(collection);
 
   //usePublicCollection 커스텀 훅
-  const [
-    handleBtnForPublicOpen,
-    handleBtnForPublicClose,
-    handleBtnForPublicPage,
-    // ] = usePublicCollection(setCollection, collection);
-  ] = usePublicCollection(setCollection, collection);
+  // const [
+  //   handleBtnForPublicOpen,
+  //   handleBtnForPublicClose,
+  //   handleBtnForPublicPage,
+  //   // ] = usePublicCollection(setCollection, collection);
+  // ] = usePublicCollection(setCollection, collection);
 
   // 리턴
   return (
@@ -189,7 +207,7 @@ function BoardCollection() {
               컬렉션 상세보기
             </button>
 
-            <button
+            {/* <button
               className={styles.publicOpenButton}
               onClick={() =>
                 handleBtnForPublicOpen(
@@ -213,18 +231,18 @@ function BoardCollection() {
               }
             >
               컬렉션 비공개
-            </button>
+            </button> */}
           </div>
 
           {/* 현재 공개 컬렉션 정보 */}
-          <div className={styles.buttonBox2}>
+          {/* <div className={styles.buttonBox2}>
             <div className={styles.publicCollectionInfo}>
               공개 설정한 컬렉션 :<div id="collectionInfo"></div>
             </div>
           </div>
           <div className={styles.publicCollectionInfo2}>
             *공개 컬렉션은 최대 1개까지 설정 가능
-          </div>
+          </div> */}
         </>
       )}
     </div>

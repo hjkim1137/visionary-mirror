@@ -39,9 +39,7 @@ function HomeCompo() {
 
   return (
     <div className={styles.container}>
-      <div
-        className={styles.collectionTitle}
-      >{`컬렉션명: ${publicCollection.title}`}</div>
+      <div className={styles.collectionTitle}>{publicCollection.title}</div>
       <img
         src={publicCollection.img}
         className={styles.img}
