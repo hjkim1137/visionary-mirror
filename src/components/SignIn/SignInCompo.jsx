@@ -6,8 +6,9 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
+import styles from './SignInCompo.module.scss';
 
-function SignIn({ isLogin }) {
+function SignInCompo({ isLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -94,44 +95,55 @@ function SignIn({ isLogin }) {
 
   return (
     <>
-      <div>로그인</div>
-      <form onSubmit={onSubmit}>
-        <div>
-          <input
-            name="email"
-            type="text"
-            placeholder="test@test.com"
-            value={email}
-            onChange={onChange}
-            required
-          />
+      <div className={styles.container}>
+        <div className={styles.title}>로그인</div>
+        <form onSubmit={onSubmit}>
+          <div>
+            <input
+              name="email"
+              type="text"
+              placeholder="test@test.com"
+              value={email}
+              onChange={onChange}
+              required
+              className={styles.inputBox}
+            />
+          </div>
+          <div>
+            <input
+              name="password"
+              type="password"
+              placeholder="4글자 이상 입력해주세요."
+              value={password}
+              onChange={onChange}
+              required
+              className={styles.inputBox}
+            />
+          </div>
+          <div>
+            <input type="submit" value="로그인" className={styles.loginBtn} />
+          </div>
+        </form>
+
+        <div className={styles.buttonBox}>
+          <div>
+            <Link to="/register">
+              <button className={styles.registerBtn}>회원가입</button>
+            </Link>
+          </div>
+          <div>
+            <button
+              name="google"
+              onClick={onClick}
+              className={styles.googleBtn}
+            >
+              구글 아이디로 시작
+            </button>
+          </div>
         </div>
-        <div>
-          <input
-            name="password"
-            type="password"
-            placeholder="4글자 이상 입력해주세요."
-            value={password}
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div>
-          <input type="submit" value="로그인" />
-        </div>
-      </form>
-      <div>
-        <Link to="/register">
-          <button>회원가입</button>
-        </Link>
-      </div>
-      <div>
-        <button name="google" onClick={onClick}>
-          구글 아이디로 시작
-        </button>
       </div>
     </>
   );
 }
 
-export default SignIn;
+export default SignInCompo;

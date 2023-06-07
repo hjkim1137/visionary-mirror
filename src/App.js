@@ -1,44 +1,27 @@
-import { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { auth } from './firebase/firebase';
-import SignIn from './pages/SignIn/SignIn';
-import SignUp from './pages/SignUp/SignUp';
-import Home from './pages/Home/Home';
+import React, { useEffect } from 'react';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Outlet,
+  useLocation,
+} from 'react-router-dom';
+
+import Layout from './pages/Layout';
 
 function App() {
-  const [isInit, setIsInit] = useState(false); // firebase 초기화 확인
-  const [isLogin, setIsLogin] = useState(false); // 현재 유저로그인(O: true, X: false)
-
+  const location = useLocation();
   useEffect(() => {
-    // auth 상태가 변경(로그인 또는 로그아웃)되면 수행
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        setIsLogin(true); // 로그인 상태
-      } else {
-        setIsLogin(false); // 로그아웃 상태
-      }
-
-      setIsInit(true); // firebase 초기화 완료
-    });
-  }, []);
+    if (window.localStorage.getItem('isLogin') == 1) {
+      console.log('로그인상태입니다');
+    }
+    console.log('nowpath', window.location.pathname);
+  }, [location.pathname]);
 
   return (
-    <>
-      {isInit ? (
-        // <BrowserRouter>
-        <Routes>
-          <Route
-            path="*"
-            element={isLogin ? <Home /> : <Navigate replace to="/login" />}
-          />
-          <Route path="/login" element={<SignIn isLogin={isLogin} />} />
-          <Route path="/register" element={<SignUp isLogin={isLogin} />} />
-        </Routes>
-      ) : (
-        // </BrowserRouter>
-        'Loading...'
-      )}
-    </>
+    <Layout>
+      <Outlet />
+    </Layout>
   );
 }
 
