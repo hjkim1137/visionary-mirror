@@ -1,4 +1,13 @@
-import { auth } from '../../firebase/firebase';
+// import React from 'react';
+// import HomeCompo from '../components/Home/HomeCompo.jsx';
+
+// function Home() {
+//   return <HomeCompo></HomeCompo>;
+// }
+
+// export default Home;
+
+import { auth } from '../firebase/firebase';
 
 function Home() {
   /** 로그아웃 기능 수행 */

@@ -18,7 +18,7 @@ function GetSampleBoardCompo() {
     <>
       <div className={styles.container}>
         <div className={styles.imgContainer}>
-          <div className={styles.imageGroup1}>
+          <div className={`${styles.imageGroup1} ${styles.blinking1}`}>
             <img
               src={imageGroup1}
               alt="이미지 그룹1"
@@ -26,7 +26,7 @@ function GetSampleBoardCompo() {
             ></img>
           </div>
 
-          <div className={styles.imageGroup2}>
+          <div className={`${styles.imageGroup1} ${styles.blinking2}`}>
             <img
               src={imageGroup2}
               alt="이미지 그룹2"
@@ -34,7 +34,7 @@ function GetSampleBoardCompo() {
             ></img>
           </div>
 
-          <div className={styles.imageGroup3}>
+          <div className={`${styles.imageGroup1} ${styles.blinking3}`}>
             <img
               src={imageGroup3}
               alt="이미지 그룹3"

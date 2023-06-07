@@ -1,3 +1,8 @@
+import React from 'react';
+import SignUo from '../components/SignUp/SignUpCompo';
+
 function SignUp() {
-  return <div>Sign Up</div>;
+  return <SignUp></SignUp>;
 }
+
+export default SignUp;

@@ -1,0 +1,79 @@
+.container {
+  margin-top: 35px;
+  width: 65%;
+  display: flex;
+  overflow-x: hidden;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.title {
+  font-size: 25px;
+  color: #116a7b;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.inputBox {
+  width: 250px;
+  margin-top: 10px;
+  height: 35px;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+.inputBox:focus {
+  background-color: rgb(214, 222, 247);
+  font-size: 15px;
+}
+
+.loginBtn {
+  width: 100%;
+  margin-top: 30px;
+  font-size: 25px;
+  text-align: center;
+  background-color: #116a7b;
+  justify-content: center;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.registerBtn {
+  width: 250px;
+  margin-top: 50px;
+  font-size: 25px;
+  text-align: center;
+  background-color: #c2dedc;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.googleBtn {
+  width: 250px;
+  margin-top: 15px;
+  font-size: 25px;
+  text-align: center;
+  background-color: #c2dedc;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+}
