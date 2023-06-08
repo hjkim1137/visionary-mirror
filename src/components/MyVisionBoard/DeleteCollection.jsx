@@ -2,7 +2,12 @@
 
 import { useCallback, useState } from 'react';
 
-const useDeleteCollection = (collection, setCollection, mockAPI) => {
+const useDeleteCollection = (
+  collection,
+  setCollection,
+  visioboardAPI,
+  setIndex
+) => {
   const [loading, setLoading] = useState(false);
 
   const handleDeleteButtonClick = useCallback(
@@ -17,13 +22,15 @@ const useDeleteCollection = (collection, setCollection, mockAPI) => {
       }
 
       setLoading(true); // 로딩 시작
-      window.alert('삭제 중..');
 
       try {
         // 선택한 컬렉션 삭제 API 호출
-        const response = await fetch(`${mockAPI}/${collection.id[index]}`, {
-          method: 'DELETE',
-        });
+        const response = await fetch(
+          `${visioboardAPI}/${collection.id[index]}`,
+          {
+            method: 'DELETE',
+          }
+        );
 
         // 삭제 성공 여부 확인
         if (!response.ok) {
@@ -42,13 +49,18 @@ const useDeleteCollection = (collection, setCollection, mockAPI) => {
         };
 
         setCollection(remainingItems);
+
+        // 만약 삭제한 아이템이 마지막 아이템이라면, 현재 슬라이드를 첫번째 인덱스로 설정
+        if (index === collection.img.length - 1) {
+          setIndex(0);
+        }
       } catch (error) {
         console.error(error);
       } finally {
         setLoading(false); // 로딩 종료
       }
     },
-    [collection, setCollection, mockAPI]
+    [collection, setCollection, visioboardAPI, setIndex]
   );
 
   return [handleDeleteButtonClick, loading]; // 삭제 함수 및 로딩 상태 반환

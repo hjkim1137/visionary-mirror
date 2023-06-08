@@ -44,7 +44,7 @@ function App() {
             <>
               <Route path="/getsampleboard" element={<GetSampleBoard />} />
               <Route path="/makeboardName" element={<MakeBoardName />} />
-              <Route path="/myvisionboard" element={<MyVisionBoard />} />
+              <Route path="/myvisionboard/list" element={<MyVisionBoard />} />
               <Route
                 path="/myvisionboardgrid/:id"
                 element={<MyVisionBoardGrid />}
