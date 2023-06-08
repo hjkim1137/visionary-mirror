@@ -57,8 +57,51 @@ function SignInCompo({ isLogin }) {
 
     try {
       const data = await signInWithEmailAndPassword(auth, email, password);
+      console.log(data); // data : {user: {accessToken: "tokentoken" } }
+      if (data) {
+        const { user } = data;
+        const token = user.getIdToken();
+
+        // ******************************************************************** //
+        // ************** [/api/v1/accounts/signin] 완성되면 주석해제 ************** //
+        // ******************************************************************** //
+        // try {
+        //   const signinResult = await fetch(`/api/api/v1/accounts/signin`, {
+        //     method: 'POST',
+        //     body: JSON.stringify({ token }), // token: "string",
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //     },
+        //   })
+        //     .then((res) => res.json()) // cookie가 클라이언트에 탑재됨.
+        //     .catch((err) => {
+        //       console.log({ err });
+        //       return null;
+        //     });
+        //   /**
+        //    * signinResult = {
+        //    *   error: { statusCode: 201, ... }, // 에러가 없으면 err: null
+        //    *   data: null
+        //    * }
+        //    *
+        //    */
+        //   if (signinResult && !signinResult.error) {
+        //     // 로그인 완료
+        //     // App.js에서 로그인상태 파악을 위해 localstorage에 isLogin 설정
+        //     localStorage.setItem('isLogin', '1'); // "1" = 로그인 / "0" = 로그아웃상태
+        //     navigate('/');
+        //   } else {
+        //     // 로그인 실패
+        //     localStorage.setItem('isLogin', '0');
+        //     alert('로그인 실패');
+        //   }
+        // } catch (err) {
+        //   console.log(err);
+        //   return null;
+        // }
+      }
+
       data && navigate('/'); // 로그인 완료 후 홈('/') 리다이렉트
-      alert('로그인에 성공하였습니다.');
     } catch (error) {
       console.log(error.message);
     }
@@ -89,7 +132,6 @@ function SignInCompo({ isLogin }) {
     try {
       const data = await signInWithPopup(auth, provider);
       data && navigate('/'); // 가입 또는 로그인 완료 후 홈('/') 리다이렉트
-      alert('로그인에 성공하였습니다.');
     } catch (error) {
       console.log(error.message);
     }
@@ -104,7 +146,7 @@ function SignInCompo({ isLogin }) {
             <input
               name="email"
               type="text"
-              placeholder="test@test.com"
+              placeholder="이메일@test.com"
               value={email}
               onChange={onChange}
               required
