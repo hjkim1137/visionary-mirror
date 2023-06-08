@@ -54,6 +54,9 @@
 }
 
 span {
-  cursor: pointer;
   padding-left: 10px;
+
+  .nav-test {
+    cursor: pointer;
+  }
 }
