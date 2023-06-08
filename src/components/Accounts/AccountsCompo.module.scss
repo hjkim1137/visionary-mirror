@@ -1,0 +1,47 @@
+.container {
+  width: 65%;
+  display: flex;
+  overflow-x: hidden;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.inputBox {
+  width: 250px;
+  margin-top: 10px;
+  height: 35px;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+.inputBox:focus {
+  background-color: rgb(214, 222, 247);
+  font-size: 15px;
+}
+
+.title {
+  font-size: 25px;
+  color: #116a7b;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.registerBtn {
+  width: 100%;
+  margin-top: 30px;
+  font-size: 25px;
+  text-align: center;
+  background-color: #116a7b;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+}

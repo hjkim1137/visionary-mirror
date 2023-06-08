@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 // import { auth } from '../../firebase/firebase';
 // import { updateProfile, updateEmail, updatePassword } from 'firebase/auth';
 // import { onAuthStateChanged } from 'firebase/auth';
+import styles from './AccountsCompo.module.scss';
 
 const fetchData = async (url, data) => {
   const result = await fetch(url, {
@@ -17,7 +18,7 @@ const fetchData = async (url, data) => {
   return response;
 };
 
-function Accounts({ isLogin }) {
+function AccountsCompo({ isLogin }) {
   const [formState, setFormState] = useState({
     nickname: { value: '', valid: false, message: '', touched: false },
     email: { value: '', valid: false, message: '', touched: false },
@@ -177,40 +178,40 @@ function Accounts({ isLogin }) {
 
   return (
     <>
-      <div>마이페이지</div>
+      <div className={styles.container}>
+        <div className={styles.title}>마이페이지</div>
 
-      <form onSubmit={onSubmit}>
-        <div>
+        <form onSubmit={onSubmit}>
           <div>
-            <span>닉네임</span>
             <input
               name="nickname"
               type="text"
-              value={formState.nickname.value}
+              placeholder="닉네임"
+              // value={username}
               onChange={onChange}
               required
+              className={styles.inputBox}
             />
-            {!formState.nickname.edited && (
+            {/* {!formState.nickname.edited && (
               <button onClick={() => onUpdate('nickname')}>수정</button>
-            )}
+            )} */}
           </div>
-          <div>{formState.nickname.touched && formState.nickname.message}</div>
+          {/* <div>{formState.nickname.touched && formState.nickname.message}</div>
           <div>
             {formState.nickname.edited && <div>닉네임이 수정되었습니다.</div>}
-          </div>
-        </div>
+          </div> */}
 
-        <div>
           <div>
-            <span>이메일</span>
             <input
               name="email"
               type="text"
-              value={formState.email.value}
+              placeholder="이메일"
+              //value={formState.email.value}
               onChange={onChange}
               required
+              className={styles.inputBox}
             />
-            @
+            {/* @
             <select name="domain" onChange={onChange} required>
               <option value="">도메인 선택</option>
               <option value="gmail.com">gmail.com</option>
@@ -219,88 +220,100 @@ function Accounts({ isLogin }) {
               <option value="hanmail.net">hanmail.net</option>
               <option value="msn.com">msn.com</option>
               <option value="nate.com">nate.com</option>
-            </select>
-            {!formState.email.edited && (
+            </select> */}
+            {/* {!formState.email.edited && (
               <button onClick={() => onUpdate('email')}>수정</button>
-            )}
+            )} */}
           </div>
-          <div>{formState.email.touched && formState.email.message}</div>
+          {/* <div>{formState.email.touched && formState.email.message}</div>
 
           <div>
             {formState.email.edited && <div>이메일이 수정되었습니다.</div>}
-          </div>
-        </div>
+          </div> */}
 
-        <div>
-          <span>비밀번호</span>
-
-          <input
-            name="password"
-            type="password"
-            value={formState.password.value}
-            onChange={onChange}
-            required
-          />
-
-          <div>{formState.password.touched && formState.password.message}</div>
-        </div>
-
-        <div>
           <div>
-            <span>비밀번호 확인</span>
+            <input
+              name="password"
+              type="password"
+              placeholder="비밀번호"
+              // value={formState.password.value}
+              onChange={onChange}
+              required
+              className={styles.inputBox}
+            />
 
+            {/* <div>
+              {formState.password.touched && formState.password.message}
+            </div> */}
+          </div>
+
+          <div>
             <input
               name="passwordConfirm"
               type="password"
-              value={formState.passwordConfirm.value}
+              placeholder="비밀번호 확인"
+              className={styles.inputBox}
+              // value={formState.passwordConfirm.value}
               onChange={onChange}
               required
             />
-            {!formState.password.edited && (
-              <button onClick={() => onUpdate('password')}>수정</button>
-            )}
+            {/* {!formState.password.edited && (
+                <button onClick={() => onUpdate('password')}>수정</button>
+              )} */}
           </div>
-          <div>
-            {formState.passwordConfirm.touched &&
-              formState.passwordConfirm.message}
-          </div>
+          {/* <div>
+              {formState.passwordConfirm.touched &&
+                formState.passwordConfirm.message}
+            </div> */}
+
+          {/* <div>
+              {formState.password.edited && (
+                <div>비밀번호가 수정되었습니다.</div>
+              )}
+            </div> */}
 
           <div>
-            {formState.password.edited && <div>비밀번호가 수정되었습니다.</div>}
+            <input
+              type="submit"
+              value="수정 완료하기"
+              className={styles.registerBtn}
+              disabled={
+                !formState.nickname.valid ||
+                !formState.email.valid ||
+                !formState.password.valid ||
+                !formState.passwordConfirm.valid
+              }
+            />
           </div>
-        </div>
 
-        <div>
-          <input
-            type="submit"
-            value="수정 완료하기"
-            disabled={
-              !formState.nickname.valid ||
-              !formState.email.valid ||
-              !formState.password.valid ||
-              !formState.passwordConfirm.valid
-            }
-          />
-        </div>
+          <div>
+            <input
+              type="submit"
+              value="수정 취소하기"
+              className={styles.registerBtn}
+              disabled={
+                !formState.nickname.valid ||
+                !formState.email.valid ||
+                !formState.password.valid ||
+                !formState.passwordConfirm.valid
+              }
+            />
+          </div>
 
-        <div>
-          <input
-            type="submit"
-            value="수정 취소하기"
-            disabled={
-              !formState.nickname.valid ||
-              !formState.email.valid ||
-              !formState.password.valid ||
-              !formState.passwordConfirm.valid
-            }
-          />
-        </div>
-      </form>
+          <div>
+            <input
+              type="submit"
+              value="탈퇴하기"
+              className={styles.registerBtn}
+            />
+          </div>
+        </form>
+      </div>
     </>
   );
 }
 
-export default Accounts;
+export default AccountsCompo;
 
 // 만들 기능 ~ : 지금 1, 2해놨는데 1이 안됨. 2도 부분만? 됨.
 
