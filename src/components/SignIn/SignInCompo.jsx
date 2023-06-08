@@ -58,6 +58,7 @@ function SignInCompo({ isLogin }) {
     try {
       const data = await signInWithEmailAndPassword(auth, email, password);
       data && navigate('/'); // 로그인 완료 후 홈('/') 리다이렉트
+      alert('로그인에 성공하였습니다.');
     } catch (error) {
       console.log(error.message);
     }
@@ -88,6 +89,7 @@ function SignInCompo({ isLogin }) {
     try {
       const data = await signInWithPopup(auth, provider);
       data && navigate('/'); // 가입 또는 로그인 완료 후 홈('/') 리다이렉트
+      alert('로그인에 성공하였습니다.');
     } catch (error) {
       console.log(error.message);
     }
