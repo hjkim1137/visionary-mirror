@@ -20,7 +20,8 @@ function SignUpCompo({ isLogin }) {
 
     try {
       const data = await createUserWithEmailAndPassword(auth, email, password);
-      data && navigate('/'); // 가입 완료 후 홈('/') 리다이렉트
+      data && navigate('/login'); // 가입 완료 후 로그인 리다이렉트
+      alert('회원가입에 성공하였습니다. 로그인해주세요.');
     } catch (error) {
       console.log(error.message);
     }
