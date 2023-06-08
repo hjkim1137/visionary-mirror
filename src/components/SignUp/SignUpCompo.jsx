@@ -1,18 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
 import styles from './SignUpCompo.module.scss';
 
-function SignUpCompo({ isLogin }) {
+function SignUpCompo() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   // 로그인 되어있으면 홈('/')으로 이동
   const navigate = useNavigate();
-  useEffect(() => {
-    isLogin && navigate('/');
-  }, [isLogin, navigate]);
 
   /** 회원가입 기능 수행 */
   const onSubmit = async (e) => {
@@ -20,10 +17,39 @@ function SignUpCompo({ isLogin }) {
 
     try {
       const data = await createUserWithEmailAndPassword(auth, email, password);
-      data && navigate('/login'); // 가입 완료 후 로그인 리다이렉트
-      alert('회원가입에 성공하였습니다. 로그인해주세요.');
+      if (data) {
+        const { user } = data;
+        const username = 'username'; // nickname
+        const token = await user.getIdToken(); // Backend로 넘겨줘야될 토큰
+
+        // *********************************************************** //
+        // ********** [api/v1/accounts] api 완성되면 주석 제거. ********** //
+        // *********************************************************** //
+
+        // const createUserResult = await fetch(`/api/api/v1/accounts`, {
+        //   method: 'POST',
+        //   body: JSON.stringify({
+        //     token,
+        //     username,
+        //   }),
+        // })
+        //   .then((res) => res.json())
+        //   .catch((err) => {
+        //     console.log({ err });
+        //     return null;
+        //   });
+
+        // if (createUserResult && !createUserResult.err) {
+        //   // 회원가입 성공
+        //   navigate('/');
+        // } else {
+        //   // 회원가입 실패
+        //   alert('회원가입 실패');
+        // }
+      }
     } catch (error) {
       console.log(error.message);
+      alert('회원가입에 실패하였습니다. 새로고침 해주세요.');
     }
   };
   /** 필드 입력시 해당 값 갱신 */
@@ -44,6 +70,16 @@ function SignUpCompo({ isLogin }) {
       <div className={styles.container}>
         <div className={styles.title}>회원가입</div>
         <form onSubmit={onSubmit}>
+          <div>
+            <input
+              name="username"
+              type="text"
+              placeholder="닉네임"
+              // value={username}
+              onChange={onChange}
+              // required
+            />
+          </div>
           <div>
             <input
               name="email"
