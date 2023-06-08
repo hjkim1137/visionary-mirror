@@ -4,6 +4,7 @@ import arrowBack from './assets/arrow_back_icon.svg';
 import media from './assets/media_icon.svg';
 
 import styles from './CreateVisionBoardModal.module.scss';
+import imageCompression from 'browser-image-compression';
 
 export default function CreateVisionBoardModal({
   isOpen,
@@ -22,13 +23,39 @@ export default function CreateVisionBoardModal({
     }
   };
 
-  const saveImgFile = () => {
-    const file = imgRef.current.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setImgFile(reader.result);
+  const saveImgFile = async () => {
+    const uploadedFile = imgRef.current.files[0];
+
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
     };
+
+    try {
+      //파일 크기 압축
+      const compressedFile = await imageCompression(uploadedFile, options);
+      console.log('compressedFile:', compressedFile)
+
+      //미리보기 및 imgFile 상태 변경
+      const reader = new FileReader();
+      reader.readAsDataURL(compressedFile);
+      reader.onloadend = () => {
+        console.log('reader.result:', reader.result);
+        setImgFile(reader.result);
+      };
+      
+      //압축파일 폼 데이터 화
+      const formData = new FormData();
+      formData.append('image', compressedFile, uploadedFile.name);
+      const savedImgFile = formData.get('image');
+      console.log('savedImgFile.keys:', savedImgFile.keys)
+      var keys = formData.has('image')
+      console.log('keys :', keys)
+      return savedImgFile;
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleSelect = () => {
