@@ -3,7 +3,6 @@ import styles from './VisionGrid.module.scss';
 import React, { useState, useEffect } from 'react';
 import CreateVisionBoardModal from './../CreateVisionBoardModal/CreateVisionBoardModal';
 import { useNavigate, useLocation } from 'react-router-dom';
-import VisionGridComponent from '../SavedUserVisionBoard/VisionGridComponent';
 
 export default function VisionGrid() {
   const navigate = useNavigate();
@@ -145,7 +144,7 @@ export default function VisionGrid() {
 
   return (
     <div className={styles.container}>
-      {/* <div className={styles.gridContainer}>
+      <div className={styles.gridContainer}>
         {gridItems.map((item, index) => {
           const isHidden =
             selectedOption === '2' && [0, 2, 6, 8].includes(index);
@@ -192,11 +191,7 @@ export default function VisionGrid() {
             </div>
           );
         })}
-      </div> */}
-      <VisionGridComponent gridItems={gridItems} selectedOption={selectedOption}
-                selectedItemIndex={selectedItemIndex} uploadedText={uploadedText}
-                handleCheckboxClick={handleCheckboxClick} handleGridItemClick={handleGridItemClick}
-                />
+      </div>
       <div className={styles.btnContainer}>
         <button className={styles.deleteBtn} onClick={handleDeleteButtonClick}>
           선택삭제
