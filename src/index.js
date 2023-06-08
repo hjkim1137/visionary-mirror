@@ -7,8 +7,9 @@ import GetSampleBoard from './pages/GetSampleBoard';
 import MakeBoardName from './pages/MakeBoardName';
 import MyVisionBoard from './pages/MyVisionBoard';
 import MyVisionBoardGrid from './pages/MyVisionBoardGrid';
-// import SignIn from './pages/SignIn';
-// import SignUp from './pages/SignUp';
+import Home from './pages/Home';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 import VisionBoardGrid from './pages/VisionBoardGrid';
 
 const router = createBrowserRouter([
@@ -16,12 +17,13 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
     children: [
+      { path: '/', element: <Home /> },
       { path: '/getsampleboard', element: <GetSampleBoard /> },
       { path: '/makeboardName', element: <MakeBoardName /> },
       { path: '/myvisionboard', element: <MyVisionBoard /> },
-      // { path: '/login', element: <SignIn /> },
-      // { path: '/register', element: <SignUp /> },
-      { path: '/myvisionboardgrid', element: <MyVisionBoardGrid /> },
+      { path: '/login', element: <SignIn /> },
+      { path: '/register', element: <SignUp /> },
+      { path: '/myvisionboardgrid/:id', element: <MyVisionBoardGrid /> },
       { path: '/visionboardgrid', element: <VisionBoardGrid /> },
     ],
   },
