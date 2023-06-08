@@ -8,9 +8,12 @@ import styles from './CreateVisionBoardModal.module.scss';
 export default function CreateVisionBoardModal({
   isOpen,
   closeModal,
-  handleImageSelect,
+  handleImageAndTextSelect,
+  readOnly
 }) {
   const [imgFile, setImgFile] = useState('');
+  const [text, setText] = useState('');
+
   const imgRef = useRef(null);
 
   const handleModalClose = () => {
@@ -29,25 +32,42 @@ export default function CreateVisionBoardModal({
   };
 
   const handleSelect = () => {
-    const file = imgRef.current.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      const selectedImg = reader.result;
-      handleImageSelect(selectedImg);
-    };
-    closeModal();
+    if (imgFile && text) {
+      // 이미지와 문구 모두 등록되어 있는지 확인
+      const file = imgRef.current.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        const selectedImg = reader.result;
+        handleImageAndTextSelect(selectedImg, text);
+      };
+      closeModal();
+    } else {
+      alert('이미지와 문구를 모두 등록해 주세요.'); // 경고 메시지 표시
+    }
   };
+
+  const handleTextChange = (e) => {
+    const inputText = e.target.value;
+    if (inputText.length <= 70) {
+      setText(inputText);
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      setText((prevText) => prevText + '\n');
+    }
+  };
+
+  const characterCount = text.length;
+  const characterLimit = 70;
 
   return (
     <div>
       {isOpen && (
-        <Modal
-          open={isOpen}
-          onClose={handleModalClose}
-          aria-labelledby="modal-title"
-          aria-describedby="modal-description"
-        >
+        <Modal open={isOpen} onClose={handleModalClose}>
           <Box
             sx={{
               position: 'absolute',
@@ -86,9 +106,19 @@ export default function CreateVisionBoardModal({
                 accept="image/*"
                 ref={imgRef}
                 onChange={saveImgFile}
+                disabled={readOnly}
               />
               <div className={styles.modalPostWrite}>
-                <textarea placeholder={'문구입력...'} />
+                <textarea
+                  placeholder={'문구입력...'}
+                  value={text}
+                  onChange={handleTextChange}
+                  onKeyDown={handleKeyDown}
+                  readOnly={readOnly}
+                />
+                <p>
+                  {characterCount}/{characterLimit} 글자수
+                </p>
               </div>
               <button className={styles.modalPostButton} onClick={handleSelect}>
                 이미지 선택 완료

@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styles from './MakeBoardName.module.scss';
 
 function MakeBoardNameCompo() {
   const navigate = useNavigate();
   const [boardName, setBoardName] = useState('');
+
   const handleBoardNameChange = (e) => {
-    setBoardName(e.target.value);
+    const inputName = e.target.value;
+    if (inputName.length <= 10) {
+      setBoardName(inputName);
+    }
   };
+
   const handleBtnForBoardGrid = () => {
     if (boardName) {
       navigate(`/visionboardgrid?boardName=${encodeURIComponent(boardName)}`);
@@ -15,6 +20,9 @@ function MakeBoardNameCompo() {
       alert('비전보드 이름을 입력해주세요.');
     }
   };
+
+  const boardNameCount = boardName.length;
+  const boardNameLimit = 10;
 
   return (
     <div className={styles.container}>
@@ -25,7 +33,10 @@ function MakeBoardNameCompo() {
           placeholder="나의 비전보드"
           value={boardName}
           onChange={handleBoardNameChange}
-        ></input>
+        />
+        <p>
+          {boardNameCount}/{boardNameLimit}
+        </p>
       </div>
       <button className={styles.nextBtn} onClick={handleBtnForBoardGrid}>
         다 음
