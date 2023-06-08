@@ -6,25 +6,8 @@ import useDeleteCollection from './DeleteCollection';
 import useCarousel from './Carousel';
 // import usePublicCollection from './PublicCollection';
 
-const mockAPI = 'http://localhost:9999/collection';
-// const getVisionboards = /api/v1/visionboards
-
-// {
-//   error: null,
-//   data:
-//   {
-//      id: Integer,
-//      title: string,
-//      collection:
-//      [
-//         {
-//            sequence:Integer,
-//            imagePath:string(이미지 path),
-//            description:string,
-//          }
-//      ]
-//  }
-// }
+const visioboardAPI = 'http://localhost:9999/collection';
+// const finalVisioboardAPI = /api/v1/visionboards
 
 function BoardCollection() {
   const [collection, setCollection] = useState({
@@ -34,9 +17,65 @@ function BoardCollection() {
   });
 
   // db에서 컬렉션 정보 불러오기
+  // --- 코치님 작성해주신 코드 시작 ---
+  // const fetchResult = fetch('/api');
+  // if (!fetchResult.error) {
+  //   console.log('api 통신 성공');
+  // }
+  // if (fetchResult.error && fetchResult.error.statusCode === 401) {
+  //   if (fetchResult.error.statusCode === 401) {
+  //     // 인증실패일 경우 다시 로그인을 유도
+  //     console.log('사용자 인증 오류');
+  //     localStorage.removeItem('isLogin');
+  //     navigate('/');
+  //   } else {
+  //     console.log('나머지 오류');
+  //     alert('에러남');
+  //   }
+  // }
+  // // --- 코치님 작성해주신 코드 끝 ---
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch('/api/api/v1/visionboards');
+
+  //       if (!response.ok) {
+  //         throw new Error('네트워크 응답이 정상적이지 않습니다');
+  //       }
+
+  //       const items = await response.json();
+
+  //       // API 통신 성공 로그
+  //       console.log('api 통신 성공');
+
+  //       if (items.error && items.error.statusCode === 401) {
+  //         console.log('사용자 인증 오류');
+  //         localStorage.removeItem('isLogin');
+  //         navigate('/');
+  //       } else if (items.error) {
+  //         console.log('나머지 오류');
+  //         alert('에러남');
+  //       } else {
+  //         const imgPaths = items.map((item) => item.imagePath);
+  //         const imgTitles = items.map((item) => item.title);
+  //         const imgIds = items.map((item) => item.id);
+  //         setCollection({
+  //           img: imgPaths,
+  //           title: imgTitles,
+  //           id: imgIds,
+  //         });
+  //       }
+  //     } catch (err) {
+  //       console.error('비동기 처리 중 오류가 발생했습니다:', err);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
+
   useEffect(() => {
     try {
-      fetch(mockAPI)
+      fetch(visioboardAPI)
         .then((response) => {
           if (!response.ok) {
             throw new Error('네트워크 응답이 정상적이지 않습니다');
@@ -65,15 +104,10 @@ function BoardCollection() {
     console.log('상세보기클릭', id);
   };
 
-  // useDeleteCollection 커스텀훅 클릭 핸들러
-  const [handleDeleteButtonClick, loading] = useDeleteCollection(
-    collection,
-    setCollection,
-    mockAPI
-  );
-
   // useCarousel 커스텀훅
+  // useDeleteCollection 커스텀훅 보다 순서상 먼저 선언되어야 함
   const {
+    setIndex,
     index,
     increaseClick,
     decreaseClick,
@@ -83,6 +117,14 @@ function BoardCollection() {
     NextImg,
     moreNextImg,
   } = useCarousel(collection);
+
+  // useDeleteCollection 커스텀훅 클릭 핸들러
+  const [handleDeleteButtonClick, loading] = useDeleteCollection(
+    collection,
+    setCollection,
+    visioboardAPI,
+    setIndex
+  );
 
   //usePublicCollection 커스텀 훅
   // const [
@@ -102,6 +144,12 @@ function BoardCollection() {
         </div>
       ) : (
         <>
+          {/* 삭제중일 때 오버레이 */}
+          {loading && (
+            <div className={styles.overlay}>
+              <p className={styles.loadingText}>삭제 중...</p>
+            </div>
+          )}
           {/* 왼쪽 버튼 */}
           <button
             className={styles.leftButton}

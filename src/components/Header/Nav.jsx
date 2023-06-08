@@ -29,7 +29,7 @@ function Nav({ isOpen, isLoggedIn }) {
               </Link>
             </li>
             <li>
-              <Link to="/myvisionboard" className={styles.navLink}>
+              <Link to="/myvisionboard/list" className={styles.navLink}>
                 <IoImages size={29} />
                 <span>내 비전보드</span>
               </Link>
