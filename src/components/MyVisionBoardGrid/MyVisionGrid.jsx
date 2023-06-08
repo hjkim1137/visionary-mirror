@@ -1,13 +1,12 @@
 import styles from '../VisionBoardGrid/VisionGrid.module.scss';
 
 import React, { useCallback, useState, useEffect } from 'react';
-import EditVisionBoardModal from '../VisionBoardModal/EditVisionBoardModal'
+
 import { useNavigate } from 'react-router-dom';
-import { fetchPosts, getPost, createPost, editPost } from './Api';
+import { fetchPosts, getPost, createPost, editPost, deletePost } from './Api';
 
-
-import VisionGridComponent from '../VisionGridComponent/VisionGridComponent';
-
+import VisionGridComponent from './VisionGridComponent';
+import EditVisionBoardModal from '../VisionBoardModal/EditVisionBoardModal'
 
 export default function MyVisionGrid() {
     const navigate = useNavigate();
@@ -19,6 +18,7 @@ export default function MyVisionGrid() {
     // 비전보드 삭제 버튼
     const handleCollectionDelete = useCallback(() => {
         if (window.confirm('현재 열람중인 비전보드를 삭제하시겠습니까?')) {
+            deletePost();
             handleBackToMyCollection();
         }
     }, [])

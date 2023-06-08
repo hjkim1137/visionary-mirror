@@ -52,12 +52,10 @@ const fetchPosts = () => {
     })
   }
   
-  // const deletePost = () => {
-  //   fetch('http://localhost:9999/collection',{
-  //     method : 'DELETE',
+  const deletePost = () => {
+    fetch('http://localhost:9999/collection', {
+      method: 'DELETE',
+    });
+  }
   
-  //   }
-  //   )
-  // }
-  
-  export { fetchPosts, getPost, createPost, editPost };
+  export { fetchPosts, getPost, createPost, editPost, deletePost };
