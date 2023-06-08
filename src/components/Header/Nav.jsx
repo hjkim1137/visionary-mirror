@@ -17,7 +17,7 @@ function Nav({ isOpen, isLoggedIn }) {
         <li>
           <Link to="/" className={styles.navLink}>
             <AiFillHome size={29} />
-            <span>홈</span>
+            <span className="nav-text">홈</span>
           </Link>
         </li>
         {isLoggedIn && (
@@ -25,13 +25,13 @@ function Nav({ isOpen, isLoggedIn }) {
             <li id={styles.navMake}>
               <Link to="/getsampleboard" className={styles.navLink}>
                 <MdDashboardCustomize size={29} />
-                <span>비전보드 만들기</span>
+                <span className="nav-text">비전보드 만들기</span>
               </Link>
             </li>
             <li>
               <Link to="/myvisionboard" className={styles.navLink}>
                 <IoImages size={29} />
-                <span>내 비전보드</span>
+                <span className="nav-text">내 비전보드</span>
               </Link>
             </li>
           </>
@@ -39,7 +39,7 @@ function Nav({ isOpen, isLoggedIn }) {
         <li>
           <Link to="/search" className={styles.navLink}>
             <FaSearch size={29} />
-            <span>탐색</span>
+            <span className="nav-text">탐색</span>
           </Link>
         </li>
       </ul>
