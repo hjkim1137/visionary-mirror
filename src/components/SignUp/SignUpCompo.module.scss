@@ -45,3 +45,13 @@
   font-size: 15px;
   cursor: pointer;
 }
+
+.span {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+span {
+  padding: 0;
+}
