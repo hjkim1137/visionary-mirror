@@ -66,7 +66,9 @@ function Header() {
               {isLoggedIn ? (
                 <div className={styles.spacing}>
                   <button onClick={handleLogout}>Logout</button>
-                  <a onClick={() => navigate('/accountedit')}>My page</a>
+                  <button onClick={() => navigate('/accountedit')}>
+                    My page
+                  </button>
                 </div>
               ) : (
                 <button onClick={login}>Login</button>
