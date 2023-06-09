@@ -167,15 +167,31 @@ export default function VisionGrid() {
     }
 
     const formData = new FormData();
+    let gridImgIndex = 1;
+    let gridTextIndex = 1;
+
     for (const item of gridItems) {
       if (item.img) {
-        formData.append('sequence', item.img);
+        formData.append(`image${gridImgIndex}`, item.img);
+        gridImgIndex++;
       }
       if (item.text) {
-        formData.append('description', item.text);
+        formData.append(`description${gridTextIndex}`, item.text);
+        gridTextIndex++;
       }
     }
+
     formData.append('title', boardName);
+
+    /* check key */
+    for (const key of formData.keys()) {
+      console.log(key);
+    }
+
+    /* Check the value */
+    for (const value of formData.values()) {
+      console.log(value);
+    }
 
     console.log('Form Data', formData);
 
