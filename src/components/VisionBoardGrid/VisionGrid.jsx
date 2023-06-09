@@ -40,25 +40,31 @@ export default function VisionGrid() {
   const [selectedOption, setSelectedOption] = useState('1');
   const [uploadedText, setUploadedText] = useState(null);
   const [isUploadComplete, setIsUploadComplete] = useState(false);
+  const [uploadCount, setUploadCount] = useState(0);
 
   useEffect(() => {
     checkUploadComplete();
   }, [gridItems, selectedOption]);
 
   const checkUploadComplete = () => {
-    let uploadCount = 0;
     if (selectedOption === '1') {
+      let count = 0;
       for (const item of gridItems) {
         if (item.img && item.text) {
-          uploadCount++;
+          count++;
         }
       }
+      console.log('Upload Count:', count);
+      setUploadCount(count);
     } else if (selectedOption === '2') {
-      for (let i = 0; i < gridItems.length; i += 2) {
-        if (gridItems[i].img && gridItems[i].text) {
-          uploadCount++;
+      let count = 0;
+      for (const item of gridItems) {
+        if (item.img && item.text) {
+          count++;
         }
       }
+      console.log('Upload Count:', count);
+      setUploadCount(count);
     }
 
     setIsUploadComplete(uploadCount === getRequiredUploadCount());
@@ -113,33 +119,102 @@ export default function VisionGrid() {
 
   const handleOptionChange = (event) => {
     const newSelectedOption = event.target.value;
-    setSelectedOption(newSelectedOption);
 
     if (newSelectedOption === '2') {
+      const skippedGridIds = ['name', '2', '4', '5', '7'];
+      const hasUploadedImages = gridItems
+        .filter((item) => !skippedGridIds.includes(item.id))
+        .some((item) => item.img !== null);
+
+      if (hasUploadedImages) {
+        const confirmed = window.confirm(
+          '기존에 업로드한 이미지는 삭제됩니다. 변경하시겠습니까?'
+        );
+        if (!confirmed) {
+          return;
+        }
+      }
+
       setGridItems((prevGridItems) => {
         const updatedGridItems = [...prevGridItems];
 
-        // 8개 업로드에서 4개 업로드로 변경될 때, 1, 3, 5, 7번째 항목 초기화
-        updatedGridItems[1].img = null;
-        updatedGridItems[1].text = null;
-        updatedGridItems[3].img = null;
-        updatedGridItems[3].text = null;
-        updatedGridItems[5].img = null;
-        updatedGridItems[5].text = null;
-        updatedGridItems[7].img = null;
-        updatedGridItems[7].text = null;
+        for (let i = 0; i < updatedGridItems.length; i += 2) {
+          if (!skippedGridIds.includes(updatedGridItems[i].id)) {
+            updatedGridItems[i].img = null;
+            updatedGridItems[i].text = null;
+            updatedGridItems[i].isChecked = false;
+          }
+        }
 
         return updatedGridItems;
       });
     }
+
+    setSelectedOption(newSelectedOption);
   };
 
   const handleCompleteButtonClick = () => {
-    if (isUploadComplete) {
-      // 완료 버튼을 누른 후의 동작을 수행
-    } else {
-      alert('이미지와 문구를 모두 업로드해야 합니다.');
+    if (selectedOption === '2') {
+      if (uploadCount < 4) {
+        alert('4개의 문구와 이미지를 업로드 해야합니다.');
+        return;
+      }
+    } else if (selectedOption === '1') {
+      if (uploadCount < 8) {
+        alert('8개의 문구와 이미지를 업로드 해야합니다.');
+        return;
+      }
     }
+
+    const formData = new FormData();
+    let gridImgIndex = 1;
+    let gridTextIndex = 1;
+
+    for (const item of gridItems) {
+      if (item.img) {
+        formData.append(`image${gridImgIndex}`, item.img);
+        gridImgIndex++;
+      }
+      if (item.text) {
+        formData.append(`description${gridTextIndex}`, item.text);
+        gridTextIndex++;
+      }
+    }
+
+    formData.append('title', boardName);
+
+    for (const key of formData.keys()) {
+      console.log(key);
+    }
+
+    for (const value of formData.values()) {
+      console.log(value);
+    }
+
+    console.log('Form Data', formData);
+
+    fetch('/api/v1/visionboard', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log('200: OK');
+          console.log(response);
+        } else if (response.status === 401) {
+          console.log('401: 잘못된 요청, 요청 값 오류');
+          // 401 오류 처리 부분 작성
+        } else if (response.status === 500) {
+          console.log('500: 내부 서버 오류');
+          // 500 오류 처리 부분 작성
+        } else {
+          // 필요한 경우 다른 상태 코드 처리
+        }
+      })
+      .catch((error) => {
+        console.error('에러:', error);
+        // 에러 처리 부분 작성
+      });
   };
 
   return (
@@ -151,7 +226,6 @@ export default function VisionGrid() {
           const gridItemClassName = `${styles.gridItem} ${
             isHidden ? styles.hidden : ''
           } ${item.img ? styles.hiddenBorder : ''}`;
-
           if (item.id === 'name') {
             return (
               <div className={styles.gridBoardName}>
@@ -205,14 +279,17 @@ export default function VisionGrid() {
         >
           완료
         </button>
-        <select
-          className={styles.selectBtn}
-          value={selectedOption}
-          onChange={handleOptionChange}
-        >
-          <option value="1">8</option>
-          <option value="2">4</option>
-        </select>
+        <div className={styles.selectContiner}>
+          <p>이미지 개수</p>
+          <select
+            className={styles.selectBtn}
+            value={selectedOption}
+            onChange={handleOptionChange}
+          >
+            <option value="1">8</option>
+            <option value="2">4</option>
+          </select>
+        </div>
       </div>
       {isModalOpen && (
         <CreateVisionBoardModal
