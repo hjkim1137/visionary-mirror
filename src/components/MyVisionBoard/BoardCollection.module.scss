@@ -12,6 +12,24 @@
   transform: translate(-50%, -50%);
 }
 
+.overlay {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  position: fixed;
+}
+
+.loadingText {
+  color: white;
+  font-size: 1.5em;
+}
+
 .noCollection {
   border: none;
   font-size: 25px;
@@ -25,6 +43,10 @@
 }
 
 .container {
+  // 현재 슬라이드 외 이미지 슬라이드 크기 제한
+  width: 300px;
+  height: 300px;
+
   background-color: rgba(0, 0, 0, 1);
   border-radius: 7px;
   display: flex;
@@ -43,10 +65,10 @@
 
 .img {
   border-radius: 7px;
-  margin: 0;
-  margin: 0 12.5px;
   position: relative;
   transition: all 0.5s linear;
+  width: 100%;
+  height: auto;
 }
 
 .priviewImg {
@@ -55,6 +77,10 @@
 }
 
 .imgWrapper {
+  // 현재 슬라이드 이미지 크기
+  width: 300px;
+  height: 300px;
+  margin: 0 12.5px;
   position: relative;
 }
 
@@ -98,23 +124,25 @@
 
 .imgDes {
   position: absolute;
-  z-index: 5;
-  width: 150px;
-  height: 50px;
-  border-radius: 5px;
-  background-color: white;
-  left: 30px;
-  bottom: 25px;
+  top: 20px;
+  left: 20px;
+  bottom: 20px;
+  right: 20px;
+
   display: flex;
   align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  background-color: lightgray;
   padding: 27px 0 20px;
+  opacity: 0.7;
 }
 
 .title {
-  padding-left: 20px;
   font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 14px;
+  font-weight: 700;
+  font-size: 24px;
+  color: #116a7b;
 }
 
 // 버튼 섹션 시작

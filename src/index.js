@@ -21,7 +21,7 @@ const router = createBrowserRouter([
       { path: '/', element: <Home /> },
       { path: '/getsampleboard', element: <GetSampleBoard /> },
       { path: '/makeboardName', element: <MakeBoardName /> },
-      { path: '/myvisionboard', element: <MyVisionBoard /> },
+      { path: '/myvisionboard/list', element: <MyVisionBoard /> },
       { path: '/login', element: <SignIn /> },
       { path: '/register', element: <SignUp /> },
       { path: '/accountedit', element: <Accounts /> },

@@ -77,34 +77,42 @@ function SignUpCompo() {
     try {
       const data = await createUserWithEmailAndPassword(auth, email, password);
       if (data) {
-        const { user } = data;
+        // const { user } = data;
         const username = 'username'; // nickname
-        const token = await user.getIdToken(); // Backend로 넘겨줘야될 토큰
+        // const token = await user.getIdToken(); // Backend로 넘겨줘야될 토큰
 
-        // *********************************************************** //
+        const {
+          user: { uid },
+        } = data;
+
+        auth.signOut();
+
+        console.log('uid', uid);
+        console.log('username', username);
+
         // ********** [api/v1/accounts] api 완성되면 주석 제거. ********** //
-        // *********************************************************** //
+        const createUserResult = await fetch(`/api/v1/accounts`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            uid,
+            username: username,
+          }),
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.log({ err });
+            return null;
+          });
 
-        //       const createUserResult = await fetch(`/api/api/v1/accounts`, {
-        //         method: 'POST',
-        //         body: JSON.stringify({
-        //           token,
-        //           username,
-        //         }),
-        //       })
-        //         .then((res) => res.json())
-        //         .catch((err) => {
-        //           console.log({ err });
-        //           return null;
-        //         });
-
-        //       if (createUserResult && !createUserResult.err) {
-        //         // 회원가입 성공
-        //         navigate('/');
-        //       } else {
-        //         // 회원가입 실패
-        //         alert('회원가입 실패');
-        //       }
+        if (createUserResult && !createUserResult.err) {
+          // 회원가입 성공
+          navigate('/');
+        } else {
+          // 회원가입 실패
+          alert('회원가입 실패');
+        }
+        alert('회원가입에 성공하였습니다.');
       }
     } catch (error) {
       console.log(error.message);

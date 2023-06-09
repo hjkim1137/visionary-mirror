@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import { auth } from './firebase/firebase';
+import {
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Accounts from './pages/Accounts';
@@ -13,83 +18,76 @@ import VisionBoardGrid from './pages/VisionBoardGrid';
 import Layout from './pages/Layout';
 
 function App() {
-  const [isInit, setIsInit] = useState(false); // firebase 초기화 확인
   const [isLogin, setIsLogin] = useState(false); // 현재 유저로그인(O: true, X: false)
   const navigate = useNavigate();
 
+  const location = useLocation();
+
   useEffect(() => {
-    // auth 상태가 변경(로그인 또는 로그아웃)되면 수행
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        setIsLogin(true); // 로그인 상태
-      } else {
-        setIsLogin(false); // 로그아웃 상태
-        navigate('/login'); // 로그아웃 시 사용자를 로그인 페이지로 리다이렉트
-      }
+    console.log('App Mounted');
+    if (localStorage.getItem('isLogin') == 1) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
+  }, [location.pathname]);
 
-      setIsInit(true); // firebase 초기화 완료
-    });
-  }, [navigate]);
-
-  return (
-    <Layout>
-      {isInit ? (
-        <Routes>
-          <Route path="/login" element={<SignIn />} />
-          <Route path="/register" element={<SignUp />} />
-          {isLogin && ( // 로그인 했을 때만 렌더링
-            <>
-              {/* <Route path="/accountedit" element={<Accounts />} /> */}
-              <Route path="/accountedit" element={<Accounts />} />
-              <Route path="/getsampleboard" element={<GetSampleBoard />} />
-              <Route path="/makeboardName" element={<MakeBoardName />} />
-              <Route path="/myvisionboard" element={<MyVisionBoard />} />
-              <Route
-                path="/myvisionboardgrid/:id"
-                element={<MyVisionBoardGrid />}
-              />
-              <Route path="/visionboardgrid" element={<VisionBoardGrid />} />
-            </>
-          )}
-          <Route
-            path="*"
-            element={isLogin ? <Home /> : <Navigate replace to="/login" />}
-          />
-        </Routes>
-      ) : (
-        'Loading...'
-      )}
-    </Layout>
-  );
-
+  // 코치님이 작성 도와주신 파트 시작
   // return (
   //   <Layout>
-  //     {isInit ? (
-  //       <Routes>
-  //         <Route
-  //           path="*"
-  //           element={isLogin ? <Home /> : <Navigate replace to="/login" />}
-  //         />
-  //         <Route path="/login" element={<SignIn />} />
-  //         <Route path="/register" element={<SignUp />} />
-  //         {isLogin && ( // 로그인 했을 때만 렌더링
-  //           <>
-  //             <Route path="/getsampleboard" element={<GetSampleBoard />} />
-  //             <Route path="/makeboardName" element={<MakeBoardName />} />
-  //             <Route path="/myvisionboard" element={<MyVisionBoard />} />
-  //             <Route
-  //               path="/myvisionboardgrid/:id"
-  //               element={<MyVisionBoardGrid />}
-  //             />
-  //             <Route path="/visionboardgrid" element={<VisionBoardGrid />} />
-  //           </>
-  //         )}
-  //       </Routes>
-  //     ) : (
-  //       'Loading...'
-  //     )}
+  //     <Routes>
+  //       <Route path="/" element={<Home />} />
+  //       {!isLogin && (
+  //         <>
+  //           <Route path="/login" element={<SignIn />} />
+  //           <Route path="/register" element={<SignUp />} />
+  //         </>
+  //       )}
+  //       {isLogin && ( // 로그인 했을 때만 렌더링
+  //         <>
+  //           {/* <Route path="/accountedit" element={<Accounts />} /> */}
+  //           <Route path="/accountedit" element={<Accounts />} />
+  //           <Route path="/getsampleboard" element={<GetSampleBoard />} />
+  //           <Route path="/makeboardName" element={<MakeBoardName />} />
+  //           <Route path="/myvisionboard/list" element={<MyVisionBoard />} />
+  //           <Route
+  //             path="/myvisionboardgrid/:id"
+  //             element={<MyVisionBoardGrid />}
+  //           />
+  //           <Route path="/visionboardgrid" element={<VisionBoardGrid />} />
+  //         </>
+  //       )}
+  //       <Route path="*" element={<div>404 not found</div>} />
+  //       {/* home으로 돌아가게 링크  */}
+  //     </Routes>
   //   </Layout>
   // );
+  // 코치님이 작성 도와주신 파트 끝
+
+  // 로그인 완성 아직 안 됐을 때 임시로 보이게 하는 상태
+  return (
+    <Layout>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        {!isLogin && (
+          <>
+            <Route path="/login" element={<SignIn />} />
+            <Route path="/register" element={<SignUp />} />
+          </>
+        )}
+        {/* <Route path="/accountedit" element={<Accounts />} /> */}
+        <Route path="/accountedit" element={<Accounts />} />
+        <Route path="/getsampleboard" element={<GetSampleBoard />} />
+        <Route path="/makeboardName" element={<MakeBoardName />} />
+        <Route path="/myvisionboard/list" element={<MyVisionBoard />} />
+        <Route path="/myvisionboardgrid/:id" element={<MyVisionBoardGrid />} />
+        <Route path="/visionboardgrid" element={<VisionBoardGrid />} />
+
+        <Route path="*" element={<div>404 not found</div>} />
+        {/* home으로 돌아가게 링크  */}
+      </Routes>
+    </Layout>
+  );
 }
 
 export default App;
