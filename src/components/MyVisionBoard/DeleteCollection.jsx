@@ -27,16 +27,16 @@ const useDeleteCollection = (collection, setCollection, setIndex) => {
         const id = collection.id[index];
 
         // 쿼리 파라미터가 아닌 url 일부로 전달하는 법
-        // const response = await fetch(`${myvisioboardAPI}/${id}`, {
-        //   method: 'DELETE',
-        //   headers: { 'Content-Type': 'applicattion/json' },
-        // });
-
-        // 쿼리 파라미터로 전달하는 법
-        const response = await fetch(`${myvisioboardAPI}?id=${id}`, {
+        const response = await fetch(`${myvisioboardAPI}/${id}`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'applicattion/json' },
         });
+
+        // 쿼리 파라미터로 전달하는 법
+        // const response = await fetch(`${myvisioboardAPI}?id=${id}`, {
+        //   method: 'DELETE',
+        //   headers: { 'Content-Type': 'applicattion/json' },
+        // });
 
         console.log('삭제 요청 응답', response); // false
         console.log('현재 슬라이드 colleciton.id:', collection.id[index]);
