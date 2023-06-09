@@ -1,6 +1,6 @@
 //데이터 패칭, useEffect로 사용. 이후 post에도 사용.
 
-const API_BASE_URL = 'http://localhost:9999/collection';
+export const API_BASE_URL = 'http://localhost:9999/collection';
 
 // `${API_BASE_URL}/${path}`
 const handleError = (err) => { console.log(err) };
@@ -74,20 +74,41 @@ export const putApi = async (gridItems, id, title) => {
       },
       body: JSON.stringify({ [title]: gridItems})
     })
-    // if (!response.ok) {
-    //   throw new Error('Network response was not ok');
-    // }
+
     if (response.status >= 200 && response.status < 300) {
       const data = await response.json();
       console.log(data);
     } else {
       throw new Error('Network response was not successful');
     }
-    const data = await response.json();
-    console.log(data);
+
   } catch (error) {
     console.error('Error:', error);
     //에러 처리 로직 필요
+  }
+}
+
+export const modalPutApi = async (gridItems, imageName, title) => {
+  try {
+    
+    const response = await fetch(`api/v1/image?name=${imageName}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ [title]: gridItems})
+    })
+
+    if (response.status >= 200 && response.status < 300) {
+      const data = await response.json();
+      console.log(data);
+    } else {
+      throw new Error('Network response was not successful');
+    }
+
+  } catch (error) {
+    console.error('Error:', error);
+    
   }
 }
 

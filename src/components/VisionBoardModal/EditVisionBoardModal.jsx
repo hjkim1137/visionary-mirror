@@ -6,7 +6,7 @@ import media from './assets/media_icon.svg';
 import styles from './CreateVisionBoardModal.module.scss';
 import imageCompression from 'browser-image-compression';
 
-import { putApi } from '../MyVisionBoardGrid/Api'
+import { modalPutApi, API_BASE_URL } from '../MyVisionBoardGrid/Api'
 
 export default function EditVisionBoardModal({
   isOpen,
@@ -51,9 +51,10 @@ export default function EditVisionBoardModal({
       //압축파일 폼 데이터 화
       const formData = new FormData();
       formData.append('image', compressedFile, uploadedFile.name);
-      const savedImgFile = formData.get('image');
 
-      return savedImgFile;
+      // 확장자를 제외한 파일 이름 추출
+      const fileNameWithoutExtension = uploadedFile.name.split('.')[0];
+      return formData.get('image');
     } catch (err) {
       console.error(err);
     }
@@ -90,6 +91,16 @@ export default function EditVisionBoardModal({
     }
   };
 
+  const savedImgToModalPutApi = async (title) => {
+    const formData = await saveImgFile();
+    const trimedDataName = formData.name.split('.')[0]
+    console.log('savedImgToModalPut ~ formData:', formData)
+    console.log('trimedDataName', trimedDataName)
+    console.log('title', title)
+    
+    // modalPutApi(formData, trimedDataName, title)
+
+  }
   const characterCount = text.length;
   const characterLimit = 70;
 
@@ -150,8 +161,8 @@ export default function EditVisionBoardModal({
                 </p>
               </div>
               <button className={styles.modalPostButton} onClick={() => {
-                handleSelect()
-                putApi(gridItems, 2, '고양이')
+                savedImgToModalPutApi(gridItems[4].id)
+                handleSelect()                
               }}>
                 이미지 선택 완료
               </button>
