@@ -183,27 +183,37 @@ export default function VisionGrid() {
 
     formData.append('title', boardName);
 
-    /* check key */
     for (const key of formData.keys()) {
       console.log(key);
     }
 
-    /* Check the value */
     for (const value of formData.values()) {
       console.log(value);
     }
 
     console.log('Form Data', formData);
 
-    fetch('/endpoint', {
+    fetch('/api/v1/visionboard', {
       method: 'POST',
       body: formData,
     })
       .then((response) => {
-        // 응답 처리
+        if (response.status === 200) {
+          console.log('200: OK');
+          console.log(response);
+        } else if (response.status === 401) {
+          console.log('401: 잘못된 요청, 요청 값 오류');
+          // 401 오류 처리 부분 작성
+        } else if (response.status === 500) {
+          console.log('500: 내부 서버 오류');
+          // 500 오류 처리 부분 작성
+        } else {
+          // 필요한 경우 다른 상태 코드 처리
+        }
       })
       .catch((error) => {
-        // 오류 처리
+        console.error('에러:', error);
+        // 에러 처리 부분 작성
       });
   };
 
