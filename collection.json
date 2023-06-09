@@ -34,6 +34,11 @@
       "id": 7,
       "title": "Concert",
       "imagePath": "https://picsum.photos/id/117/300/300"
+    },
+    {
+      "id": 8,
+      "title": "Festival",
+      "imagePath": "https://picsum.photos/id/56/300/300"
     }
   ]
 }

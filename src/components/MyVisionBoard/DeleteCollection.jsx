@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react';
 const useDeleteCollection = (
   collection,
   setCollection,
-  visioboardAPI,
+  myvisioboardAPI,
   setIndex
 ) => {
   const [loading, setLoading] = useState(false);
@@ -26,11 +26,12 @@ const useDeleteCollection = (
       try {
         // 선택한 컬렉션 삭제 API 호출
         const response = await fetch(
-          `${visioboardAPI}/${collection.id[index]}`,
+          `${myvisioboardAPI}/${collection.id[index]}`,
           {
             method: 'DELETE',
           }
         );
+        console.log('삭제 요청 응답', response);
 
         // 삭제 성공 여부 확인
         if (!response.ok) {
@@ -60,7 +61,7 @@ const useDeleteCollection = (
         setLoading(false); // 로딩 종료
       }
     },
-    [collection, setCollection, visioboardAPI, setIndex]
+    [collection, setCollection, myvisioboardAPI, setIndex]
   );
 
   return [handleDeleteButtonClick, loading]; // 삭제 함수 및 로딩 상태 반환

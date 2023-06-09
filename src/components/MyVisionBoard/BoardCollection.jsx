@@ -6,7 +6,7 @@ import useDeleteCollection from './DeleteCollection';
 import useCarousel from './Carousel';
 // import usePublicCollection from './PublicCollection';
 
-const visioboardAPI = 'http://localhost:9999/collection';
+const myvisioboardAPI = 'http://localhost:9999/collection';
 // const finalVisioboardAPI = /api/v1/visionboards
 
 function BoardCollection() {
@@ -75,7 +75,7 @@ function BoardCollection() {
 
   useEffect(() => {
     try {
-      fetch(visioboardAPI)
+      fetch(myvisioboardAPI)
         .then((response) => {
           if (!response.ok) {
             throw new Error('네트워크 응답이 정상적이지 않습니다');
@@ -83,6 +83,7 @@ function BoardCollection() {
           return response.json();
         })
         .then((items) => {
+          console.log('GET으로 받아온 items:', items);
           const imgPaths = items.map((item) => item.imagePath);
           const imgTitles = items.map((item) => item.title);
           const imgIds = items.map((item) => item.id);
@@ -122,7 +123,7 @@ function BoardCollection() {
   const [handleDeleteButtonClick, loading] = useDeleteCollection(
     collection,
     setCollection,
-    visioboardAPI,
+    myvisioboardAPI,
     setIndex
   );
 
