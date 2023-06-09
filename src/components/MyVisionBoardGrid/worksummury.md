@@ -30,7 +30,7 @@ CreateVisionBoardModal 에 readOnly 프롭스 추가하여 읽기/수정에 따�
 -넘어가는 데이터 생김새 BE에 알려주기.
 5. 각 fetch코드에서 결과값 받아온 후에 분기처리.
 ↓↓
-양식
+양식은 이렇게 들어옴. 에러나면 아래와 같이, 성공하면 data는 null로 뜬다는 뜻.
 {
    err: {
       "statusCode": 404,
@@ -52,6 +52,7 @@ if (fetchResult.error && fetchResult.error.statusCode === 401) {
         // 인증실패일 경우 다시 로그인을 유도
         console.log("사용자 인증 오류")
         localStorage.removeItem("isLogin"); 
+        //오류뜨면 로컬 스토리지에서 로그인상태를 지워서 로그인 해제
         navigate("/");
    }else{
        console.log("나머지 오류")
@@ -70,3 +71,4 @@ postApi에 콜백으로 grid 전체를 하나로 저장하는 바업 찾기.
 4. query로 title 가져오기
 5. 이미지 미리보기 따로, form 데이터 넘겨주기 따로 구현.
 6. 유저가 지정한 title로 컬렉션이름 지정하기 ✔️
+7. visionboardgrid에서 back으로 넘긴 name을 가져와서 내 그리드 가운데에 노출.
