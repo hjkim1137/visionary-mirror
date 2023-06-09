@@ -3,7 +3,7 @@ import styles from '../VisionBoardGrid/VisionGrid.module.scss';
 import React, { useCallback, useState, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { fetchPosts, getPost, createPost, editPost, deletePost } from './Api';
+import { fetchPosts, getApi, postApi, putApi, deleteApi } from './Api';
 
 import VisionGridComponent from './VisionGridComponent';
 import EditVisionBoardModal from '../VisionBoardModal/EditVisionBoardModal'
@@ -18,13 +18,14 @@ export default function MyVisionGrid() {
     // 비전보드 삭제 버튼
     const handleCollectionDelete = useCallback(() => {
         if (window.confirm('현재 열람중인 비전보드를 삭제하시겠습니까?')) {
-            deletePost();
+            deleteApi(3);
             handleBackToMyCollection();
         }
     }, [])
 
     useEffect(() => {
         fetchPosts()
+
     }, []);
 
     const [gridItems, setGridItems] = useState([
@@ -128,7 +129,8 @@ export default function MyVisionGrid() {
                             이전
                         </button>
                         <button className={styles.completeBtn} onClick={() => {
-                            createPost(gridItems, selectedItemIndex)
+                            postApi(gridItems)
+                            console.log(gridItems)
                         }}>완료</button>
                         <select
                             className={styles.selectBtn}
@@ -145,7 +147,8 @@ export default function MyVisionGrid() {
                     isOpen={isModalOpen}
                     closeModal={() => setIsModalOpen(false)}
                     handleImageAndTextSelect={handleImageAndTextSelect}
-                    readOnly={readOnly}
+                    readOnly={readOnly} setGridItems={setGridItems}
+                    gridItems={gridItems}
                 />
             )}
         </div>
