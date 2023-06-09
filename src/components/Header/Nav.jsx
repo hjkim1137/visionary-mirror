@@ -10,7 +10,6 @@ function Nav({ isOpen, isLoggedIn }) {
   if (!isOpen) {
     return null;
   }
-
   return (
     <nav className={isOpen ? `${styles.nav} ${styles.navOpen}` : styles.nav}>
       <ul className={styles.navListWrapper}>
