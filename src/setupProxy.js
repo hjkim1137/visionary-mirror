@@ -6,7 +6,7 @@ module.exports = function (app) {
     '/api', // 백엔드에 프록시를 적용할 경로 나열 (path parameter), api 공통
 
     createProxyMiddleware({
-      target: 'http://localhost:3001', // 백엔드 서버 주소
+      target: 'http://kdt-sw-4-team03.elicecoding.com', // 백엔드 서버 주소
       changeOrigin: true,
       secure: false,
 
