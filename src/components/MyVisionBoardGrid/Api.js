@@ -3,7 +3,7 @@
 export const API_BASE_URL = 'http://localhost:9999/collection';
 
 // `${API_BASE_URL}/${path}`
-const handleError = (err) => { console.log(err) };
+// const handleError = (err) => { console.log(err) };
 
 // .catch(err => handleError(err)) 이렇게 연결.
 
@@ -66,13 +66,13 @@ export const postApi = async (gridItems) => {
 
 export const putApi = async (gridItems, id, title) => {
   try {
-    
+
     const response = await fetch(`${API_BASE_URL}/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ [title]: gridItems})
+      body: JSON.stringify({ [title]: gridItems })
     })
 
     if (response.status >= 200 && response.status < 300) {
@@ -88,15 +88,17 @@ export const putApi = async (gridItems, id, title) => {
   }
 }
 
-export const modalPutApi = async (gridItems, imageName, title) => {
+//폼 데이터를 받아, 수정할 그리드의 데이터에 put, 경로는 api/v1/image?name=${imageName}로 요청.
+//api/v1/image?name=${imageName}
+export const modalPutApi = async (formData, gridItems, prevImgName) => {
   try {
     
-    const response = await fetch(`api/v1/image?name=${imageName}`, {
+    const response = await fetch(`api/v1/image?name=${prevImgName}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ [title]: gridItems})
+      body: JSON.stringify({formData})
     })
 
     if (response.status >= 200 && response.status < 300) {
@@ -108,12 +110,13 @@ export const modalPutApi = async (gridItems, imageName, title) => {
 
   } catch (error) {
     console.error('Error:', error);
-    
+
   }
 }
 
 export const deleteApi = async (path) => {
   try {
+
     await fetch(`${API_BASE_URL}/${path}`, {
       method: 'DELETE',
     })

@@ -3,10 +3,12 @@ import { Modal, Box } from '@mui/material';
 import arrowBack from './assets/arrow_back_icon.svg';
 import media from './assets/media_icon.svg';
 
+import { useLocation } from 'react-router-dom'
+
 import styles from './CreateVisionBoardModal.module.scss';
 import imageCompression from 'browser-image-compression';
 
-import { modalPutApi, API_BASE_URL } from '../MyVisionBoardGrid/Api'
+import { modalPutApi } from '../MyVisionBoardGrid/Api'
 
 export default function EditVisionBoardModal({
   isOpen,
@@ -16,6 +18,11 @@ export default function EditVisionBoardModal({
   gridItems,
   setGridItems
 }) {
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const prevImgName = searchParams.get('name');
+
   const [imgFile, setImgFile] = useState('');
   const [text, setText] = useState('');
 
@@ -53,7 +60,7 @@ export default function EditVisionBoardModal({
       formData.append('image', compressedFile, uploadedFile.name);
 
       // 확장자를 제외한 파일 이름 추출
-      const fileNameWithoutExtension = uploadedFile.name.split('.')[0];
+      
       return formData.get('image');
     } catch (err) {
       console.error(err);
@@ -91,14 +98,16 @@ export default function EditVisionBoardModal({
     }
   };
 
-  const savedImgToModalPutApi = async (title) => {
+  const savedImgToModalPutApi = async () => {
+    // 넘겨야 할 폼 데이터
     const formData = await saveImgFile();
+    // 폼 데이터에서 확장자 뗀 파일 이름
     const trimedDataName = formData.name.split('.')[0]
     console.log('savedImgToModalPut ~ formData:', formData)
     console.log('trimedDataName', trimedDataName)
-    console.log('title', title)
-    
-    // modalPutApi(formData, trimedDataName, title)
+    console.log('prevImgName', prevImgName)
+
+    // modalPutApi(formData, prevImgName)
 
   }
   const characterCount = text.length;
@@ -161,8 +170,8 @@ export default function EditVisionBoardModal({
                 </p>
               </div>
               <button className={styles.modalPostButton} onClick={() => {
-                savedImgToModalPutApi(gridItems[4].id)
-                handleSelect()                
+                savedImgToModalPutApi()
+                handleSelect()
               }}>
                 이미지 선택 완료
               </button>
