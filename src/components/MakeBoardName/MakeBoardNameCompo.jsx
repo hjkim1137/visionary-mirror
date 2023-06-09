@@ -34,7 +34,7 @@ function MakeBoardNameCompo() {
           value={boardName}
           onChange={handleBoardNameChange}
         />
-        <p>
+        <p className={styles.nameLimit}>
           {boardNameCount}/{boardNameLimit}
         </p>
       </div>
