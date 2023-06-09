@@ -140,10 +140,29 @@
       margin-top: 20px;
     }
 
-    .selectBtn {
-      width: 130px;
-      font-size: 20px;
+    .selectContiner {
+      display: flex;
+      justify-content: space-between;
+      height: 40px;
       margin-top: 20px;
+      background-color: #116a7b;
+      align-items: center;
+      padding: 0 5px 0 5px;
+      border-radius: 10px;
+
+      p {
+        color: #fff;
+        font-size: 20px;
+      }
+
+      .selectBtn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 35px;
+        font-size: 20px;
+        margin-left: 5px;
+      }
     }
 
     // 버튼 애니메이션
