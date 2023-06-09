@@ -10,7 +10,6 @@ function Nav({ isOpen, isLoggedIn }) {
   if (!isOpen) {
     return null;
   }
-
   return (
     <nav className={isOpen ? `${styles.nav} ${styles.navOpen}` : styles.nav}>
       <ul className={styles.navListWrapper}>
@@ -29,19 +28,19 @@ function Nav({ isOpen, isLoggedIn }) {
               </Link>
             </li>
             <li>
-              <Link to="/myvisionboard" className={styles.navLink}>
+              <Link to="/myvisionboard/list" className={styles.navLink}>
                 <IoImages size={29} />
                 <span className="nav-text">내 비전보드</span>
               </Link>
             </li>
           </>
         )}
-        <li>
+        {/* <li>
           <Link to="/search" className={styles.navLink}>
             <FaSearch size={29} />
             <span className="nav-text">탐색</span>
           </Link>
-        </li>
+        </li> */}
       </ul>
     </nav>
   );

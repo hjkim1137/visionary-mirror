@@ -6,25 +6,29 @@ import useDeleteCollection from './DeleteCollection';
 import useCarousel from './Carousel';
 // import usePublicCollection from './PublicCollection';
 
-const mockAPI = 'http://localhost:9999/collection';
-// const getVisionboards = /api/v1/visionboards
+// const myvisioboardAPI = 'http://localhost:9999/data';
+// api 구축 완료 시 교체
+const myvisioboardAPI = '/api/v1/myvisionboard';
+// delete = /api/api/v1/myvisionboard?id={}
 
+// example response
 // {
-//   error: null,
-//   data:
+//   "error": null,
+//   "data": [
 //   {
-//      id: Integer,
-//      title: string,
-//      collection:
-//      [
-//         {
-//            sequence:Integer,
-//            imagePath:string(이미지 path),
-//            description:string,
-//          }
-//      ]
-//  }
-// }
+//   "visionboardId": 1,
+//   "title": "title\n",
+//   "imagePath": "/home/bbde1861/elice_2st_project_BE/back_end/images/ecb97c1849475fe5e3d82962e87dd8f4.jpg",'
+//   "imageName": "ecb97c1849475fe5e3d82962e87dd8f4.jpg", "created_at": "2023-06-08T09:16:16.000Z"
+//       },
+// {
+//   "visionboardId": 2,
+//   "title": "title\n",
+//   "imagePath": "/home/bbde1861/elice_2st_project_BE/back_end/images/ecb97c1849475fe5e3d82962e87dd8f4.jpg",'
+//   "imageName": "ecb97c1849475fe5e3d82962e87dd8f4.jpg", "created_at": "2023-06-08T09:16:16.000Z"
+//       }
+//     ]
+//   }
 
 function BoardCollection() {
   const [collection, setCollection] = useState({
@@ -33,30 +37,35 @@ function BoardCollection() {
     id: [],
   });
 
-  // db에서 컬렉션 정보 불러오기
   useEffect(() => {
     try {
-      fetch(mockAPI)
+      fetch(`${myvisioboardAPI}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'applicattion/json' },
+      })
         .then((response) => {
+          console.log('1.최초 response:', response);
           if (!response.ok) {
             throw new Error('네트워크 응답이 정상적이지 않습니다');
           }
           return response.json();
         })
         .then((items) => {
+          console.log('2.GET으로 받아온 items:', items);
           const imgPaths = items.map((item) => item.imagePath);
-          const imgTitles = items.map((item) => item.title);
-          const imgIds = items.map((item) => item.id);
+          const titles = items.map((item) => item.title);
+          const visionboardIds = items.map((item) => item.visionboardId);
           setCollection({
             img: imgPaths,
-            title: imgTitles,
-            id: imgIds,
+            title: titles,
+            id: visionboardIds,
           });
         });
     } catch (err) {
       console.error('비동기 처리 중 오류가 발생했습니다:', err);
     }
   }, []);
+  // console.log('컬렉션:', collection);
 
   // 컬렉션 상세보기 페이지 넘어가기
   const navigate = useNavigate();
@@ -65,15 +74,10 @@ function BoardCollection() {
     console.log('상세보기클릭', id);
   };
 
-  // useDeleteCollection 커스텀훅 클릭 핸들러
-  const [handleDeleteButtonClick, loading] = useDeleteCollection(
-    collection,
-    setCollection,
-    mockAPI
-  );
-
   // useCarousel 커스텀훅
+  // useDeleteCollection 커스텀훅 보다 순서상 먼저 선언되어야 함
   const {
+    setIndex,
     index,
     increaseClick,
     decreaseClick,
@@ -83,6 +87,13 @@ function BoardCollection() {
     NextImg,
     moreNextImg,
   } = useCarousel(collection);
+
+  // useDeleteCollection 커스텀훅 클릭 핸들러
+  const [handleDeleteButtonClick, loading] = useDeleteCollection(
+    collection,
+    setCollection,
+    setIndex
+  );
 
   //usePublicCollection 커스텀 훅
   // const [
@@ -102,6 +113,12 @@ function BoardCollection() {
         </div>
       ) : (
         <>
+          {/* 삭제중일 때 오버레이 */}
+          {loading && (
+            <div className={styles.overlay}>
+              <p className={styles.loadingText}>삭제 중...</p>
+            </div>
+          )}
           {/* 왼쪽 버튼 */}
           <button
             className={styles.leftButton}

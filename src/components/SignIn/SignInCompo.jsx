@@ -4,6 +4,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signInWithEmailAndPassword,
+  getIdToken,
 } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
 import styles from './SignInCompo.module.scss';
@@ -59,53 +60,63 @@ function SignInCompo({ isLogin }) {
       const data = await signInWithEmailAndPassword(auth, email, password);
       console.log(data); // data : {user: {accessToken: "tokentoken" } }
       if (data) {
-        const { user } = data;
-        const token = user.getIdToken();
+        // const { user } = data;
+        // const token = user.getIdToken(user.uid);
 
-        // ******************************************************************** //
-        // ************** [/api/v1/accounts/signin] 완성되면 주석해제 ************** //
-        // ******************************************************************** //
-        // try {
-        //   const signinResult = await fetch(`/api/api/v1/accounts/signin`, {
-        //     method: 'POST',
-        //     body: JSON.stringify({ token }), // token: "string",
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     },
-        //   })
-        //     .then((res) => res.json()) // cookie가 클라이언트에 탑재됨.
-        //     .catch((err) => {
-        //       console.log({ err });
-        //       return null;
-        //     });
-        //   /**
-        //    * signinResult = {
-        //    *   error: { statusCode: 201, ... }, // 에러가 없으면 err: null
-        //    *   data: null
-        //    * }
-        //    *
-        //    */
-        //   if (signinResult && !signinResult.error) {
-        //     // 로그인 완료
-        //     // App.js에서 로그인상태 파악을 위해 localstorage에 isLogin 설정
-        //     localStorage.setItem('isLogin', '1'); // "1" = 로그인 / "0" = 로그아웃상태
-        //     navigate('/');
-        //   } else {
-        //     // 로그인 실패
-        //     localStorage.setItem('isLogin', '0');
-        //     alert('로그인 실패');
-        //   }
-        // } catch (err) {
-        //   console.log(err);
-        //   return null;
-        // }
+        const {
+          user: { uid },
+        } = data;
+        const token = await getIdToken(auth.currentUser);
+        console.log(uid);
+        console.log('token', token);
+
+        // api 완성되면 주석 제거 - 로그인 로직 시작(nest.js에 POST)
+        try {
+          const signinResult = await fetch(`/api/v1/accounts/signin`, {
+            method: 'POST',
+            body: JSON.stringify({ token }), // token: "string",
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }).then((res) => res.json()); // cookie가 클라이언트에 탑재됨.
+          // .catch((err) => {
+          //   // POST 요청 실패 시
+          //   console.log({ err });
+          //   return null;
+          // });
+
+          /*
+           * signinResult = {
+           *   error: { statusCode: 201, ... }, // 에러 없으면(정상) err: null
+           *   data: null
+           * }
+           *
+           */
+
+          if (signinResult && !signinResult.error) {
+            console.log('signinResult:', signinResult);
+            // 정상 로그인 완료(에러 없음)
+            // App.js에서 로그인상태 파악을 위해 localstorage에 isLogin 설정
+            localStorage.setItem('isLogin', '1'); // "1" = 로그인 / "0" = 로그아웃상태
+            // navigate('/');
+          } else {
+            // 로그인 실패
+            console.log('signinResult:', signinResult);
+            localStorage.setItem('isLogin', '0');
+            alert('로그인 실패');
+          }
+        } catch (err) {
+          console.log(err);
+          console.log('실패원인', err);
+          return null;
+        }
       }
-
       data && navigate('/'); // 로그인 완료 후 홈('/') 리다이렉트
     } catch (error) {
       console.log(error.message);
     }
   };
+
   /** 필드 입력시 해당 값 갱신 */
   const onChange = (e) => {
     const {

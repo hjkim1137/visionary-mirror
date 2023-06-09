@@ -1,6 +1,6 @@
-// 슬라이드 관련 커스텀 훅
 import { useState, useEffect } from 'react';
 
+// 슬라이드 관련 커스텀 훅
 function useCarousel(collection) {
   const [index, setIndex] = useState(0); // 표시되고 있는 슬라이드 인덱스
   const [isSlide, setIsSlide] = useState(false); // 슬라이드 중 여부 체크, 여러번 빠르게 클릭 못하게 하는 역할
@@ -59,6 +59,7 @@ function useCarousel(collection) {
   const moreNextImg = (index + 2) % collection.img.length;
 
   return {
+    setIndex,
     index,
     increaseClick,
     decreaseClick,
