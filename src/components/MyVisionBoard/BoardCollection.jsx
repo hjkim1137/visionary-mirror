@@ -6,9 +6,9 @@ import useDeleteCollection from './DeleteCollection';
 import useCarousel from './Carousel';
 // import usePublicCollection from './PublicCollection';
 
-const myvisioboardAPI = 'http://localhost:9999/data';
+// const myvisioboardAPI = 'http://localhost:9999/data';
 // api 구축 완료 시 교체
-// const myvisioboardAPI = /api/api/v1/myvisionboard
+const myvisioboardAPI = '/api/v1/myvisionboard';
 // delete = /api/api/v1/myvisionboard?id={}
 
 // example response

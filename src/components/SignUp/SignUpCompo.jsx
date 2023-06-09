@@ -77,16 +77,26 @@ function SignUpCompo() {
     try {
       const data = await createUserWithEmailAndPassword(auth, email, password);
       if (data) {
-        const { user } = data;
+        // const { user } = data;
         const username = 'username'; // nickname
-        const token = await user.getIdToken(); // Backend로 넘겨줘야될 토큰
+        // const token = await user.getIdToken(); // Backend로 넘겨줘야될 토큰
+
+        const {
+          user: { uid },
+        } = data;
+
+        auth.signOut();
+
+        console.log('uid', uid);
+        console.log('username', username);
 
         // ********** [api/v1/accounts] api 완성되면 주석 제거. ********** //
-        const createUserResult = await fetch(`/api/api/v1/accounts`, {
+        const createUserResult = await fetch(`/api/v1/accounts`, {
           method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            token,
-            username,
+            uid,
+            username: username,
           }),
         })
           .then((res) => res.json())
