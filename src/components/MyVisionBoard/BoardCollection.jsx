@@ -6,8 +6,29 @@ import useDeleteCollection from './DeleteCollection';
 import useCarousel from './Carousel';
 // import usePublicCollection from './PublicCollection';
 
-const myvisioboardAPI = 'http://localhost:9999/collection';
-// const finalVisioboardAPI = /api/v1/visionboards
+const myvisioboardAPI = 'http://localhost:9999/data';
+// api 구축 완료 시 교체
+// const myvisioboardAPI = /api/api/v1/myvisionboard
+// delete = /api/api/v1/myvisionboard?id={}
+
+// example response
+// {
+//   "error": null,
+//   "data": [
+//   {
+//   "visionboardId": 1,
+//   "title": "title\n",
+//   "imagePath": "/home/bbde1861/elice_2st_project_BE/back_end/images/ecb97c1849475fe5e3d82962e87dd8f4.jpg",'
+//   "imageName": "ecb97c1849475fe5e3d82962e87dd8f4.jpg", "created_at": "2023-06-08T09:16:16.000Z"
+//       },
+// {
+//   "visionboardId": 2,
+//   "title": "title\n",
+//   "imagePath": "/home/bbde1861/elice_2st_project_BE/back_end/images/ecb97c1849475fe5e3d82962e87dd8f4.jpg",'
+//   "imageName": "ecb97c1849475fe5e3d82962e87dd8f4.jpg", "created_at": "2023-06-08T09:16:16.000Z"
+//       }
+//     ]
+//   }
 
 function BoardCollection() {
   const [collection, setCollection] = useState({
@@ -16,87 +37,35 @@ function BoardCollection() {
     id: [],
   });
 
-  // db에서 컬렉션 정보 불러오기
-  // --- 코치님 작성해주신 코드 시작 ---
-  // const fetchResult = fetch('/api');
-  // if (!fetchResult.error) {
-  //   console.log('api 통신 성공');
-  // }
-  // if (fetchResult.error && fetchResult.error.statusCode === 401) {
-  //   if (fetchResult.error.statusCode === 401) {
-  //     // 인증실패일 경우 다시 로그인을 유도
-  //     console.log('사용자 인증 오류');
-  //     localStorage.removeItem('isLogin');
-  //     navigate('/');
-  //   } else {
-  //     console.log('나머지 오류');
-  //     alert('에러남');
-  //   }
-  // }
-  // // --- 코치님 작성해주신 코드 끝 ---
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch('/api/api/v1/visionboards');
-
-  //       if (!response.ok) {
-  //         throw new Error('네트워크 응답이 정상적이지 않습니다');
-  //       }
-
-  //       const items = await response.json();
-
-  //       // API 통신 성공 로그
-  //       console.log('api 통신 성공');
-
-  //       if (items.error && items.error.statusCode === 401) {
-  //         console.log('사용자 인증 오류');
-  //         localStorage.removeItem('isLogin');
-  //         navigate('/');
-  //       } else if (items.error) {
-  //         console.log('나머지 오류');
-  //         alert('에러남');
-  //       } else {
-  //         const imgPaths = items.map((item) => item.imagePath);
-  //         const imgTitles = items.map((item) => item.title);
-  //         const imgIds = items.map((item) => item.id);
-  //         setCollection({
-  //           img: imgPaths,
-  //           title: imgTitles,
-  //           id: imgIds,
-  //         });
-  //       }
-  //     } catch (err) {
-  //       console.error('비동기 처리 중 오류가 발생했습니다:', err);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-
   useEffect(() => {
     try {
-      fetch(myvisioboardAPI)
+      fetch(`${myvisioboardAPI}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'applicattion/json' },
+      })
         .then((response) => {
+          console.log('1.최초 response:', response);
           if (!response.ok) {
             throw new Error('네트워크 응답이 정상적이지 않습니다');
           }
           return response.json();
         })
         .then((items) => {
-          console.log('GET으로 받아온 items:', items);
+          console.log('2.GET으로 받아온 items:', items);
           const imgPaths = items.map((item) => item.imagePath);
-          const imgTitles = items.map((item) => item.title);
-          const imgIds = items.map((item) => item.id);
+          const titles = items.map((item) => item.title);
+          const visionboardIds = items.map((item) => item.visionboardId);
           setCollection({
             img: imgPaths,
-            title: imgTitles,
-            id: imgIds,
+            title: titles,
+            id: visionboardIds,
           });
         });
     } catch (err) {
       console.error('비동기 처리 중 오류가 발생했습니다:', err);
     }
   }, []);
+  // console.log('컬렉션:', collection);
 
   // 컬렉션 상세보기 페이지 넘어가기
   const navigate = useNavigate();
@@ -123,7 +92,6 @@ function BoardCollection() {
   const [handleDeleteButtonClick, loading] = useDeleteCollection(
     collection,
     setCollection,
-    myvisioboardAPI,
     setIndex
   );
 

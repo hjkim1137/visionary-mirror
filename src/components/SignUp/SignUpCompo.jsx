@@ -105,6 +105,7 @@ function SignUpCompo() {
         //         // 회원가입 실패
         //         alert('회원가입 실패');
         //       }
+        alert('회원가입에 성공하였습니다.');
       }
     } catch (error) {
       console.log(error.message);
