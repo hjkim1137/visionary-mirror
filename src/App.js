@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { auth } from './firebase/firebase';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import Accounts from './pages/Accounts';
 import Home from './pages/Home';
 import GetSampleBoard from './pages/GetSampleBoard';
 import MakeBoardName from './pages/MakeBoardName';
@@ -34,14 +35,12 @@ function App() {
     <Layout>
       {isInit ? (
         <Routes>
-          <Route
-            path="*"
-            element={isLogin ? <Home /> : <Navigate replace to="/login" />}
-          />
           <Route path="/login" element={<SignIn />} />
           <Route path="/register" element={<SignUp />} />
           {isLogin && ( // 로그인 했을 때만 렌더링
             <>
+              {/* <Route path="/accountedit" element={<Accounts />} /> */}
+              <Route path="/accountedit" element={<Accounts />} />
               <Route path="/getsampleboard" element={<GetSampleBoard />} />
               <Route path="/makeboardName" element={<MakeBoardName />} />
               <Route path="/myvisionboard/list" element={<MyVisionBoard />} />
@@ -52,12 +51,45 @@ function App() {
               <Route path="/visionboardgrid" element={<VisionBoardGrid />} />
             </>
           )}
+          <Route
+            path="*"
+            element={isLogin ? <Home /> : <Navigate replace to="/login" />}
+          />
         </Routes>
       ) : (
         'Loading...'
       )}
     </Layout>
   );
+
+  // return (
+  //   <Layout>
+  //     {isInit ? (
+  //       <Routes>
+  //         <Route
+  //           path="*"
+  //           element={isLogin ? <Home /> : <Navigate replace to="/login" />}
+  //         />
+  //         <Route path="/login" element={<SignIn />} />
+  //         <Route path="/register" element={<SignUp />} />
+  //         {isLogin && ( // 로그인 했을 때만 렌더링
+  //           <>
+  //             <Route path="/getsampleboard" element={<GetSampleBoard />} />
+  //             <Route path="/makeboardName" element={<MakeBoardName />} />
+  //             <Route path="/myvisionboard" element={<MyVisionBoard />} />
+  //             <Route
+  //               path="/myvisionboardgrid/:id"
+  //               element={<MyVisionBoardGrid />}
+  //             />
+  //             <Route path="/visionboardgrid" element={<VisionBoardGrid />} />
+  //           </>
+  //         )}
+  //       </Routes>
+  //     ) : (
+  //       'Loading...'
+  //     )}
+  //   </Layout>
+  // );
 }
 
 export default App;
