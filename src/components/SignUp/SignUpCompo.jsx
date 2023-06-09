@@ -81,30 +81,27 @@ function SignUpCompo() {
         const username = 'username'; // nickname
         const token = await user.getIdToken(); // Backend로 넘겨줘야될 토큰
 
-        // *********************************************************** //
         // ********** [api/v1/accounts] api 완성되면 주석 제거. ********** //
-        // *********************************************************** //
+        const createUserResult = await fetch(`/api/api/v1/accounts`, {
+          method: 'POST',
+          body: JSON.stringify({
+            token,
+            username,
+          }),
+        })
+          .then((res) => res.json())
+          .catch((err) => {
+            console.log({ err });
+            return null;
+          });
 
-        //       const createUserResult = await fetch(`/api/api/v1/accounts`, {
-        //         method: 'POST',
-        //         body: JSON.stringify({
-        //           token,
-        //           username,
-        //         }),
-        //       })
-        //         .then((res) => res.json())
-        //         .catch((err) => {
-        //           console.log({ err });
-        //           return null;
-        //         });
-
-        //       if (createUserResult && !createUserResult.err) {
-        //         // 회원가입 성공
-        //         navigate('/');
-        //       } else {
-        //         // 회원가입 실패
-        //         alert('회원가입 실패');
-        //       }
+        if (createUserResult && !createUserResult.err) {
+          // 회원가입 성공
+          navigate('/');
+        } else {
+          // 회원가입 실패
+          alert('회원가입 실패');
+        }
         alert('회원가입에 성공하였습니다.');
       }
     } catch (error) {

@@ -36,12 +36,12 @@ function Nav({ isOpen, isLoggedIn }) {
             </li>
           </>
         )}
-        <li>
+        {/* <li>
           <Link to="/search" className={styles.navLink}>
             <FaSearch size={29} />
             <span className="nav-text">탐색</span>
           </Link>
-        </li>
+        </li> */}
       </ul>
     </nav>
   );
