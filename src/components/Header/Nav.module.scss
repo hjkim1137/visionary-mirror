@@ -2,15 +2,11 @@
   position: absolute;
   top: 100%;
   left: 0;
-
   height: 100vh;
   margin: 0;
-
   font-size: 20px;
   background: rgb(50, 47, 47);
   z-index: 1;
-  transform: translateX(-100%); /* 메뉴를 왼쪽으로 이동 */
-  transition: transform 1s ease-out;
 }
 
 .navOpen {
@@ -22,10 +18,19 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-
   width: 225px;
   height: 100%;
   margin-left: 0;
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 .nav .navListWrapper li {
@@ -35,9 +40,7 @@
 .navLink {
   display: flex;
   align-items: center;
-
   padding-right: 10px;
-
   text-decoration: none;
   color: rgb(66, 65, 65);
   font-size: 16px;
@@ -54,6 +57,9 @@
 }
 
 span {
-  cursor: pointer;
   padding-left: 10px;
+
+  .nav-test {
+    cursor: pointer;
+  }
 }
