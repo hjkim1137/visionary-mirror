@@ -3,36 +3,70 @@ import styles from './BoardCollection.module.scss';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import useDeleteCollection from './DeleteCollection';
+import useCarousel from './Carousel';
+// import usePublicCollection from './PublicCollection';
 
-const mockAPI = 'http://localhost:9999/collection';
+// const myvisioboardAPI = 'http://localhost:9999/data';
+// api 구축 완료 시 교체
+const myvisioboardAPI = '/api/v1/myvisionboard';
+// delete = /api/api/v1/myvisionboard?id={}
+
+// example response
+// {
+//   "error": null,
+//   "data": [
+//   {
+//   "visionboardId": 1,
+//   "title": "title\n",
+//   "imagePath": "/home/bbde1861/elice_2st_project_BE/back_end/images/ecb97c1849475fe5e3d82962e87dd8f4.jpg",'
+//   "imageName": "ecb97c1849475fe5e3d82962e87dd8f4.jpg", "created_at": "2023-06-08T09:16:16.000Z"
+//       },
+// {
+//   "visionboardId": 2,
+//   "title": "title\n",
+//   "imagePath": "/home/bbde1861/elice_2st_project_BE/back_end/images/ecb97c1849475fe5e3d82962e87dd8f4.jpg",'
+//   "imageName": "ecb97c1849475fe5e3d82962e87dd8f4.jpg", "created_at": "2023-06-08T09:16:16.000Z"
+//       }
+//     ]
+//   }
 
 function BoardCollection() {
-  // db에서 컬렉션 정보 불러오기
-  const [collectionImg, setCollectionImg] = useState([]);
-  const [collectionTitle, setCollectionTitle] = useState([]);
-  const [collectionId, setCollectionId] = useState([]);
+  const [collection, setCollection] = useState({
+    img: [],
+    title: [],
+    id: [],
+  });
 
   useEffect(() => {
     try {
-      fetch(mockAPI)
+      fetch(`${myvisioboardAPI}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'applicattion/json' },
+      })
         .then((response) => {
+          console.log('1.최초 response:', response);
           if (!response.ok) {
             throw new Error('네트워크 응답이 정상적이지 않습니다');
           }
           return response.json();
         })
         .then((items) => {
-          const imgUrls = items.map((item) => item.url);
-          const imgTitles = items.map((item) => item.title);
-          const imgIds = items.map((item) => item.id);
-          setCollectionImg(imgUrls);
-          setCollectionTitle(imgTitles);
-          setCollectionId(imgIds);
+          console.log('2.GET으로 받아온 items:', items);
+          const imgPaths = items.map((item) => item.imagePath);
+          const titles = items.map((item) => item.title);
+          const visionboardIds = items.map((item) => item.visionboardId);
+          setCollection({
+            img: imgPaths,
+            title: titles,
+            id: visionboardIds,
+          });
         });
     } catch (err) {
       console.error('비동기 처리 중 오류가 발생했습니다:', err);
     }
   }, []);
+  // console.log('컬렉션:', collection);
+
   // 컬렉션 상세보기 페이지 넘어가기
   const navigate = useNavigate();
   const handleBtnForBoardDetail = (id) => {
@@ -40,87 +74,51 @@ function BoardCollection() {
     console.log('상세보기클릭', id);
   };
 
-  // useDeleteCollection 불러오기
-  const handleDeleteButtonClick = useDeleteCollection(
-    collectionTitle,
-    collectionId,
-    collectionImg,
-    setCollectionImg,
-    setCollectionTitle,
-    setCollectionId,
-    mockAPI
+  // useCarousel 커스텀훅
+  // useDeleteCollection 커스텀훅 보다 순서상 먼저 선언되어야 함
+  const {
+    setIndex,
+    index,
+    increaseClick,
+    decreaseClick,
+    x,
+    morePrevImg,
+    PrevImg,
+    NextImg,
+    moreNextImg,
+  } = useCarousel(collection);
+
+  // useDeleteCollection 커스텀훅 클릭 핸들러
+  const [handleDeleteButtonClick, loading] = useDeleteCollection(
+    collection,
+    setCollection,
+    setIndex
   );
 
-  //슬라이드 관련
-  // const slideRef = useRef(null);
-  const [index, setIndex] = useState(0); // 표시되고 있는 슬라이드 인덱스
-  const [isSlide, setIsSlide] = useState(false); // 슬라이드 중 여부 체크, 여러번 빠르게 클릭 못하게 하는 역할
-  const [x, setX] = useState(0); // 슬라이드 애니메이션 효과를 주기위한 x만큼 이동
-
-  // 자동으로 슬라이드 넘기기 기능
-  useEffect(() => {
-    let autoSlide;
-
-    if (index !== collectionImg.length - 1) {
-      // 마지막 슬라이드가 아닐 때만 작동
-      autoSlide = setTimeout(() => {
-        increaseClick();
-      }, 2500); //
-    }
-    // Component가 unmount 되거나 업데이트 되기 전에 타이머를 정리
-    return () => {
-      clearTimeout(autoSlide);
-    };
-  }, [index, collectionImg.length]); // 의존성 배열에 index, collectionImg.length 추가
-
-  // 오른쪽 버튼 함수-일방향
-  const increaseClick = async () => {
-    if (isSlide || index === collectionImg.length - 1) {
-      // 마지막 슬라이드일 경우 이동을 멈춤
-      return;
-    }
-    setX(-56);
-    setIsSlide(true);
-
-    await setTimeout(() => {
-      setIndex((prev) => prev + 1);
-      setX(0);
-      setIsSlide(false);
-    }, 500);
-  };
-
-  //왼쪽 버튼 함수- 일방향
-  const decreaseClick = async () => {
-    if (isSlide || index === 0) {
-      // 첫 슬라이드일 경우 이동을 멈춤
-      return;
-    }
-    setX(+56);
-    setIsSlide(true);
-
-    await setTimeout(() => {
-      setIndex((prev) => prev - 1);
-      setX(0);
-      setIsSlide(false);
-    }, 500);
-  };
-
-  // 캐러셀 원형논리 적용 + 이미지가 8개보다 적을 경우 이미지 인덱스가 실제 이미지 수를 넘어가지 않게 함
-  const morePrevImg = (index + collectionImg.length - 2) % collectionImg.length; //두 슬라이드 전
-  const PrevImg = (index + collectionImg.length - 1) % collectionImg.length; // 이전 슬라이드
-  const NextImg = (index + 1) % collectionImg.length; // 다음 슬라이드
-  const moreNextImg = (index + 2) % collectionImg.length; //두 슬라이드 뒤
+  //usePublicCollection 커스텀 훅
+  // const [
+  //   handleBtnForPublicOpen,
+  //   handleBtnForPublicClose,
+  //   handleBtnForPublicPage,
+  //   // ] = usePublicCollection(setCollection, collection);
+  // ] = usePublicCollection(setCollection, collection);
 
   // 리턴
   return (
     <div className={styles.wrapper}>
       {/* 보유한 컬렉션 없으면 문구 제외 모든 기능 숨김 */}
-      {collectionImg.length === 0 ? (
+      {collection.img.length === 0 ? (
         <div className={styles.noCollection}>
           보유한 컬렉션이 없습니다. 비전보드를 만들어보세요!
         </div>
       ) : (
         <>
+          {/* 삭제중일 때 오버레이 */}
+          {loading && (
+            <div className={styles.overlay}>
+              <p className={styles.loadingText}>삭제 중...</p>
+            </div>
+          )}
           {/* 왼쪽 버튼 */}
           <button
             className={styles.leftButton}
@@ -137,26 +135,19 @@ function BoardCollection() {
             onClick={increaseClick}
             // 마지막 페이지 도달 시 버튼 숨김
             style={{
-              display: index === collectionImg.length - 1 ? 'none' : 'block',
+              display: index === collection.img.length - 1 ? 'none' : 'block',
             }}
           >
             <FiChevronRight />
           </button>
 
           {/* 가로 정렬 등 전체 스타일 시작  */}
-          <div
-            className={styles.row}
-            key={index}
-            // ref={slideRef}
-            style={{
-              transform: `translateX(${x}vw)`,
-            }}
-          >
+          <div className={styles.row} key={index}>
             {/* 전전 슬라이드에 적용 */}
             <div className={styles.container}>
               <img
                 className={styles.priviewImg}
-                src={collectionImg[morePrevImg]}
+                src={collection.img[morePrevImg]}
               ></img>
             </div>
 
@@ -164,17 +155,17 @@ function BoardCollection() {
             <div className={styles.container}>
               <img
                 className={styles.priviewImg}
-                src={collectionImg[PrevImg]}
+                src={collection.img[PrevImg]}
               ></img>
             </div>
 
             {/* 현재 슬라이드 시작 */}
             <div className={styles.imgWrapper}>
-              <img className={styles.img} src={collectionImg[index]}></img>
+              <img className={styles.img} src={collection.img[index]}></img>
 
               {/* 이미지 설명 박스 */}
               <div className={styles.imgDes}>
-                <div className={styles.title}>{collectionTitle[index]}</div>
+                <div className={styles.title}>{collection.title[index]}</div>
               </div>
             </div>
             {/* 현재 슬라이드  끝 */}
@@ -183,7 +174,7 @@ function BoardCollection() {
             <div className={styles.container}>
               <img
                 className={styles.priviewImg}
-                src={collectionImg[NextImg]}
+                src={collection.img[NextImg]}
               ></img>
             </div>
 
@@ -191,7 +182,7 @@ function BoardCollection() {
             <div className={styles.container}>
               <img
                 className={styles.priviewImg}
-                src={collectionImg[moreNextImg]}
+                src={collection.img[moreNextImg]}
               ></img>
             </div>
           </div>
@@ -200,7 +191,7 @@ function BoardCollection() {
 
           {/* 현재 슬라이드 위치 표시 */}
           <div className={styles.dotWrapper}>
-            {collectionImg.map((_, idx) => (
+            {collection.img.map((_, idx) => (
               <div
                 key={idx}
                 className={
@@ -221,11 +212,47 @@ function BoardCollection() {
 
             <button
               className={styles.detailButton}
-              onClick={() => handleBtnForBoardDetail(collectionId[index])}
+              onClick={() => handleBtnForBoardDetail(collection.id[index])}
             >
               컬렉션 상세보기
             </button>
+
+            {/* <button
+              className={styles.publicOpenButton}
+              onClick={() =>
+                handleBtnForPublicOpen(
+                  collection.id[index],
+                  collection.title[index],
+                  collection.img[index]
+                )
+              }
+            >
+              컬렉션 공개
+            </button>
+
+            <button
+              className={styles.publicCloseButton}
+              onClick={() =>
+                handleBtnForPublicClose(
+                  collection.id[index],
+                  collection.title[index],
+                  collection.img[index]
+                )
+              }
+            >
+              컬렉션 비공개
+            </button> */}
           </div>
+
+          {/* 현재 공개 컬렉션 정보 */}
+          {/* <div className={styles.buttonBox2}>
+            <div className={styles.publicCollectionInfo}>
+              공개 설정한 컬렉션 :<div id="collectionInfo"></div>
+            </div>
+          </div>
+          <div className={styles.publicCollectionInfo2}>
+            *공개 컬렉션은 최대 1개까지 설정 가능
+          </div> */}
         </>
       )}
     </div>
