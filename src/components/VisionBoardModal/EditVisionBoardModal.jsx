@@ -6,11 +6,15 @@ import media from './assets/media_icon.svg';
 import styles from './CreateVisionBoardModal.module.scss';
 import imageCompression from 'browser-image-compression';
 
-export default function CreateVisionBoardModal({
+import { putApi } from '../MyVisionBoardGrid/Api'
+
+export default function EditVisionBoardModal({
   isOpen,
   closeModal,
   handleImageAndTextSelect,
-  readOnly
+  readOnly,
+  gridItems,
+  setGridItems
 }) {
   const [imgFile, setImgFile] = useState('');
   const [text, setText] = useState('');
@@ -35,23 +39,20 @@ export default function CreateVisionBoardModal({
     try {
       //파일 크기 압축
       const compressedFile = await imageCompression(uploadedFile, options);
-      console.log('compressedFile:', compressedFile)
+
 
       //미리보기 및 imgFile 상태 변경
       const reader = new FileReader();
       reader.readAsDataURL(compressedFile);
       reader.onloadend = () => {
-        console.log('reader.result:', reader.result);
         setImgFile(reader.result);
       };
-      
+
       //압축파일 폼 데이터 화
       const formData = new FormData();
       formData.append('image', compressedFile, uploadedFile.name);
       const savedImgFile = formData.get('image');
-      console.log('savedImgFile.keys:', savedImgFile.keys)
-      var keys = formData.has('image')
-      console.log('keys :', keys)
+
       return savedImgFile;
     } catch (err) {
       console.error(err);
@@ -65,9 +66,10 @@ export default function CreateVisionBoardModal({
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = () => {
-        const selectedImg = reader.result;
+        var selectedImg = reader.result;
         handleImageAndTextSelect(selectedImg, text);
       };
+
       closeModal();
     } else {
       alert('이미지와 문구를 모두 등록해 주세요.'); // 경고 메시지 표시
@@ -147,7 +149,10 @@ export default function CreateVisionBoardModal({
                   {characterCount}/{characterLimit} 글자수
                 </p>
               </div>
-              <button className={styles.modalPostButton} onClick={handleSelect}>
+              <button className={styles.modalPostButton} onClick={() => {
+                handleSelect()
+                putApi(gridItems, 2, '고양이')
+              }}>
                 이미지 선택 완료
               </button>
             </div>

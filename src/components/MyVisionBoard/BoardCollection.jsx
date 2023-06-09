@@ -4,7 +4,8 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import useDeleteCollection from './DeleteCollection';
 
-const mockAPI = 'http://localhost:9999/collection';
+const mockAPI = 'https://jsonplaceholder.typicode.com/posts';
+// 'http://localhost:9999/collection';
 
 function BoardCollection() {
   // db에서 컬렉션 정보 불러오기

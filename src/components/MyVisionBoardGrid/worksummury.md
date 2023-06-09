@@ -11,8 +11,6 @@ put api 구현
 -confirm 받아 수락시 alert로 명시 이후 /myvisionboard로 이동✔️ handleCollectionDelete
 -보드 db에서 삭제
 
-p.s. 각 버튼들 className은 그냥 일괄적으로 delete로 통일하였습니다. css는 진휘님 입맛에 맞게 꾸미시면 됩니다.
-
 npx json-server --port 9999 --watch db.json
 
 http://localhost:9999/collection
@@ -23,7 +21,7 @@ CreateVisionBoardModal 에 readOnly 프롭스 추가하여 읽기/수정에 따�
 
 <23.06.08>
 1.수정 완료시 put
-2.삭제 버튼 delete api
+2.삭제 버튼 delete api ✔️
 3.EditVisionBoardModal.jsx 수정 : 
 -이미지 프리뷰가 안 뜨므로 일단 프리뷰 뜨게 한 뒤에 압축하는 방향으로 ✔️
 -formData.append('image', compressedFile, uploadedFile.name); name에 파일 이름 들어가게 됨.✔️ 
@@ -60,3 +58,15 @@ if (fetchResult.error && fetchResult.error.statusCode === 401) {
        alert("에러남")
    }
 }
+
+
+
+postApi에 콜백으로 grid 전체를 하나로 저장하는 바업 찾기.
+
+<06.09>
+1. putApi : path에 유저컬렉션에 해당하는 endpoint할당필요.
+2. 모달창 이미지 선택 완료시 fetch('api/v1/image?name={기존이미지이름}`), put으로 변경할 이미지 전송
+3. get 가져와서 보여주고 수정버튼으로 put
+4. query로 title 가져오기
+5. 이미지 미리보기 따로, form 데이터 넘겨주기 따로 구현.
+6. 유저가 지정한 title로 컬렉션이름 지정하기 ✔️
