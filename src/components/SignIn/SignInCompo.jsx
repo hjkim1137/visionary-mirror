@@ -1,4 +1,4 @@
-// 최종수정 2023-06-10 23:37
+// 최종수정 2023-06-11 00:07
 
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -15,26 +15,44 @@ function SignInCompo({ isLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
   // 로그인 되어있으면 홈('/')으로 이동
   const navigate = useNavigate();
+
+  // 로그인 내부 유효성 검사
   useEffect(() => {
     isLogin && navigate('/');
-  }, [isLogin, navigate]);
 
-  // 내부 유효성 검사
-  // 이메일 형식 체크 함수
-  const isEmailValid = (loginEmail) => {
-    return String(loginEmail)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
+    // 이메일 형식 체크 함수
+    const isEmailValid = (loginEmail) => {
+      return String(loginEmail)
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+    };
 
-  // 비밀번호 길이 체크 함수
-  const isPasswordValid = (loginPassword) => {
-    return loginPassword.length >= 4;
-  };
+    // 이메일 검사
+    if (!isEmailValid(email)) {
+      setEmailError('올바른 이메일 형식이 아닙니다.');
+    } else {
+      setEmailError('');
+    }
+
+    // 비밀번호 길이 체크 함수
+    const isPasswordValid = (loginPassword) => {
+      return loginPassword.length >= 6;
+    };
+
+    // 비밀번호 길이 검사
+    if (!isPasswordValid(password)) {
+      setPasswordError('비밀번호는 6글자 이상이어야 합니다.');
+    } else {
+      setPasswordError('');
+    }
+  }, [isLogin, email, password, navigate]);
 
   // 로그인 기능 수행
   const onSubmit = async (e) => {
@@ -46,18 +64,7 @@ function SignInCompo({ isLogin }) {
       return;
     }
 
-    // 이메일 검사
-    if (!isEmailValid(email)) {
-      alert('올바른 이메일 형식이 아닙니다.');
-      return;
-    }
-
-    // 비밀번호 길이 검사
-    if (!isPasswordValid(password)) {
-      alert('비밀번호는 4글자 이상이어야 합니다.');
-      return;
-    }
-
+    // 로그인 firebase 시작
     try {
       const data = await signInWithEmailAndPassword(auth, email, password);
       console.log(data); // data : {user: {accessToken: "tokentoken" } }
@@ -72,6 +79,7 @@ function SignInCompo({ isLogin }) {
         console.log(uid);
         console.log('token', token);
 
+        // 로그인 api 통신 시작
         try {
           const signinResult = await fetch(`/api/v1/accounts/signin`, {
             method: 'POST',
@@ -150,23 +158,27 @@ function SignInCompo({ isLogin }) {
             <input
               name="email"
               type="text"
-              placeholder="이메일@test.com"
+              placeholder="email@test.com"
               value={email}
               onChange={onChange}
               required
               className={styles.inputBox}
             />
+            {emailError && <div className={styles.error}>{emailError}</div>}
           </div>
           <div>
             <input
               name="password"
               type="password"
-              placeholder="4글자 이상 입력해주세요."
+              placeholder="6글자 이상 입력해주세요."
               value={password}
               onChange={onChange}
               required
               className={styles.inputBox}
             />
+            {passwordError && (
+              <div className={styles.error}>{passwordError}</div>
+            )}
           </div>
           <div>
             <input type="submit" value="로그인" className={styles.loginBtn} />
