@@ -27,7 +27,7 @@ function AccountsCompo({ isLogin }) {
     }
   }, [isLogin, navigate]);
 
-  // GET: (input 입력 전)회원정보 받기 요청
+  // GET: (input 입력 전)회원정보 받기 요청: password는 없음
   useEffect(() => {
     const fetchAccountInfo = async () => {
       try {
@@ -36,7 +36,7 @@ function AccountsCompo({ isLogin }) {
           headers: {
             'Content-Type': 'application/json',
           },
-          credentials: 'include',
+          //credentials: 'include',
         });
 
         // 응답 없을 때
@@ -84,9 +84,9 @@ function AccountsCompo({ isLogin }) {
         edited: true,
       };
 
-      // 닉네임이 3~12자인지 확인 (가입버튼 누르기 전)
+      // 닉네임이 3~10자인지 확인 (가입버튼 누르기 전)
       if (name === 'username') {
-        if (value.length < 3 || value.length > 12) {
+        if (value.length < 3 || value.length > 10) {
           newState.message = '닉네임은 최소 3자 이상 12자 이하이어야 합니다.';
           newState.valid = false;
         } else {
@@ -118,15 +118,9 @@ function AccountsCompo({ isLogin }) {
           containsSpecialCharacter,
         ].filter(Boolean).length;
 
-        if (
-          value.includes(formState.username.value) ||
-          value.includes(formState.email.value) ||
-          value.length < 6 ||
-          value.length > 16 ||
-          countValidations < 2
-        ) {
+        if (value.length < 6 || value.length > 16 || countValidations < 2) {
           newState.message =
-            '비밀번호는 6자 이상 16자 이하이어야 하며, 닉네임과 이메일을 포함할 수 없습니다. 또한, 숫자, 문자, 특수 문자 중 적어도 두 가지를 포함해야 합니다.';
+            '비밀번호는 6자 이상 16자 이하이며 닉네임과 이메일을 포함할 수 없습니다. 또한, 숫자, 문자, 특수 문자 중 적어도 두 가지를 포함해야 합니다.';
           newState.valid = false;
         } else {
           newState.message = '유효한 비밀번호입니다.';
@@ -187,7 +181,7 @@ function AccountsCompo({ isLogin }) {
       const data = await response.json();
 
       if (response.status === 200) {
-        // 비밀번호 변경되었으면 로그아웃 처리
+        // 비밀번호 변경되었으면 로그아웃 처리: 로그아웃 api를 써야함, islogin바꾸기
         if (formState.password.value !== '') {
           console.log('비밀번호가 변경되었습니다. 다시 로그인해주세요.');
           navigate('/login');
