@@ -78,14 +78,6 @@ function BoardCollection() {
     setIndex
   );
 
-  //usePublicCollection 커스텀 훅
-  // const [
-  //   handleBtnForPublicOpen,
-  //   handleBtnForPublicClose,
-  //   handleBtnForPublicPage,
-  //   // ] = usePublicCollection(setCollection, collection);
-  // ] = usePublicCollection(setCollection, collection);
-
   // 리턴
   return (
     <div className={styles.wrapper}>
@@ -147,17 +139,6 @@ function BoardCollection() {
             )}
 
             {/* 현재 슬라이드 시작 */}
-            {/* <div className={styles.imgWrapper}>
-              <img className={styles.img} src={collection.img[index]}></img>
-
-              {/* 이미지 설명 박스 */}
-            {/* <div className={styles.imgDes}>
-                <div className={styles.title}>{collection.title[index]}</div>
-              </div>
-            </div>  */}
-            {/* 현재 슬라이드  끝 */}
-
-            {/* 현재 슬라이드 시작- "테스트" */}
             <div className={styles.imgWrapper}>
               <img className={styles.img} src={collection.img[index]}></img>
 
@@ -166,9 +147,10 @@ function BoardCollection() {
                 <div className={styles.title}>{collection.title[index]}</div>
               </div>
             </div>
-            {/* 현재 슬라이드  끝- "테스트" */}
+            {/* 현재 슬라이드  끝 */}
 
             {/* 다음 슬라이드에 적용 */}
+            {/* 슬라이드 1개 이상 일때만 다음 슬라이드 보임 */}
             {collection.img.length > 1 && (
               <div className={styles.container}>
                 <img

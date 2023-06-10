@@ -1,11 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-  useLocation,
-} from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Accounts from './pages/Accounts';
@@ -15,11 +9,11 @@ import MakeBoardName from './pages/MakeBoardName';
 import MyVisionBoard from './pages/MyVisionBoard';
 import MyVisionBoardGrid from './pages/MyVisionBoardGrid';
 import VisionBoardGrid from './pages/VisionBoardGrid';
+import NAPage from './pages/NaPage';
 import Layout from './pages/Layout';
 
 function App() {
   const [isLogin, setIsLogin] = useState(false); // 현재 유저로그인(O: true, X: false)
-  const navigate = useNavigate();
 
   const location = useLocation();
 
@@ -32,7 +26,6 @@ function App() {
     }
   }, [location.pathname]);
 
-  // 코치님이 작성 도와주신 파트 시작
   return (
     <Layout>
       <Routes>
@@ -56,8 +49,8 @@ function App() {
             <Route path="/visionboardgrid" element={<VisionBoardGrid />} />
           </>
         )}
-        <Route path="*" element={<div>404 not found</div>} />
-        {/* home으로 돌아가게 링크  */}
+        {/* 유효하지 않는 경로 요청 시  */}
+        <Route path="*" element={<NAPage />} />
       </Routes>
     </Layout>
   );
