@@ -117,8 +117,8 @@ export default function VisionGrid() {
     });
   };
 
-  const handleOptionChange = (event) => {
-    const newSelectedOption = event.target.value;
+  const handleOptionChange = (e) => {
+    const newSelectedOption = e.target.value;
 
     if (newSelectedOption === '2') {
       const skippedGridIds = ['name', '2', '4', '5', '7'];
@@ -153,7 +153,7 @@ export default function VisionGrid() {
     setSelectedOption(newSelectedOption);
   };
 
-  const handleCompleteButtonClick = () => {
+  const handleCompleteButtonClick = async () => {
     if (selectedOption === '2') {
       if (uploadCount < 4) {
         alert('4개의 문구와 이미지를 업로드 해야합니다.');
@@ -183,38 +183,31 @@ export default function VisionGrid() {
 
     formData.append('title', boardName);
 
-    for (const key of formData.keys()) {
-      console.log(key);
-    }
-
-    for (const value of formData.values()) {
-      console.log(value);
-    }
-
-    console.log('Form Data', formData);
-
-    fetch('/api/v1/visionboard', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          console.log('200: OK');
-          console.log(response);
-        } else if (response.status === 401) {
-          console.log('401: 잘못된 요청, 요청 값 오류');
-          // 401 오류 처리 부분 작성
-        } else if (response.status === 500) {
-          console.log('500: 내부 서버 오류');
-          // 500 오류 처리 부분 작성
-        } else {
-          // 필요한 경우 다른 상태 코드 처리
-        }
-      })
-      .catch((error) => {
-        console.error('에러:', error);
-        // 에러 처리 부분 작성
+    try {
+      const response = await fetch('/api/v1/visionboard', {
+        method: 'POST',
+        body: formData,
       });
+
+      if (response.status === 200) {
+        console.log('200: OK');
+        console.log(response);
+      } else if (response.status === 201) {
+        console.log('201: OK');
+        console.log(response);
+      } else if (response.status === 401) {
+        console.log('401: 승인되지 않음');
+        localStorage.removeItem('isLogin');
+        navigate('/');
+      } else if (response.status === 500) {
+        console.log('500: 내부 서버오류');
+      } else {
+        console.log('다른 status');
+        alert('Error');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
