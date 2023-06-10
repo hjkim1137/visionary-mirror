@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getAuth } from 'firebase/auth';
 
 import styles from './AccountsCompo.module.scss';
 
@@ -18,8 +19,10 @@ function AccountsCompo({ isLogin }) {
     navigate('/');
   }
 
+  // GET: (input 입력 전)회원정보 받기 요청
   useEffect(() => {
     const fetchAccountInfo = async () => {
+      // 1. fetch로 데이터를 받아온다
       try {
         const response = await fetch('/api/v1/accounts', {
           method: 'GET',
@@ -28,26 +31,37 @@ function AccountsCompo({ isLogin }) {
           },
           credentials: 'include',
         });
+        const accountData = await response.json();
+        console.log(accountData);
 
-        if (response.ok) {
-          const data = await response.json();
+        // 2. 응답을 받는다면 200
+        if (response.status === 200) {
+          const { email, username } = accountData.data;
+          console.log('User email:', email);
+          console.log('User username:', username);
+
           setFormState((prevState) => ({
             ...prevState,
-            username: { value: data.username, valid: true, touched: true },
-            email: { value: data.email, valid: true, touched: true },
-            password: { value: '', valid: false, message: '', touched: false },
-            passwordConfirm: {
-              value: '',
-              valid: false,
-              message: '',
-              touched: false,
-            },
+            username: { value: username, valid: true, touched: true },
+            email: { value: email, valid: true, touched: true },
+            // password: {
+            //   value: '',
+            //   valid: false,
+            //   message: '',
+            //   touched: false,
+            // },
+            // passwordConfirm: {
+            //   value: '',
+            //   valid: false,
+            //   message: '',
+            //   touched: false,
+            // },
           }));
         } else {
-          throw new Error('Network response was not ok.');
+          console.error(`Error: ${accountData.error.message}`);
         }
       } catch (error) {
-        console.log(error.message);
+        console.log('get요청 실패', error);
       }
     };
 
@@ -134,6 +148,11 @@ function AccountsCompo({ isLogin }) {
     });
   };
 
+  ////////////////////////////
+  ///// 버튼들: 정보 수정, 취소, 탈퇴
+  ////////////////////////////
+
+  // PUT: 회원정보 수정 요청
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -156,18 +175,48 @@ function AccountsCompo({ isLogin }) {
         credentials: 'include',
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success) {
-          console.log('회원정보가 수정되었습니다.');
-        } else {
-          throw new Error(data.message);
-        }
+      const data = await response.json();
+
+      if (response.status === 200) {
+        console.log('회원정보가 수정되었습니다.');
       } else {
-        throw new Error('Network response was not ok.');
+        console.error(`Error: ${data.error.message}`);
       }
     } catch (error) {
-      console.log(error.message);
+      console.log('put요청 실패', error);
+    }
+  };
+
+  // 회원정보 수정 취소
+  const CancelAccountChange = () => {
+    console.log('수정 눌림');
+  };
+
+  // DELETE: 탈퇴(회원정보 삭제) 요청
+  const DeleteAccount = async (e) => {
+    e.preventDefault();
+    console.log('삭제 눌림');
+    if (window.confirm('정말로 탈퇴하시겠습니까?')) {
+      try {
+        const response = await fetch('/api/v1/accounts', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        });
+
+        const data = await response.json();
+
+        if (response.status === 200) {
+          console.log('회원정보가 삭제되었습니다.');
+          navigate('/'); // 탈퇴시 홈으로 간다
+        } else {
+          console.error(`Error: ${data.error.message}`);
+        }
+      } catch (error) {
+        console.log('delete요청 실패', error);
+      }
     }
   };
 
@@ -189,9 +238,6 @@ function AccountsCompo({ isLogin }) {
             />
           </div>
           <div>{formState.username.touched && formState.username.message}</div>
-          <div>
-            {/* {formState.nickname.edited && <div>닉네임이 수정되었습니다.</div>} */}
-          </div>
 
           <div>
             <input
@@ -203,25 +249,8 @@ function AccountsCompo({ isLogin }) {
               required
               className={styles.inputBox}
             />
-            {/* @
-            <select name="domain" onChange={onChange} required>
-              <option value="">도메인 선택</option>
-              <option value="gmail.com">gmail.com</option>
-              <option value="naver.com">naver.com</option>
-              <option value="daum.net">daum.net</option>
-              <option value="hanmail.net">hanmail.net</option>
-              <option value="msn.com">msn.com</option>
-              <option value="nate.com">nate.com</option>
-            </select> */}
-            {/* {!formState.email.edited && (
-              <button onClick={() => onUpdate('email')}>수정</button>
-            )} */}
           </div>
           <div>{formState.email.touched && formState.email.message}</div>
-
-          <div>
-            {/* {formState.email.edited && <div>이메일이 수정되었습니다.</div>} */}
-          </div>
 
           <div>
             <input
@@ -249,9 +278,6 @@ function AccountsCompo({ isLogin }) {
               onChange={onChange}
               required
             />
-            {/* {!formState.password.edited && (
-              <button onClick={() => onUpdate('password')}>수정</button>
-            )} */}
           </div>
           <div>
             {formState.passwordConfirm.touched &&
@@ -262,6 +288,7 @@ function AccountsCompo({ isLogin }) {
             <input
               type="submit"
               value="수정 완료하기"
+              onClick={onSubmit}
               className={styles.registerBtn}
               disabled={!Object.values(formState).every((field) => field.valid)}
             />
@@ -271,6 +298,7 @@ function AccountsCompo({ isLogin }) {
             <input
               type="submit"
               value="수정 취소하기"
+              onClick={CancelAccountChange}
               className={styles.registerBtn}
               disabled={
                 !formState.username.valid ||
@@ -285,6 +313,7 @@ function AccountsCompo({ isLogin }) {
             <input
               type="submit"
               value="탈퇴하기"
+              onClick={DeleteAccount}
               className={styles.registerBtn}
             />
           </div>
