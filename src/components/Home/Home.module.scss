@@ -1,6 +1,6 @@
 .container {
-  width: 65%;
-  height: 450px;
+  width: 400px;
+  height: 400px;
   display: flex;
   overflow-x: hidden;
   align-items: center;
@@ -11,10 +11,10 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-style: italic;
-  font-size: 38px;
-}
-
-.title {
-  color: #116a7b;
-  font-size: 38px;
+  font-size: 50px;
+  font-weight: 700;
+  border: none;
+  border-radius: 500px;
+  background-color: #116a7b;
+  color: white;
 }
