@@ -17,6 +17,20 @@ function SignUpCompo() {
 
   const navigate = useNavigate();
 
+  // 이 주석 풀어도 /login으로 이동 안하면서 + 회원가입 창 안나옴
+  // Firebase Auth는 사용자의 로그인 상태 변화 관찰하는 onAuthStateChanged 메서드를 제공
+  //이를 이용, 사용자가 로그아웃 했을 때 페이지를 이동
+  // useEffect(() => {
+  //   const unsubscribe = auth.onAuthStateChanged((user) => {
+  //     if (!user) {
+  //       navigate('/login');
+  //     }
+  //   });
+
+  //   // Clean up
+  //   return () => unsubscribe();
+  // }, [navigate]);
+
   useEffect(() => {
     if (username.length < 3 || username.length > 12) {
       setUsernameError('닉네임은 3~12자 사이여야 합니다.');
@@ -85,7 +99,10 @@ function SignUpCompo() {
           user: { uid },
         } = data;
 
-        auth.signOut();
+        // 로그아웃. 그러나 Firebase에 로그아웃을 시키는 명령만을 보내고,
+        // 실제로 어플리케이션의 라우팅을 변경하진 않음
+        await auth.signOut();
+        console.log('User signed out');
 
         console.log('uid', uid);
         console.log('username', username);
@@ -98,17 +115,18 @@ function SignUpCompo() {
             uid,
             username: username,
           }),
-        })
-          .then((res) => res.json())
-          .catch((err) => {
-            console.log({ err });
-            return null;
-          });
+        });
+        const resultJson = await createUserResult.json();
+        // .then((res) => res.json())
+        // .catch((err) => {
+        //   console.log({ err });
+        //   return null;
+        // });
 
         // 회원가입 성패 여부
-        if (createUserResult && !createUserResult.err) {
-          navigate('/');
+        if (resultJson && !resultJson.err) {
           alert('회원가입에 성공하였습니다.');
+          navigate('/login');
         } else {
           alert('회원가입 실패');
         }
