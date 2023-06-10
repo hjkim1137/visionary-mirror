@@ -8,14 +8,23 @@ function NAPageCompo() {
     navigate('/');
   };
 
+  const handleGoToLogin = () => {
+    navigate('/login');
+  };
+
   return (
     <>
       <div className={styles.container}>
         <div>404 NOT FOUND</div>
         <div>페이지를 찾을 수 없습니다.</div>
-        <button onClick={handleGoToHome} className={styles.mainBtn}>
-          메인으로 돌아가기
-        </button>
+        <div className={styles.buttonBox}>
+          <button onClick={handleGoToHome} className={styles.mainBtn}>
+            메인으로 돌아가기
+          </button>
+          <button onClick={handleGoToLogin} className={styles.loginBtn}>
+            로그인하기
+          </button>
+        </div>
       </div>
     </>
   );
