@@ -3,17 +3,27 @@ import styles from '../VisionBoardGrid/VisionGrid.module.scss';
 import React, { useCallback, useState, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { fetchPosts, getApi, postApi, putApi, deleteApi } from './Api';
+import { getApi, putApi, deleteApi } from './Api';
 
 import VisionGridComponent from './VisionGridComponent';
 import EditVisionBoardModal from '../VisionBoardModal/EditVisionBoardModal'
 
+import { useLocation } from 'react-router-dom'
+
+
 export default function MyVisionGrid() {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const searchParams = new URLSearchParams(location.search);
+    const prevBoardName = searchParams.get('boardName');
+    const id = location.pathname.split('/')[2];
+
+
 
     // 목록으로 돌아가기 버튼
     const handleBackToMyCollection = useCallback(() => {
-        navigate('/myvisionboard')
+        navigate('/myvisionboard/list')
     }, [])
     // 비전보드 삭제 버튼
     const handleCollectionDelete = useCallback(() => {
@@ -24,8 +34,20 @@ export default function MyVisionGrid() {
     }, [])
 
     useEffect(() => {
-        fetchPosts()
-
+        const fetchData = async () => {
+            try {
+                const result = await getApi(id);
+                if (result) {
+                    setGridItems(result)
+                    console.log('gridItems 패칭확인:', gridItems)
+                } else {
+                    throw new Error('No fetching data available')
+                }
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        fetchData();
     }, []);
 
     const [gridItems, setGridItems] = useState([
@@ -33,7 +55,7 @@ export default function MyVisionGrid() {
         { id: '2', img: null, text: null, isChecked: false },
         { id: '3', img: null, text: null, isChecked: false },
         { id: '4', img: null, text: null, isChecked: false },
-        { id: 'name', img: null, text: null, isChecked: false },
+        { id: 'name'},
         { id: '5', img: null, text: null, isChecked: false },
         { id: '6', img: null, text: null, isChecked: false },
         { id: '7', img: null, text: null, isChecked: false },
@@ -50,12 +72,12 @@ export default function MyVisionGrid() {
         if (gridItems[index].id !== 'name') {
             // console.log('gridItems[index]:', gridItems[index])
             setSelectedItemIndex(index);
-            if(readOnly === true){
+            if (readOnly === true) {
                 setIsModalOpen(false)
             } else {
                 setIsModalOpen(true);
             }
-            
+
         }
     };
 
@@ -112,7 +134,7 @@ export default function MyVisionGrid() {
                         <button className={styles.deleteBtn} onClick={handleBackToMyCollection}>
                             비전보드 목록
                         </button>
-                        <button className={styles.deleteBtn} onClick={() => { setReadOnly(false) }}>
+                        <button className={styles.deleteBtn} onClick={() => setReadOnly(false)}>
                             수정하기
                         </button>
                         <button className={styles.deleteBtn} onClick={handleCollectionDelete}>
@@ -125,17 +147,16 @@ export default function MyVisionGrid() {
                         <button className={styles.deleteBtn} onClick={handleDeleteButtonClick}>
                             선택삭제
                         </button>
-                        <button className={styles.prevBtn} onClick={() => { setReadOnly(true) }}>
+                        <button className={styles.prevBtn} onClick={() => setReadOnly(true)}>
                             이전
                         </button>
                         <button className={styles.completeBtn} onClick={() => {
-                            postApi(gridItems)
-                            console.log(gridItems)
+                            putApi(gridItems, id, gridItems[4].id.name)
                         }}>완료</button>
                         <select
                             className={styles.selectBtn}
                             value={selectedOption}
-                            onChange={handleOptionChange}                        
+                            onChange={handleOptionChange}
                         >
                             <option value="1">8</option>
                             <option value="2">4</option>

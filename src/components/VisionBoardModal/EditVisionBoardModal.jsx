@@ -61,7 +61,8 @@ export default function EditVisionBoardModal({
 
       // 확장자를 제외한 파일 이름 추출
       
-      return formData.get('image');
+      // return formData.get('image');
+      return formData
     } catch (err) {
       console.error(err);
     }
@@ -102,10 +103,10 @@ export default function EditVisionBoardModal({
     // 넘겨야 할 폼 데이터
     const formData = await saveImgFile();
     // 폼 데이터에서 확장자 뗀 파일 이름
-    const trimedDataName = formData.name.split('.')[0]
+    // const trimedDataName = formData.name.split('.')[0]
     console.log('savedImgToModalPut ~ formData:', formData)
-    console.log('trimedDataName', trimedDataName)
-    console.log('prevImgName', prevImgName)
+    // console.log('trimedDataName', trimedDataName)
+    // console.log('prevImgName', prevImgName)
 
     // modalPutApi(formData, prevImgName)
 
