@@ -33,38 +33,6 @@ function App() {
   }, [location.pathname]);
 
   // 코치님이 작성 도와주신 파트 시작
-  // return (
-  //   <Layout>
-  //     <Routes>
-  //       <Route path="/" element={<Home />} />
-  //       {!isLogin && (
-  //         <>
-  //           <Route path="/login" element={<SignIn />} />
-  //           <Route path="/register" element={<SignUp />} />
-  //         </>
-  //       )}
-  //       {isLogin && ( // 로그인 했을 때만 렌더링
-  //         <>
-  //           {/* <Route path="/accountedit" element={<Accounts />} /> */}
-  //           <Route path="/accountedit" element={<Accounts />} />
-  //           <Route path="/getsampleboard" element={<GetSampleBoard />} />
-  //           <Route path="/makeboardName" element={<MakeBoardName />} />
-  //           <Route path="/myvisionboard/list" element={<MyVisionBoard />} />
-  //           <Route
-  //             path="/myvisionboardgrid/:id"
-  //             element={<MyVisionBoardGrid />}
-  //           />
-  //           <Route path="/visionboardgrid" element={<VisionBoardGrid />} />
-  //         </>
-  //       )}
-  //       <Route path="*" element={<div>404 not found</div>} />
-  //       {/* home으로 돌아가게 링크  */}
-  //     </Routes>
-  //   </Layout>
-  // );
-  // 코치님이 작성 도와주신 파트 끝
-
-  // 로그인 완성 아직 안 됐을 때 임시로 보이게 하는 상태
   return (
     <Layout>
       <Routes>
@@ -75,19 +43,23 @@ function App() {
             <Route path="/register" element={<SignUp />} />
           </>
         )}
-        {/* <Route path="/accountedit" element={<Accounts />} /> */}
-        <Route path="/accountedit" element={<Accounts />} />
-        <Route path="/getsampleboard" element={<GetSampleBoard />} />
-        <Route path="/makeboardName" element={<MakeBoardName />} />
-        <Route path="/myvisionboard/list" element={<MyVisionBoard />} />
-        <Route path="/myvisionboardgrid/:id" element={<MyVisionBoardGrid />} />
-        <Route path="/visionboardgrid" element={<VisionBoardGrid />} />
-
+        {isLogin && ( // 로그인 했을 때만 렌더링
+          <>
+            <Route path="/accountedit" element={<Accounts />} />
+            <Route path="/getsampleboard" element={<GetSampleBoard />} />
+            <Route path="/makeboardName" element={<MakeBoardName />} />
+            <Route path="/myvisionboard/list" element={<MyVisionBoard />} />
+            <Route
+              path="/myvisionboardgrid/:id"
+              element={<MyVisionBoardGrid />}
+            />
+            <Route path="/visionboardgrid" element={<VisionBoardGrid />} />
+          </>
+        )}
         <Route path="*" element={<div>404 not found</div>} />
         {/* home으로 돌아가게 링크  */}
       </Routes>
     </Layout>
   );
 }
-
 export default App;

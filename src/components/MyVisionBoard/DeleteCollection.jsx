@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from 'react';
 
-const myvisioboardAPI = 'http://localhost:9999/data';
+const myvisioboardAPI = '/api/v1/myvisionboard';
 
 const useDeleteCollection = (collection, setCollection, setIndex) => {
   const [loading, setLoading] = useState(false);
@@ -26,17 +26,11 @@ const useDeleteCollection = (collection, setCollection, setIndex) => {
         // 현재 컬렉션 슬라이드(index)의 id를 변수 id에 담기
         const id = collection.id[index];
 
-        // 쿼리 파라미터가 아닌 url 일부로 전달하는 법
-        const response = await fetch(`${myvisioboardAPI}/${id}`, {
+        // 쿼리 파라미터로 전달하는 법
+        const response = await fetch(`${myvisioboardAPI}?id=${id}`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'applicattion/json' },
         });
-
-        // 쿼리 파라미터로 전달하는 법
-        // const response = await fetch(`${myvisioboardAPI}?id=${id}`, {
-        //   method: 'DELETE',
-        //   headers: { 'Content-Type': 'applicattion/json' },
-        // });
 
         console.log('삭제 요청 응답', response); // false
         console.log('현재 슬라이드 colleciton.id:', collection.id[index]);

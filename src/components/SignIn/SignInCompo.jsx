@@ -70,7 +70,6 @@ function SignInCompo({ isLogin }) {
         console.log(uid);
         console.log('token', token);
 
-        // api 완성되면 주석 제거 - 로그인 로직 시작(nest.js에 POST)
         try {
           const signinResult = await fetch(`/api/v1/accounts/signin`, {
             method: 'POST',
@@ -79,41 +78,33 @@ function SignInCompo({ isLogin }) {
               'Content-Type': 'application/json',
             },
           }).then((res) => res.json()); // cookie가 클라이언트에 탑재됨.
-          // .catch((err) => {
-          //   // POST 요청 실패 시
-          //   console.log({ err });
-          //   return null;
-          // });
-
-          /*
-           * signinResult = {
-           *   error: { statusCode: 201, ... }, // 에러 없으면(정상) err: null
-           *   data: null
-           * }
-           *
-           */
-
           if (signinResult && !signinResult.error) {
-            console.log('signinResult:', signinResult);
-            // 정상 로그인 완료(에러 없음)
+            console.log('signinResult:', signinResult); // {isLogin:true}
+            // 정상 로그인 완료(= 에러 없음 err:null)
             // App.js에서 로그인상태 파악을 위해 localstorage에 isLogin 설정
             localStorage.setItem('isLogin', '1'); // "1" = 로그인 / "0" = 로그아웃상태
-            // navigate('/');
+            alert('로그인에 성공하였습니다.');
+            navigate('/');
           } else {
             // 로그인 실패
-            console.log('signinResult:', signinResult);
+            console.log('signinResult:', signinResult); // {isLogin:false}
             localStorage.setItem('isLogin', '0');
-            alert('로그인 실패');
+            alert('로그인에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
+            navigate('/login');
           }
         } catch (err) {
-          console.log(err);
-          console.log('실패원인', err);
+          console.log('통신 에러', err.message);
+          alert('서버와 통신에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
+          navigate('/login');
           return null;
         }
       }
       data && navigate('/'); // 로그인 완료 후 홈('/') 리다이렉트
-    } catch (error) {
-      console.log(error.message);
+    } catch (err) {
+      // firebase 오류 등
+      console.log('인증 에러', err.message);
+      alert('인증에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
+      navigate('/login');
     }
   };
 

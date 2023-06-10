@@ -4,31 +4,8 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import useDeleteCollection from './DeleteCollection';
 import useCarousel from './Carousel';
-// import usePublicCollection from './PublicCollection';
 
-// const myvisioboardAPI = 'http://localhost:9999/data';
-// api 구축 완료 시 교체
 const myvisioboardAPI = '/api/v1/myvisionboard';
-// delete = /api/api/v1/myvisionboard?id={}
-
-// example response
-// {
-//   "error": null,
-//   "data": [
-//   {
-//   "visionboardId": 1,
-//   "title": "title\n",
-//   "imagePath": "/home/bbde1861/elice_2st_project_BE/back_end/images/ecb97c1849475fe5e3d82962e87dd8f4.jpg",'
-//   "imageName": "ecb97c1849475fe5e3d82962e87dd8f4.jpg", "created_at": "2023-06-08T09:16:16.000Z"
-//       },
-// {
-//   "visionboardId": 2,
-//   "title": "title\n",
-//   "imagePath": "/home/bbde1861/elice_2st_project_BE/back_end/images/ecb97c1849475fe5e3d82962e87dd8f4.jpg",'
-//   "imageName": "ecb97c1849475fe5e3d82962e87dd8f4.jpg", "created_at": "2023-06-08T09:16:16.000Z"
-//       }
-//     ]
-//   }
 
 function BoardCollection() {
   const [collection, setCollection] = useState({
@@ -50,22 +27,28 @@ function BoardCollection() {
           }
           return response.json();
         })
-        .then((items) => {
-          console.log('2.GET으로 받아온 items:', items);
+        // items는 객체를 포함하는 배열 시작 ---
+        .then((datas) => {
+          console.log('2.get으로 받아온 datas(object)', datas);
+          const items = datas.data;
+          console.log('2.get으로 받아온 datas들의 data(array)', items);
+
           const imgPaths = items.map((item) => item.imagePath);
           const titles = items.map((item) => item.title);
           const visionboardIds = items.map((item) => item.visionboardId);
+
           setCollection({
             img: imgPaths,
             title: titles,
             id: visionboardIds,
           });
         });
+      //--- items는 객체를 포함하는 배열 끝 ---
     } catch (err) {
       console.error('비동기 처리 중 오류가 발생했습니다:', err);
     }
   }, []);
-  // console.log('컬렉션:', collection);
+  console.log('컬렉션:', collection);
 
   // 컬렉션 상세보기 페이지 넘어가기
   const navigate = useNavigate();
@@ -144,22 +127,37 @@ function BoardCollection() {
           {/* 가로 정렬 등 전체 스타일 시작  */}
           <div className={styles.row} key={index}>
             {/* 전전 슬라이드에 적용 */}
-            <div className={styles.container}>
-              <img
-                className={styles.priviewImg}
-                src={collection.img[morePrevImg]}
-              ></img>
-            </div>
+            {collection.img.length > 2 && (
+              <div className={styles.container}>
+                <img
+                  className={styles.priviewImg}
+                  src={collection.img[morePrevImg]}
+                ></img>
+              </div>
+            )}
 
             {/* 전 슬라이드에 적용 */}
-            <div className={styles.container}>
-              <img
-                className={styles.priviewImg}
-                src={collection.img[PrevImg]}
-              ></img>
-            </div>
+            {collection.img.length > 1 && (
+              <div className={styles.container}>
+                <img
+                  className={styles.priviewImg}
+                  src={collection.img[PrevImg]}
+                ></img>
+              </div>
+            )}
 
             {/* 현재 슬라이드 시작 */}
+            {/* <div className={styles.imgWrapper}>
+              <img className={styles.img} src={collection.img[index]}></img>
+
+              {/* 이미지 설명 박스 */}
+            {/* <div className={styles.imgDes}>
+                <div className={styles.title}>{collection.title[index]}</div>
+              </div>
+            </div>  */}
+            {/* 현재 슬라이드  끝 */}
+
+            {/* 현재 슬라이드 시작- "테스트" */}
             <div className={styles.imgWrapper}>
               <img className={styles.img} src={collection.img[index]}></img>
 
@@ -168,23 +166,27 @@ function BoardCollection() {
                 <div className={styles.title}>{collection.title[index]}</div>
               </div>
             </div>
-            {/* 현재 슬라이드  끝 */}
+            {/* 현재 슬라이드  끝- "테스트" */}
 
             {/* 다음 슬라이드에 적용 */}
-            <div className={styles.container}>
-              <img
-                className={styles.priviewImg}
-                src={collection.img[NextImg]}
-              ></img>
-            </div>
+            {collection.img.length > 1 && (
+              <div className={styles.container}>
+                <img
+                  className={styles.priviewImg}
+                  src={collection.img[NextImg]}
+                ></img>
+              </div>
+            )}
 
             {/* 다다음 슬라이드에 적용 */}
-            <div className={styles.container}>
-              <img
-                className={styles.priviewImg}
-                src={collection.img[moreNextImg]}
-              ></img>
-            </div>
+            {collection.img.length > 2 && (
+              <div className={styles.container}>
+                <img
+                  className={styles.priviewImg}
+                  src={collection.img[moreNextImg]}
+                ></img>
+              </div>
+            )}
           </div>
 
           {/* 가로 정렬 등 전체 스타일 끝  */}
@@ -214,45 +216,9 @@ function BoardCollection() {
               className={styles.detailButton}
               onClick={() => handleBtnForBoardDetail(collection.id[index])}
             >
-              컬렉션 상세보기
+              컬렉션 상세
             </button>
-
-            {/* <button
-              className={styles.publicOpenButton}
-              onClick={() =>
-                handleBtnForPublicOpen(
-                  collection.id[index],
-                  collection.title[index],
-                  collection.img[index]
-                )
-              }
-            >
-              컬렉션 공개
-            </button>
-
-            <button
-              className={styles.publicCloseButton}
-              onClick={() =>
-                handleBtnForPublicClose(
-                  collection.id[index],
-                  collection.title[index],
-                  collection.img[index]
-                )
-              }
-            >
-              컬렉션 비공개
-            </button> */}
           </div>
-
-          {/* 현재 공개 컬렉션 정보 */}
-          {/* <div className={styles.buttonBox2}>
-            <div className={styles.publicCollectionInfo}>
-              공개 설정한 컬렉션 :<div id="collectionInfo"></div>
-            </div>
-          </div>
-          <div className={styles.publicCollectionInfo2}>
-            *공개 컬렉션은 최대 1개까지 설정 가능
-          </div> */}
         </>
       )}
     </div>
