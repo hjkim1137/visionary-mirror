@@ -182,7 +182,7 @@ export default function VisionGrid() {
         method: 'POST',
         body: formData,
         headers: {
-          'Content-Type': 'application/json; charset=utf-8', // Set Content-Type header with charset
+          'Content-Type': 'multipart/form-data', // Set Content-Type header with charset
         },
       });
 
