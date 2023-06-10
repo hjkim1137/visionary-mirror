@@ -105,14 +105,13 @@ function SignUpCompo() {
             return null;
           });
 
+        // 회원가입 성패 여부
         if (createUserResult && !createUserResult.err) {
-          // 회원가입 성공
           navigate('/');
+          alert('회원가입에 성공하였습니다.');
         } else {
-          // 회원가입 실패
           alert('회원가입 실패');
         }
-        alert('회원가입에 성공하였습니다.');
       }
     } catch (error) {
       console.log(error.message);
