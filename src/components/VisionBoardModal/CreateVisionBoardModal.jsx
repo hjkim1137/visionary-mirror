@@ -9,7 +9,7 @@ export default function CreateVisionBoardModal({
   isOpen,
   closeModal,
   handleImageAndTextSelect,
-  readOnly
+  readOnly,
 }) {
   const [imgFile, setImgFile] = useState('');
   const [text, setText] = useState('');
@@ -35,11 +35,17 @@ export default function CreateVisionBoardModal({
     if (imgFile && text) {
       // 이미지와 문구 모두 등록되어 있는지 확인
       const file = imgRef.current.files[0];
+
+      console.log(imgRef.current.files[0]);
+      handleImageAndTextSelect(imgRef.current.files[0], text);
+
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = () => {
         const selectedImg = reader.result;
-        handleImageAndTextSelect(selectedImg, text);
+        // handleImageAndTextSelect(selectedImg, text);
+        // console.log(imgRef.current.files);
+        // handleImageAndTextSelect(imgRef.current.files, text);
       };
       closeModal();
     } else {
@@ -130,4 +136,3 @@ export default function CreateVisionBoardModal({
     </div>
   );
 }
-

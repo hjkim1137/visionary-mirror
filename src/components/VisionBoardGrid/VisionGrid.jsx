@@ -1,5 +1,7 @@
 import styles from './VisionGrid.module.scss';
 
+import axios from 'axios';
+
 import React, { useState, useEffect } from 'react';
 import CreateVisionBoardModal from './../VisionBoardModal/CreateVisionBoardModal';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -165,6 +167,7 @@ export default function VisionGrid() {
     let descriptionIndex = 1;
 
     for (const item of gridItems) {
+      console.log(item, item.img);
       if (item.img) {
         formData.append(`image${imageIndex}`, item.img);
         imageIndex++;
@@ -177,13 +180,12 @@ export default function VisionGrid() {
 
     formData.append('title', boardName);
 
+    console.log(Array.from(formData.entries()));
+
+    console.log(formData);
     try {
-      const response = await fetch('/api/v1/visionboard', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data', // Set Content-Type header with charset
-        },
+      const response = await axios.post('/api/v1/visionboard', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       if (response.ok) {
