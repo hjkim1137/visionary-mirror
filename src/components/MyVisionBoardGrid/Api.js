@@ -25,7 +25,7 @@ export const getApi = async (id) => {
     const response = await fetch(`/api/v1/visionboard?id=${id}`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
       },
     });
 
@@ -73,7 +73,7 @@ export const putApi = async (formData, id, title) => {
     const response = await fetch(`/api/v1/visionboard?id=${id}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
       },
       body: JSON.stringify({ formData })
     })
@@ -99,7 +99,7 @@ export const modalPutApi = async (formData, prevImgName) => {
     const response = await fetch(`api/v1/image?name=${prevImgName}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
       },
       body: JSON.stringify({ formData })
     })
