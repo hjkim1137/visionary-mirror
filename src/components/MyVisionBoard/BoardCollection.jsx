@@ -113,29 +113,24 @@ function BoardCollection() {
           {/* 가로 정렬 등 전체 스타일 시작  */}
           <div className={styles.row} key={index}>
             {/* 전전 슬라이드에 적용 */}
-            {collection.img.length > 2 && (
-              <div className={styles.container}>
-                <img
-                  className={styles.priviewImg}
-                  src={collection.img[morePrevImg]}
-                ></img>
-              </div>
-            )}
+            <div className={styles.container}>
+              <img
+                className={styles.priviewImg}
+                src={collection.img[morePrevImg]}
+              ></img>
+            </div>
 
             {/* 전 슬라이드에 적용 */}
-            {collection.img.length > 1 && (
-              <div className={styles.container}>
-                <img
-                  className={styles.priviewImg}
-                  src={collection.img[PrevImg]}
-                ></img>
-              </div>
-            )}
+            <div className={styles.container}>
+              <img
+                className={styles.priviewImg}
+                src={collection.img[PrevImg]}
+              ></img>
+            </div>
 
             {/* 현재 슬라이드 시작 */}
             <div className={styles.imgWrapper}>
               <img className={styles.img} src={collection.img[index]}></img>
-
               {/* 이미지 설명 박스 */}
               <div className={styles.imgDes}>
                 <div className={styles.title}>{collection.title[index]}</div>
@@ -144,27 +139,21 @@ function BoardCollection() {
             {/* 현재 슬라이드  끝 */}
 
             {/* 다음 슬라이드에 적용 */}
-            {/* 슬라이드 1개 이상 일때만 다음 슬라이드 보임 */}
-            {collection.img.length > 1 && (
-              <div className={styles.container}>
-                <img
-                  className={styles.priviewImg}
-                  src={collection.img[NextImg]}
-                ></img>
-              </div>
-            )}
+            <div className={styles.container}>
+              <img
+                className={styles.priviewImg}
+                src={collection.img[NextImg]}
+              ></img>
+            </div>
 
             {/* 다다음 슬라이드에 적용 */}
-            {collection.img.length > 2 && (
-              <div className={styles.container}>
-                <img
-                  className={styles.priviewImg}
-                  src={collection.img[moreNextImg]}
-                ></img>
-              </div>
-            )}
+            <div className={styles.container}>
+              <img
+                className={styles.priviewImg}
+                src={collection.img[moreNextImg]}
+              ></img>
+            </div>
           </div>
-
           {/* 가로 정렬 등 전체 스타일 끝  */}
 
           {/* 현재 슬라이드 위치 표시 */}
