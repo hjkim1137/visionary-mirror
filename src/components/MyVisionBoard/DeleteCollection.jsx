@@ -4,7 +4,7 @@
 
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { deleteAPI } from './Api';
+import { myvisioboardDeleteAPI } from './Api';
 
 const useDeleteCollection = (collection, setCollection, setIndex) => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ const useDeleteCollection = (collection, setCollection, setIndex) => {
       try {
         const id = collection.id[index]; // 현재 슬라이드 컬렉션 id 저장
         console.log('삭제하려는 현재 컬렉션 id:', id);
-        const fetchResult = await deleteAPI({ navigate, id });
+        const fetchResult = await myvisioboardDeleteAPI({ navigate, id });
 
         if (fetchResult && !fetchResult.error) {
           alert(`${itemTitle} 컬렉션이 정상적으로 삭제되었습니다.`);

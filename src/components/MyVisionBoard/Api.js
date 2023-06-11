@@ -1,6 +1,6 @@
 const myvisioboardAPI = '/api/v1/myvisionboard';
 
-export const getAPI = async ({ navigate }) => {
+export const myvisioboardGetAPI = async ({ navigate }) => {
   try {
     const response = await fetch(`${myvisioboardAPI}`, {
       method: 'GET',
@@ -36,7 +36,7 @@ export const getAPI = async ({ navigate }) => {
   }
 };
 
-export const deleteAPI = async ({ navigate, id }) => {
+export const myvisioboardDeleteAPI = async ({ navigate, id }) => {
   try {
     const response = await fetch(`${myvisioboardAPI}?id=${id}`, {
       method: 'DELETE',

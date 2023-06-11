@@ -6,7 +6,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import useDeleteCollection from './DeleteCollection';
 import useCarousel from './Carousel';
-import { getAPI } from './Api';
+import { myvisioboardGetAPI } from './Api';
 
 function BoardCollection() {
   const [collection, setCollection] = useState({
@@ -19,7 +19,7 @@ function BoardCollection() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const fetchResult = await getAPI({ navigate });
+      const fetchResult = await myvisioboardGetAPI({ navigate });
 
       if (fetchResult && !fetchResult.error) {
         console.log('api 통신 결과:', fetchResult); // {error: null} 이면 통신성공
