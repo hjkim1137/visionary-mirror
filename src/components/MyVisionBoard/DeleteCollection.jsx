@@ -1,10 +1,14 @@
+//최종 수정 2023-06-11 11:43
+
 // 컬렉션 삭제 커스텀 훅
 
 import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const myvisioboardAPI = '/api/v1/myvisionboard';
 
 const useDeleteCollection = (collection, setCollection, setIndex) => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const handleDeleteButtonClick = useCallback(
@@ -32,34 +36,52 @@ const useDeleteCollection = (collection, setCollection, setIndex) => {
           headers: { 'Content-Type': 'applicattion/json' },
         });
 
-        console.log('삭제 요청 응답', response); // false
-        console.log('현재 슬라이드 colleciton.id:', collection.id[index]);
+        const fetchResult = await response.json();
+
+        console.log('삭제 요청 응답', fetchResult);
         console.log('현재 슬라이드 컬렉션 id:', id);
 
-        // 삭제 성공 여부 확인
-        if (!response.ok) {
-          console.error('삭제가 실패하였습니다. 잠시 후 다시 시도해주세요.');
-          return;
+        if (fetchResult && !fetchResult.error) {
+          console.log('api 통신 결과:', fetchResult); // {error: null} 이면 통신성공
+
+          // 삭제 완료 알림
+          alert(`${itemTitle} 컬렉션이 정상적으로 삭제되었습니다.`);
+
+          // 삭제 후 컬렉션 업데이트
+          const remainingItems = {
+            img: collection.img.filter((_, idx) => idx !== index),
+            title: collection.title.filter((_, idx) => idx !== index),
+            id: collection.id.filter((_, idx) => idx !== index),
+          };
+
+          setCollection(remainingItems);
+
+          // 만약 삭제한 아이템이 마지막 아이템이라면, 현재 슬라이드를 첫번째 인덱스로 설정
+          if (index === collection.img.length - 1) {
+            setIndex(0);
+          }
         }
 
-        // 삭제 완료 알림
-        alert(`${itemTitle} 컬렉션이 정상적으로 삭제되었습니다.`);
-
-        // 삭제 후 컬렉션 업데이트
-        const remainingItems = {
-          img: collection.img.filter((_, idx) => idx !== index),
-          title: collection.title.filter((_, idx) => idx !== index),
-          id: collection.id.filter((_, idx) => idx !== index),
-        };
-
-        setCollection(remainingItems);
-
-        // 만약 삭제한 아이템이 마지막 아이템이라면, 현재 슬라이드를 첫번째 인덱스로 설정
-        if (index === collection.img.length - 1) {
-          setIndex(0);
+        if (
+          fetchResult &&
+          fetchResult.error &&
+          fetchResult.error.statusCode === 401
+        ) {
+          console.log('사용자 인증 오류');
+          localStorage.removeItem('isLogin');
+          alert(
+            '사용자 인증 오류가 발생하였습니다. 새로고침 후 재 로그인해주세요.'
+          );
+          navigate('/login');
+        } else if (fetchResult && fetchResult.error) {
+          console.log('401번 외 오류 발생');
+          alert('에러가 발생하였습니다. 새로고침 후 다시 시도해주세요.');
+          navigate('/');
         }
       } catch (error) {
-        console.error(error);
+        console.log('통신 에러', error.message);
+        alert('서버와 통신에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
+        navigate('/');
       } finally {
         setLoading(false); // 로딩 종료
       }

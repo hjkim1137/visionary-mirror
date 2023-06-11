@@ -1,3 +1,5 @@
+//최종 수정 시간 : 2023-06-11 11:07
+
 import { useState, useEffect } from 'react';
 import styles from './BoardCollection.module.scss';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
@@ -15,23 +17,21 @@ function BoardCollection() {
   });
 
   useEffect(() => {
-    try {
-      fetch(`${myvisioboardAPI}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'applicattion/json' },
-      })
-        .then((response) => {
-          console.log('1.최초 response:', response);
-          if (!response.ok) {
-            throw new Error('네트워크 응답이 정상적이지 않습니다');
-          }
-          return response.json();
-        })
-        // items는 객체를 포함하는 배열 시작 ---
-        .then((datas) => {
-          console.log('2.get으로 받아온 datas(object)', datas);
-          const items = datas.data;
-          console.log('2.get으로 받아온 datas들의 data(array)', items);
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${myvisioboardAPI}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        const fetchResult = await response.json();
+
+        if (fetchResult && !fetchResult.error) {
+          console.log('api 통신 결과:', fetchResult); // {error: null} 이면 통신성공
+
+          // items는 객체를 포함하는 배열 시작 ---
+          const items = fetchResult.data;
+          console.log('get으로 받아온 datas들의 data(array)', items);
 
           const imgPaths = items.map((item) => item.imagePath);
           const titles = items.map((item) => item.title);
@@ -42,13 +42,34 @@ function BoardCollection() {
             title: titles,
             id: visionboardIds,
           });
-        });
-      //--- items는 객체를 포함하는 배열 끝 ---
-    } catch (err) {
-      console.error('비동기 처리 중 오류가 발생했습니다:', err);
-    }
+          //--- items는 객체를 포함하는 배열 끝 ---
+        }
+        if (
+          fetchResult &&
+          fetchResult.error &&
+          fetchResult.error.statusCode === 401
+        ) {
+          console.log('사용자 인증 오류');
+          localStorage.removeItem('isLogin');
+          alert(
+            '사용자 인증 오류가 발생하였습니다. 새로고침 후 재 로그인해주세요.'
+          );
+          navigate('/login');
+        } else if (fetchResult && fetchResult.error) {
+          console.log('401번 외 오류 발생');
+          alert('에러가 발생하였습니다. 새로고침 후 다시 시도해주세요.');
+          navigate('/');
+        }
+      } catch (error) {
+        console.log('통신 에러', error.message);
+        alert('서버와 통신에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
+        navigate('/');
+      }
+    };
+    fetchData();
   }, []);
-  console.log('컬렉션:', collection);
+
+  // console.log('컬렉션:', collection);
 
   // 컬렉션 상세보기 페이지 넘어가기
   const navigate = useNavigate();
