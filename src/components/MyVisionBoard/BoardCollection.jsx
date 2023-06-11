@@ -1,4 +1,4 @@
-//최종 수정 시간 : 2023-06-11 11:07
+//최종 수정 시간 : 2023-06-11 14:14
 
 import { useState, useEffect } from 'react';
 import styles from './BoardCollection.module.scss';
@@ -6,8 +6,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import useDeleteCollection from './DeleteCollection';
 import useCarousel from './Carousel';
-
-const myvisioboardAPI = '/api/v1/myvisionboard';
+import { getAPI } from './Api';
 
 function BoardCollection() {
   const [collection, setCollection] = useState({
@@ -16,63 +15,37 @@ function BoardCollection() {
     id: [],
   });
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await fetch(`${myvisioboardAPI}`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
+      const fetchResult = await getAPI({ navigate });
+
+      if (fetchResult && !fetchResult.error) {
+        console.log('api 통신 결과:', fetchResult); // {error: null} 이면 통신성공
+
+        // items는 객체를 포함하는 배열 시작 ---
+        const items = fetchResult.data;
+        console.log('get으로 받아온 datas들의 data(array)', items);
+
+        const imgPaths = items.map((item) => item.imagePath);
+        const titles = items.map((item) => item.title);
+        const visionboardIds = items.map((item) => item.visionboardId);
+
+        setCollection({
+          img: imgPaths,
+          title: titles,
+          id: visionboardIds,
         });
-
-        const fetchResult = await response.json();
-
-        if (fetchResult && !fetchResult.error) {
-          console.log('api 통신 결과:', fetchResult); // {error: null} 이면 통신성공
-
-          // items는 객체를 포함하는 배열 시작 ---
-          const items = fetchResult.data;
-          console.log('get으로 받아온 datas들의 data(array)', items);
-
-          const imgPaths = items.map((item) => item.imagePath);
-          const titles = items.map((item) => item.title);
-          const visionboardIds = items.map((item) => item.visionboardId);
-
-          setCollection({
-            img: imgPaths,
-            title: titles,
-            id: visionboardIds,
-          });
-          //--- items는 객체를 포함하는 배열 끝 ---
-        }
-        if (
-          fetchResult &&
-          fetchResult.error &&
-          fetchResult.error.statusCode === 401
-        ) {
-          console.log('사용자 인증 오류');
-          localStorage.removeItem('isLogin');
-          alert(
-            '사용자 인증 오류가 발생하였습니다. 새로고침 후 재 로그인해주세요.'
-          );
-          navigate('/login');
-        } else if (fetchResult && fetchResult.error) {
-          console.log('401번 외 오류 발생');
-          alert('에러가 발생하였습니다. 새로고침 후 다시 시도해주세요.');
-          navigate('/');
-        }
-      } catch (error) {
-        console.log('통신 에러', error.message);
-        alert('서버와 통신에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
-        navigate('/');
+        // items 객체를 포함하는 배열 끝 ---
       }
     };
     fetchData();
   }, []);
 
-  // console.log('컬렉션:', collection);
+  // console.log('컬렉션 정보:', collection);
 
   // 컬렉션 상세보기 페이지 넘어가기
-  const navigate = useNavigate();
   const handleBtnForBoardDetail = (id) => {
     navigate(`/myvisionboardgrid/${id}`);
     console.log('상세보기클릭', id);
