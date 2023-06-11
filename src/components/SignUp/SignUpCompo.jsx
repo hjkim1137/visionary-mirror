@@ -117,6 +117,7 @@ function SignUpCompo() {
           }),
         });
         const resultJson = await createUserResult.json();
+        console.log('resultJson:', resultJson); // fetch의 반환값 출력. 호출 후 응답 제대로?
         // .then((res) => res.json())
         // .catch((err) => {
         //   console.log({ err });
