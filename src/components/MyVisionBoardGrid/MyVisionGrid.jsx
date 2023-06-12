@@ -1,44 +1,50 @@
-import styles from '../VisionBoardGrid/VisionGrid.module.scss';
-
 import React, { useCallback, useState, useEffect } from 'react';
-
+import { useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
-import { fetchPosts, getApi, postApi, putApi, deleteApi } from './Api';
 
 import VisionGridComponent from './VisionGridComponent';
 import EditVisionBoardModal from '../VisionBoardModal/EditVisionBoardModal'
+import styles from '../VisionBoardGrid/VisionGrid.module.scss';
+
+import { getApi, putApi, deleteApi } from './Api';
+import {initGridItmes} from './InitGridItems'
 
 export default function MyVisionGrid() {
     const navigate = useNavigate();
+    const location = useLocation(); 
+
+    const id = location.pathname.split('/')[2];
 
     // 목록으로 돌아가기 버튼
     const handleBackToMyCollection = useCallback(() => {
-        navigate('/myvisionboard')
+        navigate('/myvisionboard/list')
     }, [])
     // 비전보드 삭제 버튼
     const handleCollectionDelete = useCallback(() => {
         if (window.confirm('현재 열람중인 비전보드를 삭제하시겠습니까?')) {
-            deleteApi(3);
+            deleteApi(id);
             handleBackToMyCollection();
         }
     }, [])
 
     useEffect(() => {
-        fetchPosts()
-
+        const fetchData = async () => {
+            try {
+                const result = await getApi(id);
+                if (result) {
+                    setGridItems(result)
+                    console.log('gridItems 패칭확인:', gridItems)
+                } else {
+                    throw new Error('No fetching data available')
+                }
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        fetchData();
     }, []);
 
-    const [gridItems, setGridItems] = useState([
-        { id: '1', img: null, text: null, isChecked: false },
-        { id: '2', img: null, text: null, isChecked: false },
-        { id: '3', img: null, text: null, isChecked: false },
-        { id: '4', img: null, text: null, isChecked: false },
-        { id: 'name', img: null, text: null, isChecked: false },
-        { id: '5', img: null, text: null, isChecked: false },
-        { id: '6', img: null, text: null, isChecked: false },
-        { id: '7', img: null, text: null, isChecked: false },
-        { id: '8', img: null, text: null, isChecked: false },
-    ]);
+    const [gridItems, setGridItems] = useState(initGridItmes)
     const [selectedItemIndex, setSelectedItemIndex] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState('1');
@@ -50,12 +56,12 @@ export default function MyVisionGrid() {
         if (gridItems[index].id !== 'name') {
             // console.log('gridItems[index]:', gridItems[index])
             setSelectedItemIndex(index);
-            if(readOnly === true){
+            if (readOnly === true) {
                 setIsModalOpen(false)
             } else {
                 setIsModalOpen(true);
             }
-            
+
         }
     };
 
@@ -112,7 +118,7 @@ export default function MyVisionGrid() {
                         <button className={styles.deleteBtn} onClick={handleBackToMyCollection}>
                             비전보드 목록
                         </button>
-                        <button className={styles.deleteBtn} onClick={() => { setReadOnly(false) }}>
+                        <button className={styles.deleteBtn} onClick={() => setReadOnly(false)}>
                             수정하기
                         </button>
                         <button className={styles.deleteBtn} onClick={handleCollectionDelete}>
@@ -125,17 +131,16 @@ export default function MyVisionGrid() {
                         <button className={styles.deleteBtn} onClick={handleDeleteButtonClick}>
                             선택삭제
                         </button>
-                        <button className={styles.prevBtn} onClick={() => { setReadOnly(true) }}>
+                        <button className={styles.prevBtn} onClick={() => setReadOnly(true)}>
                             이전
                         </button>
                         <button className={styles.completeBtn} onClick={() => {
-                            postApi(gridItems)
-                            console.log(gridItems)
+                            putApi(gridItems, id, gridItems[4].id.name)
                         }}>완료</button>
                         <select
                             className={styles.selectBtn}
                             value={selectedOption}
-                            onChange={handleOptionChange}                        
+                            onChange={handleOptionChange}
                         >
                             <option value="1">8</option>
                             <option value="2">4</option>

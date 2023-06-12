@@ -20,7 +20,7 @@ CreateVisionBoardModal 에 readOnly 프롭스 추가하여 읽기/수정에 따�
 
 
 <23.06.08>
-1.수정 완료시 put
+1.수정 완료시 put -pp
 2.삭제 버튼 delete api ✔️
 3.EditVisionBoardModal.jsx 수정 : 
 -이미지 프리뷰가 안 뜨므로 일단 프리뷰 뜨게 한 뒤에 압축하는 방향으로 ✔️
@@ -28,7 +28,7 @@ CreateVisionBoardModal 에 readOnly 프롭스 추가하여 읽기/수정에 따�
 -key 값 존재. 객체에 통으로 담겨있는지? 질문.
 -savedImgFile.name = value로 넘어갈 값.✔️
 -넘어가는 데이터 생김새 BE에 알려주기.
-5. 각 fetch코드에서 결과값 받아온 후에 분기처리.
+5. 각 fetch코드에서 결과값 받아온 후에 분기처리. 
 ↓↓
 양식은 이렇게 들어옴. 에러나면 아래와 같이, 성공하면 data는 null로 뜬다는 뜻.
 {
@@ -64,11 +64,12 @@ if (fetchResult.error && fetchResult.error.statusCode === 401) {
 
 postApi에 콜백으로 grid 전체를 하나로 저장하는 바업 찾기.
 
-<06.09>
-1. putApi : path에 유저컬렉션에 해당하는 endpoint할당필요.
+<2주차~
+1. putApi : 완료버튼 누를 경우 path에 유저컬렉션에 해당하는 endpoint할당필요.
 2. 모달창 이미지 선택 완료시 fetch('api/v1/image?name={기존이미지이름}`), put으로 변경할 이미지 전송
 3. get 가져와서 보여주고 수정버튼으로 put
 4. query로 title 가져오기
 5. 이미지 미리보기 따로, form 데이터 넘겨주기 따로 구현.
 6. 유저가 지정한 title로 컬렉션이름 지정하기 ✔️
-7. visionboardgrid에서 back으로 넘긴 name을 가져와서 내 그리드 가운데에 노출.
+7. visionboardgrid에서 be로 넘긴 name을 가져와서 내 그리드 가운데에 노출.
+8. 페이지 url에서 id값 가져와 변수 지정. ✔️

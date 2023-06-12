@@ -3,8 +3,6 @@ import { Modal, Box } from '@mui/material';
 import arrowBack from './assets/arrow_back_icon.svg';
 import media from './assets/media_icon.svg';
 
-import { useLocation } from 'react-router-dom'
-
 import styles from './CreateVisionBoardModal.module.scss';
 import imageCompression from 'browser-image-compression';
 
@@ -18,10 +16,6 @@ export default function EditVisionBoardModal({
   gridItems,
   setGridItems
 }) {
-
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const prevImgName = searchParams.get('name');
 
   const [imgFile, setImgFile] = useState('');
   const [text, setText] = useState('');
@@ -59,9 +53,23 @@ export default function EditVisionBoardModal({
       const formData = new FormData();
       formData.append('image', compressedFile, uploadedFile.name);
 
-      // 확장자를 제외한 파일 이름 추출
-      
       return formData.get('image');
+      
+
+      
+      // let gridImgIndex = 1;
+      // let gridTextIndex = 1;
+  
+      // for (const item of gridItems) {
+      //   if (item.img) {
+      //     formData.append(`image${gridImgIndex}`, item.img);
+      //     gridImgIndex++;
+      //   }
+      //   if (item.text) {
+      //     formData.append(`description${gridTextIndex}`, item.text);
+      //     gridTextIndex++;
+      //   }
+      // }
     } catch (err) {
       console.error(err);
     }
@@ -102,10 +110,10 @@ export default function EditVisionBoardModal({
     // 넘겨야 할 폼 데이터
     const formData = await saveImgFile();
     // 폼 데이터에서 확장자 뗀 파일 이름
-    const trimedDataName = formData.name.split('.')[0]
+    // const trimedDataName = formData.name.split('.')[0]
     console.log('savedImgToModalPut ~ formData:', formData)
-    console.log('trimedDataName', trimedDataName)
-    console.log('prevImgName', prevImgName)
+    // console.log('trimedDataName', trimedDataName)
+    // console.log('prevImgName', prevImgName)
 
     // modalPutApi(formData, prevImgName)
 

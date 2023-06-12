@@ -216,9 +216,8 @@ export default function VisionGrid() {
         {gridItems.map((item, index) => {
           const isHidden =
             selectedOption === '2' && [0, 2, 6, 8].includes(index);
-          const gridItemClassName = `${styles.gridItem} ${
-            isHidden ? styles.hidden : ''
-          } ${item.img ? styles.hiddenBorder : ''}`;
+          const gridItemClassName = `${styles.gridItem} ${isHidden ? styles.hidden : ''
+            } ${item.img ? styles.hiddenBorder : ''}`;
           if (item.id === 'name') {
             return (
               <div className={styles.gridBoardName}>
@@ -314,3 +313,4 @@ export default function VisionGrid() {
     </div>
   );
 }
+
