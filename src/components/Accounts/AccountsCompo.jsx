@@ -27,7 +27,7 @@ function AccountsCompo({ isLogin }) {
     }
   }, [isLogin, navigate]);
 
-  // GET: (input 입력 전)회원정보 받기 요청: password는 없음
+  //GET: (input 입력 전)회원정보 받기 요청: password는 없음
   useEffect(() => {
     const fetchAccountInfo = async () => {
       try {
@@ -55,9 +55,14 @@ function AccountsCompo({ isLogin }) {
             email: { value: email, valid: true, touched: true },
           };
           console.log(username, email);
+          console.log(typeof newState); // object
 
           // 사용자 정보 변경
-          setFormState(newState);
+          setFormState((prevState) => ({
+            ...prevState,
+            username: { value: username, valid: true, touched: true },
+            email: { value: email, valid: true, touched: true },
+          }));
           setOriginalState(newState);
         } else {
           console.error(`Error: ${data.error.message}`);
@@ -131,7 +136,10 @@ function AccountsCompo({ isLogin }) {
 
       // 비밀번호 확인
       if (name === 'passwordConfirm') {
-        if (value !== formState.password.value) {
+        if (!formState.password || formState.password.value === '') {
+          newState.message = '먼저 비밀번호를 입력해주세요.';
+          newState.valid = false;
+        } else if (value !== formState.password.value) {
           newState.message = '비밀번호가 일치하지 않습니다.';
           newState.valid = false;
         } else {
@@ -193,9 +201,12 @@ function AccountsCompo({ isLogin }) {
           navigate('/login');
         } else {
           console.log('회원정보가 수정되었습니다.');
+          alert('회원정보가 수정되었습니다.');
+          navigate('/');
         }
       } else {
-        console.error(`Error: ${data.error.message}`);
+        // console.error(`Error: ${data.error.message}`);
+        console.log('why error?');
       }
     } catch (error) {
       console.log('회원정보 수정 요청 실패', error);
@@ -337,7 +348,7 @@ function AccountsCompo({ isLogin }) {
               name="password"
               type="password"
               placeholder="비밀번호"
-              value={formState.password.value}
+              value={formState.password.value || ''}
               onChange={onChange}
               required
               className={styles.inputBox}
@@ -354,6 +365,7 @@ function AccountsCompo({ isLogin }) {
               type="password"
               placeholder="비밀번호 확인"
               className={styles.inputBox}
+              // value={formState.password.value || ''}
               value={formState.passwordConfirm.value}
               onChange={onChange}
               required
