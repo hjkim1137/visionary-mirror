@@ -21,6 +21,9 @@
 
 // 데이터 가져오기
 export const getApi = async (id) => {
+  // 진휘님 post /api/v1/visionboard
+  // 내 api /api/v1/visionboard?id=${id}
+  // /api/v1/visionboard/${id}
   try {
     const response = await fetch(`/api/v1/visionboard?id=${id}`, {
       method: 'GET',
@@ -28,9 +31,10 @@ export const getApi = async (id) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-
+    console.log('get으로 가져온 response', response)
     if (response.status >= 200 && response.status < 300) {
       const data = await response.json();
+
       return data;
     } else {
       throw new Error('Network response was not successful');

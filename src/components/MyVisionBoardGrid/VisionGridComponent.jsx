@@ -11,13 +11,20 @@ export default function VisionGridComponent({
 }) {
 
     return (
-        
+
         <div className={styles.gridContainer}>
             {gridItems.map((item, index) => {
                 const isHidden =
-                    selectedOption === '2' && [1, 3, 5, 7].includes(index);
+                    selectedOption === '2' && [0, 2, 6, 8].includes(index);
                 const gridItemClassName = `${styles.gridItem} ${isHidden ? styles.hidden : ''
-                    }`;
+                    } ${item.img ? styles.hiddenBorder : ''}`;
+                if (item.id === 'name') {
+                    return (
+                        <div className={styles.gridBoardName}>
+                            <div>{boardName}</div>
+                        </div>
+                    );
+                }
                 return (
                     <div
                         key={item.id}
@@ -50,7 +57,7 @@ export default function VisionGridComponent({
                                     checked={item.isChecked}
                                     onChange={() => handleCheckboxClick(index)}
                                     onClick={(e) => e.stopPropagation()}
-                                    style={{visibility : readOnly ? 'hidden': ''}}
+                                    style={{ visibility: readOnly ? 'hidden' : '' }}
                                 />
                             </>
                         )}
@@ -58,7 +65,7 @@ export default function VisionGridComponent({
                 );
             })}
         </div>
-        
+
     )
 }
 
