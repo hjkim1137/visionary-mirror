@@ -7,23 +7,10 @@
 
 // .catch(err => handleError(err)) 이렇게 연결.
 
-// export const fetchPosts = () => {
-//   fetch(`/api/v1/visionboard/:id`)
-//     .then(response => response.json())
-//     .then(data => {
-//       console.log(data)
-//     })
-//     .catch(error => {
-//       console.error('Error fetching posts:', error);
-//     });
-// };
-
 
 // 데이터 가져오기
 export const getApi = async (id) => {
-  // 진휘님 post /api/v1/visionboard
-  // 내 api /api/v1/visionboard?id=${id}
-  // /api/v1/visionboard/${id}
+
   try {
     const response = await fetch(`/api/v1/visionboard?id=${id}`, {
       method: 'GET',
@@ -31,10 +18,10 @@ export const getApi = async (id) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-    console.log('get으로 가져온 response', response)
+    
     if (response.status >= 200 && response.status < 300) {
       const data = await response.json();
-
+      console.log('get 성공 data', data)
       return data;
     } else {
       throw new Error('Network response was not successful');
@@ -45,30 +32,6 @@ export const getApi = async (id) => {
     return null;
   }
 };
-
-
-
-// export const postApi = async (gridItems) => {
-//  /api/v1/visionboards?id={}
-//   try {
-//     컬렉션이름을 유저가 정한 visionboard 이름으로 정하는 방법 찾기
-//     const response = await fetch(`${API_BASE_URL}`, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({ name: gridItems })
-//     })
-//     if (!response.ok) {
-//       throw new Error('Network response was not ok');
-//     }
-//     const data = await response.json();
-//     console.log(data);
-
-//   } catch (error) {
-//     console.error('Error:', error);
-//   }
-// }
 
 export const putApi = async (formData, id, title) => {
 
@@ -84,9 +47,11 @@ export const putApi = async (formData, id, title) => {
 
     if (response.status >= 200 && response.status < 300) {
       const data = await response.json();
-      console.log(data);
+      console.log('data:', data);
     } else {
+
       throw new Error('Network response was not successful');
+
     }
 
   } catch (error) {
@@ -123,7 +88,6 @@ export const modalPutApi = async (formData, prevImgName) => {
 
 export const deleteApi = async (id) => {
   try {
-
     await fetch(`/api/v1/myvisionboard?id=${id}`, {
       method: 'DELETE',
     })
