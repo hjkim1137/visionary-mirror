@@ -14,7 +14,7 @@ function AccountsCompo({ isLogin }) {
     password: { value: '', valid: false, message: '', touched: false },
     passwordConfirm: { value: '', valid: false, message: '', touched: false },
   });
-
+  // const [isLogin, setIsLogin] = useState(1);
   // 사용자 원래 정보 저장
   const [originalState, setOriginalState] = useState(null);
 
@@ -193,12 +193,16 @@ function AccountsCompo({ isLogin }) {
       }
 
       const data = await response.json();
+      console.log(data);
+      console.log(typeof data); // obj
 
-      if (response.status === 200 && data && data.data) {
+      if (response.ok) {
         // 비밀번호 변경되었으면 로그아웃 처리: 로그아웃 api를 써야함, islogin바꾸기
+        // 일단 비밀번호 변경해도 로그인 된 것으로 한다.
         if (formState.password.value !== '') {
-          console.log('비밀번호가 변경되었습니다. 다시 로그인해주세요.');
-          navigate('/login');
+          // console.log('비밀번호가 변경되었습니다. 다시 로그인해주세요.');
+          console.log('비밀번호가 변경되었습니다.');
+          navigate('/');
         } else {
           console.log('회원정보가 수정되었습니다.');
           alert('회원정보가 수정되었습니다.');
@@ -218,6 +222,8 @@ function AccountsCompo({ isLogin }) {
     if (originalState) {
       setFormState(originalState);
       console.log('수정 취소');
+      alert('수정이 취소되었습니다.');
+      navigate('/');
     }
   };
 
@@ -244,16 +250,33 @@ function AccountsCompo({ isLogin }) {
 
       // 응답 없을 때
       if (!response.ok) {
-        throw new Error('Error deleting account');
+        const errorText = await response.text();
+        throw new Error(
+          'Error deleting account, status: ' +
+            response.status +
+            ', text: ' +
+            errorText
+        );
       }
 
       // 응답을 json으로 파싱
       const data = await response.json();
+      console.log('data: ', data);
+      console.log('data type: ', typeof data);
+      console.log('data.data: ', data.data);
+      console.log('data.error: ', data.error);
 
-      if (response.status === 200 && data && data.data) {
+      if (response.status === 200 && (!data.data || data.data === 'success')) {
         console.log('회원 탈퇴 성공');
-      } else {
+        alert('탈퇴에 성공하였습니다.');
+        navigate('/');
+
+        // 회원 탈퇴 후 로그아웃 처리
+        // setIsLogin(0); // isLogin 상태를 0으로 변경
+      } else if (data && data.error) {
         throw new Error(`Error: ${data.error.message}`);
+      } else {
+        throw new Error(`An unexpected error occurred`);
       }
 
       // Firebase에서 유저 삭제
@@ -392,12 +415,12 @@ function AccountsCompo({ isLogin }) {
               value="수정 취소하기"
               onClick={CancelAccountChange}
               className={styles.registerBtn}
-              disabled={
-                !formState.username.valid ||
-                !formState.email.valid ||
-                !formState.password.valid ||
-                !formState.passwordConfirm.valid
-              }
+              // disabled={
+              //   !formState.username.valid ||
+              //   !formState.email.valid ||
+              //   !formState.password.valid ||
+              //   !formState.passwordConfirm.valid
+              // }
             />
           </div>
 
