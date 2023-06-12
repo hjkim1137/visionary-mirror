@@ -54,6 +54,7 @@ function AccountsCompo({ isLogin }) {
             username: { value: username, valid: true, touched: true },
             email: { value: email, valid: true, touched: true },
           };
+          console.log(username, email);
 
           // 사용자 정보 변경
           setFormState(newState);
@@ -87,7 +88,7 @@ function AccountsCompo({ isLogin }) {
       // 닉네임이 3~10자인지 확인 (가입버튼 누르기 전)
       if (name === 'username') {
         if (value.length < 3 || value.length > 10) {
-          newState.message = '닉네임은 최소 3자 이상 12자 이하이어야 합니다.';
+          newState.message = '닉네임은 최소 3자 이상 10자 이하이어야 합니다.';
           newState.valid = false;
         } else {
           newState.message = '유효한 닉네임입니다.';
@@ -97,7 +98,7 @@ function AccountsCompo({ isLogin }) {
 
       // 메일 유효성 검사
       if (name === 'email') {
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
         if (!emailRegex.test(value)) {
           newState.message = '유효한 이메일을 입력해주세요.';
           newState.valid = false;
@@ -143,9 +144,9 @@ function AccountsCompo({ isLogin }) {
     });
   };
 
-  ////////////////////////////
-  ///// 버튼들: 정보 수정, 취소, 탈퇴
-  ////////////////////////////
+  ////////////////////////////////////////////////////////
+  //////////// 버튼들: 정보 수정, 취소, 탈퇴
+  ////////////////////////////////////////////////////////
 
   // PUT: 회원정보 수정 요청
   const onSubmit = async (e) => {
@@ -178,9 +179,14 @@ function AccountsCompo({ isLogin }) {
         credentials: 'include',
       });
 
+      // 응답 없을 때
+      if (!response.ok) {
+        throw new Error('Error updating account information');
+      }
+
       const data = await response.json();
 
-      if (response.status === 200) {
+      if (response.status === 200 && data && data.data) {
         // 비밀번호 변경되었으면 로그아웃 처리: 로그아웃 api를 써야함, islogin바꾸기
         if (formState.password.value !== '') {
           console.log('비밀번호가 변경되었습니다. 다시 로그인해주세요.');
@@ -208,38 +214,90 @@ function AccountsCompo({ isLogin }) {
   const DeleteAccount = async (e) => {
     e.preventDefault();
     console.log('삭제 눌림');
-    if (window.confirm('정말로 탈퇴하시겠습니까?')) {
-      const auth = getAuth();
-      const user = auth.currentUser;
-      console.log('auth :', auth);
-      console.log('user :', user);
-      deleteUser(user)
-        .then(async () => {
-          try {
-            const response = await fetch('/api/v1/accounts', {
-              method: 'DELETE',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              credentials: 'include',
-            });
 
-            const data = await response.json();
-
-            if (response.status === 200) {
-              console.log('회원정보가 삭제되었습니다.');
-              navigate('/'); // 탈퇴시 홈으로 간다
-            } else {
-              console.error(`Error: ${data.error.message}`);
-            }
-          } catch (error) {
-            console.log('delete요청 실패', error);
-          }
-        })
-        .catch((error) => {
-          console.log('파이어베이스 user 삭제 실패', error);
-        });
+    // 유저 확인
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (!user) {
+      console.log('현재 로그인 중인 유저가 없습니다.');
+      return;
     }
+
+    try {
+      const response = await fetch('/api/v1/accounts', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // 응답 없을 때
+      if (!response.ok) {
+        throw new Error('Error deleting account');
+      }
+
+      // 응답을 json으로 파싱
+      const data = await response.json();
+
+      if (response.status === 200 && data && data.data) {
+        console.log('회원 탈퇴 성공');
+      } else {
+        throw new Error(`Error: ${data.error.message}`);
+      }
+
+      // Firebase에서 유저 삭제
+      await deleteUser(user);
+
+      // 상태 초기화
+      setFormState({
+        username: { value: '', valid: false, message: '', touched: false },
+        email: { value: '', valid: false, message: '', touched: false },
+        password: { value: '', valid: false, message: '', touched: false },
+        passwordConfirm: {
+          value: '',
+          valid: false,
+          message: '',
+          touched: false,
+        },
+      });
+      setOriginalState(null);
+    } catch (error) {
+      console.error('회원 탈퇴 요청 실패', error);
+    }
+
+    // 전 탈퇴코드.위는 에러처리 추가임
+    // if (window.confirm('정말로 탈퇴하시겠습니까?')) {
+    //   const auth = getAuth();
+    //   const user = auth.currentUser;
+    //   console.log('auth :', auth);
+    //   console.log('user :', user);
+    //   deleteUser(user)
+    //     .then(async () => {
+    //       try {
+    //         const response = await fetch('/api/v1/accounts', {
+    //           method: 'DELETE',
+    //           headers: {
+    //             'Content-Type': 'application/json',
+    //           },
+    //           credentials: 'include',
+    //         });
+
+    //         const data = await response.json();
+
+    //         if (response.status === 200) {
+    //           console.log('회원정보가 삭제되었습니다.');
+    //           navigate('/'); // 탈퇴시 홈으로 간다
+    //         } else {
+    //           console.error(`Error: ${data.error.message}`);
+    //         }
+    //       } catch (error) {
+    //         console.log('delete요청 실패', error);
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log('파이어베이스 user 삭제 실패', error);
+    //     });
+    // }
   };
 
   return (
@@ -273,7 +331,7 @@ function AccountsCompo({ isLogin }) {
             />
           </div>
           <div>{formState.email.touched && formState.email.message}</div>
-
+          {console.log(formState.password)}
           <div>
             <input
               name="password"

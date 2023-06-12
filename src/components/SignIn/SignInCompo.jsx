@@ -31,7 +31,7 @@ function SignInCompo({ isLogin }) {
 
   // 비밀번호 길이 체크 함수
   const isPasswordValid = (loginPassword) => {
-    return loginPassword.length >= 4;
+    return loginPassword.length >= 6;
   };
 
   // 로그인 기능 수행
@@ -52,7 +52,7 @@ function SignInCompo({ isLogin }) {
 
     // 비밀번호 길이 검사
     if (!isPasswordValid(password)) {
-      alert('비밀번호는 4글자 이상이어야 합니다.');
+      alert('비밀번호는 6글자 이상이어야 합니다.');
       return;
     }
 

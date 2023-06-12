@@ -17,28 +17,14 @@ function SignUpCompo() {
 
   const navigate = useNavigate();
 
-  // 이 주석 풀어도 /login으로 이동 안하면서 + 회원가입 창 안나옴
-  // Firebase Auth는 사용자의 로그인 상태 변화 관찰하는 onAuthStateChanged 메서드를 제공
-  //이를 이용, 사용자가 로그아웃 했을 때 페이지를 이동
-  // useEffect(() => {
-  //   const unsubscribe = auth.onAuthStateChanged((user) => {
-  //     if (!user) {
-  //       navigate('/login');
-  //     }
-  //   });
-
-  //   // Clean up
-  //   return () => unsubscribe();
-  // }, [navigate]);
-
   useEffect(() => {
-    if (username.length < 3 || username.length > 12) {
-      setUsernameError('닉네임은 3~12자 사이여야 합니다.');
+    if (username.length < 3 || username.length > 10) {
+      setUsernameError('닉네임은 3~10자 사이여야 합니다.');
     } else {
       setUsernameError('');
     }
 
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (!emailRegex.test(email)) {
       setEmailError('이메일 형식이 올바르지 않습니다.');
     } else {
@@ -80,7 +66,7 @@ function SignUpCompo() {
       passwordError ||
       confirmPasswordError ||
       username.length < 3 ||
-      username.length > 12 ||
+      username.length > 10 ||
       password.length < 6 ||
       password.length > 16 ||
       password !== confirmPassword
