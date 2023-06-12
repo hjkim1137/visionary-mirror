@@ -107,24 +107,21 @@ function SignUpCompo() {
             alert(
               '서버와 통신에 실패하였습니다. 새로고침 후 다시 시도해주세요.'
             );
-            navigate('/register');
             return null;
           });
         if (createUserResult && !createUserResult.err) {
           // 회원가입 성공 후 홈('/') 리다이렉트
-          alert('회원가입에 성공하였습니다.');
-          navigate('/');
+          alert('회원가입에 성공하였습니다. 로그인 해주세요.');
+          navigate('/login');
         } else {
           // 회원가입 실패
           console.log('createUserResult', createUserResult);
           alert('회원가입에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
-          navigate('/register');
         }
       }
     } catch (err) {
       console.log('err.message', err.message);
       alert('인증에 실패하였습니다. 새로고침 후 다시 시도해주세요.'); //firebase 오류 등(이미 존재하는 이메일 등)
-      navigate('/register');
     }
   };
   const onChange = (e) => {

@@ -100,12 +100,10 @@ function SignInCompo({ isLogin }) {
             console.log('signinResult:', signinResult); // {isLogin:false}
             localStorage.setItem('isLogin', '0');
             alert('로그인에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
-            navigate('/login');
           }
         } catch (err) {
           console.log('통신 에러', err.message);
           alert('서버와 통신에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
-          navigate('/login');
           return null;
         }
       }
@@ -114,7 +112,6 @@ function SignInCompo({ isLogin }) {
       // firebase 오류 등
       console.log('인증 에러', err.message);
       alert('인증에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
-      navigate('/login');
     }
   };
 
