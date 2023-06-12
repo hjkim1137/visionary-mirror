@@ -13,6 +13,7 @@ export default function CreateVisionBoardModal({
 }) {
   const [imgFile, setImgFile] = useState('');
   const [text, setText] = useState('');
+  const [selectedImg, setSelectedImg] = useState('');
 
   const imgRef = useRef(null);
 
@@ -28,28 +29,19 @@ export default function CreateVisionBoardModal({
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       setImgFile(reader.result);
+      setSelectedImg(reader.result);
     };
   };
 
   const handleSelect = () => {
     if (imgFile && text) {
-      // 이미지와 문구 모두 등록되어 있는지 확인
       const file = imgRef.current.files[0];
 
-      console.log(imgRef.current.files[0]);
-      handleImageAndTextSelect(imgRef.current.files[0], text);
+      handleImageAndTextSelect(file, text, selectedImg);
 
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        const selectedImg = reader.result;
-        // handleImageAndTextSelect(selectedImg, text);
-        // console.log(imgRef.current.files);
-        // handleImageAndTextSelect(imgRef.current.files, text);
-      };
       closeModal();
     } else {
-      alert('이미지와 문구를 모두 등록해 주세요.'); // 경고 메시지 표시
+      alert('이미지와 문구를 모두 등록해 주세요.');
     }
   };
 

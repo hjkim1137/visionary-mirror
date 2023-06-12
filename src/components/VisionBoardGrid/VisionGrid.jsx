@@ -74,15 +74,19 @@ export default function VisionGrid() {
     }
   };
 
-  const handleImageAndTextSelect = (imgData, textData) => {
+  const handleImageAndTextSelect = (imgData, textData, imgPreview) => {
     setGridItems((prevGridItems) => {
       const updatedGridItems = [...prevGridItems];
       const selectedItem = updatedGridItems[selectedItemIndex];
       selectedItem.img = imgData;
       selectedItem.text = textData;
+      selectedItem.imgPreview = imgPreview;
       selectedItem.isChecked = false;
       return updatedGridItems;
     });
+
+    console.log(imgData);
+    console.log(textData);
 
     setUploadedText(textData);
 
@@ -234,7 +238,9 @@ export default function VisionGrid() {
             >
               {item.id !== 'name' && (
                 <>
-                  {item.img && <img src={item.img} alt="Selected" />}
+                  {item.imgPreview && (
+                    <img src={item.imgPreview} alt="Selected" />
+                  )}
                   {item.text && (
                     <div className={styles.gridItemText}>
                       {item.text}
