@@ -54,6 +54,7 @@ function Header() {
         console.log('Logout error:', data.error.message);
       } else {
         console.log('Logout 성공');
+        navigate('/login');
       }
     } catch (error) {
       console.error('logout 실패:', error);
