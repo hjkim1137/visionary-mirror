@@ -1,5 +1,7 @@
 import styles from './VisionGrid.module.scss';
 
+import axios from 'axios';
+
 import React, { useState, useEffect } from 'react';
 import CreateVisionBoardModal from './../VisionBoardModal/CreateVisionBoardModal';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -47,27 +49,18 @@ export default function VisionGrid() {
   }, [gridItems, selectedOption]);
 
   const checkUploadComplete = () => {
-    if (selectedOption === '1') {
-      let count = 0;
-      for (const item of gridItems) {
-        if (item.img && item.text) {
-          count++;
-        }
+    const requiredUploadCount = getRequiredUploadCount();
+    let count = 0;
+
+    for (const item of gridItems) {
+      if (item.img && item.text) {
+        count++;
       }
-      console.log('Upload Count:', count);
-      setUploadCount(count);
-    } else if (selectedOption === '2') {
-      let count = 0;
-      for (const item of gridItems) {
-        if (item.img && item.text) {
-          count++;
-        }
-      }
-      console.log('Upload Count:', count);
-      setUploadCount(count);
     }
 
-    setIsUploadComplete(uploadCount === getRequiredUploadCount());
+    console.log('Upload Count:', count);
+    setUploadCount(count);
+    setIsUploadComplete(count === requiredUploadCount);
   };
 
   const getRequiredUploadCount = () => {
@@ -81,13 +74,19 @@ export default function VisionGrid() {
     }
   };
 
-  const handleImageAndTextSelect = (imgData, textData) => {
+  const handleImageAndTextSelect = (imgData, textData, imgPreview) => {
     setGridItems((prevGridItems) => {
       const updatedGridItems = [...prevGridItems];
-      updatedGridItems[selectedItemIndex].img = imgData;
-      updatedGridItems[selectedItemIndex].text = textData;
+      const selectedItem = updatedGridItems[selectedItemIndex];
+      selectedItem.img = imgData;
+      selectedItem.text = textData;
+      selectedItem.imgPreview = imgPreview;
+      selectedItem.isChecked = false;
       return updatedGridItems;
     });
+
+    console.log(imgData);
+    console.log(textData);
 
     setUploadedText(textData);
 
@@ -117,8 +116,8 @@ export default function VisionGrid() {
     });
   };
 
-  const handleOptionChange = (event) => {
-    const newSelectedOption = event.target.value;
+  const handleOptionChange = (e) => {
+    const newSelectedOption = e.target.value;
 
     if (newSelectedOption === '2') {
       const skippedGridIds = ['name', '2', '4', '5', '7'];
@@ -153,68 +152,62 @@ export default function VisionGrid() {
     setSelectedOption(newSelectedOption);
   };
 
-  const handleCompleteButtonClick = () => {
+  const handleCompleteButtonClick = async (e) => {
+    e.preventDefault();
     if (selectedOption === '2') {
       if (uploadCount < 4) {
-        alert('4개의 문구와 이미지를 업로드 해야합니다.');
+        alert('4개의 텍스트와 이미지를 업로드해야 합니다.');
         return;
       }
     } else if (selectedOption === '1') {
       if (uploadCount < 8) {
-        alert('8개의 문구와 이미지를 업로드 해야합니다.');
+        alert('8개의 텍스트와 이미지를 업로드해야 합니다.');
         return;
       }
     }
 
     const formData = new FormData();
-    let gridImgIndex = 1;
-    let gridTextIndex = 1;
+    let imageIndex = 1;
+    let descriptionIndex = 1;
 
     for (const item of gridItems) {
+      console.log(item, item.img);
       if (item.img) {
-        formData.append(`image${gridImgIndex}`, item.img);
-        gridImgIndex++;
+        formData.append(`image${imageIndex}`, item.img);
+        imageIndex++;
       }
       if (item.text) {
-        formData.append(`description${gridTextIndex}`, item.text);
-        gridTextIndex++;
+        formData.append(`description${descriptionIndex}`, item.text);
+        descriptionIndex++;
       }
     }
 
     formData.append('title', boardName);
 
-    for (const key of formData.keys()) {
-      console.log(key);
-    }
+    console.log(Array.from(formData.entries()));
 
-    for (const value of formData.values()) {
-      console.log(value);
-    }
-
-    console.log('Form Data', formData);
-
-    fetch('/api/v1/visionboard', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          console.log('200: OK');
-          console.log(response);
-        } else if (response.status === 401) {
-          console.log('401: 잘못된 요청, 요청 값 오류');
-          // 401 오류 처리 부분 작성
-        } else if (response.status === 500) {
-          console.log('500: 내부 서버 오류');
-          // 500 오류 처리 부분 작성
-        } else {
-          // 필요한 경우 다른 상태 코드 처리
-        }
-      })
-      .catch((error) => {
-        console.error('에러:', error);
-        // 에러 처리 부분 작성
+    console.log(formData);
+    try {
+      const response = await axios.post('/api/v1/visionboard', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
+
+      if (response.ok) {
+        console.log('Images and descriptions uploaded successfully');
+        console.log(response);
+      } else if (response.status === 401) {
+        console.log('401: 인증되지 않음');
+        localStorage.removeItem('isLogin');
+        navigate('/');
+      } else if (response.status === 500) {
+        console.log('500: 내부 서버 오류');
+      } else {
+        console.log('기타 상태');
+        alert('오류가 발생했습니다.');
+      }
+    } catch (error) {
+      console.error('에러:', error);
+    }
   };
 
   return (
@@ -245,7 +238,9 @@ export default function VisionGrid() {
             >
               {item.id !== 'name' && (
                 <>
-                  {item.img && <img src={item.img} alt="Selected" />}
+                  {item.imgPreview && (
+                    <img src={item.imgPreview} alt="Selected" />
+                  )}
                   {item.text && (
                     <div className={styles.gridItemText}>
                       {item.text}
@@ -273,12 +268,30 @@ export default function VisionGrid() {
         <button className={styles.prevBtn} onClick={handleForMakeBoardName}>
           이전
         </button>
-        <button
-          className={styles.completeBtn}
-          onClick={handleCompleteButtonClick}
-        >
-          완료
-        </button>
+        <form onSubmit={handleCompleteButtonClick}>
+          <button className={styles.completeBtn} type="submit">
+            완료
+          </button>
+          <input type="hidden" name="boardName" value={boardName} />
+          {gridItems.map((item, index) => (
+            <>
+              {item.img && (
+                <input
+                  type="hidden"
+                  name={`image${index + 1}`}
+                  value={item.img}
+                />
+              )}
+              {item.text && (
+                <input
+                  type="hidden"
+                  name={`description${index + 1}`}
+                  value={item.text}
+                />
+              )}
+            </>
+          ))}
+        </form>
         <div className={styles.selectContiner}>
           <p>이미지 개수</p>
           <select
