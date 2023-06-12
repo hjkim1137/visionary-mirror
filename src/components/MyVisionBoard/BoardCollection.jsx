@@ -17,13 +17,6 @@ function BoardCollection() {
 
   const navigate = useNavigate();
 
-  // 받아오는 데이터 샘플
-  // created_at: "2023-06-12T01:19:54.000Z"
-  // imageName: "1398f149f515cf4f3259d3d1d88d4fd9.jpg"
-  // imagePath: "/home/elice/projects/deploy-test/images/1398f149f515cf4f3259d3d1d88d4fd9.jpg"
-  // title: "8개"
-  // visionboardId: 1
-
   useEffect(() => {
     const fetchData = async () => {
       const fetchResult = await myvisioboardGetAPI({ navigate });
@@ -39,7 +32,8 @@ function BoardCollection() {
         const visionboardIds = items.map((item) => item.visionboardId);
         // const imgPaths = items.map((item) => item.imagePath);
 
-        // 이미지 파일을 base64 문자열로 변환 (지금은 서버 파일 시스템 기반 절대 경로 가져오고 있음. 클라이언트에서 접근 가능한 웹 서버의 URL을 DB에 저장하거나 변환하는 방식을 사용해야 합니다.)
+        // 이미지 파일을 base64 문자열로 변환
+        //지금은 서버 파일 시스템 기반 절대 경로 가져오고 있음. 클라이언트에서 접근 가능한 웹 서버의 URL을 DB에 저장하거나 변환하는 방식 사용해야함
         const imgPaths = await Promise.all(
           items.map(async (item) => {
             const response = await fetch(item.imagePath);

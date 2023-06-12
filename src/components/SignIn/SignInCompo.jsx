@@ -1,4 +1,4 @@
-// 최종수정 2023-06-11 00:07
+// 최종수정 2023-06-13 00:51
 
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -127,8 +127,9 @@ function SignInCompo({ isLogin }) {
       setPassword(value);
     }
   };
-  /** 다른 계정으로 가입 및 로그인 */
-  const onClick = async (e) => {
+
+  /** 구글 계정으로 가입 및 로그인 */
+  const googleOnClick = async (e) => {
     const {
       target: { name },
     } = e;
@@ -140,9 +141,51 @@ function SignInCompo({ isLogin }) {
 
     try {
       const data = await signInWithPopup(auth, provider);
-      data && navigate('/'); // 가입 또는 로그인 완료 후 홈('/') 리다이렉트
+      console.log(data);
+      const {
+        user: { uid, displayName },
+      } = data;
+      console.log('displayName:', displayName);
+      console.log('uid', uid);
+
+      // 회원가입
+      const createUserResult = await fetch(`/api/v1/accounts`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ uid, username: displayName }),
+      });
+
+      const resultJson = await createUserResult.json();
+      console.log('resultJson:', resultJson);
+
+      // 회원가입 성공 후 토큰 받아오기
+      const token = await getIdToken(auth.currentUser);
+      console.log('token', token);
+
+      // 로그인 시도
+      const signinResult = await fetch(`/api/v1/accounts/signin`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
+      }).then((res) => res.json());
+
+      console.log('signinResult:', signinResult);
+
+      // 한 번 만들면 세션 저장돼서 이후에는 바로 로그인 됨
+      if (signinResult && !signinResult.error) {
+        localStorage.setItem('isLogin', '1');
+        alert('Google 계정으로 접속에 성공하였습니다.');
+        data && navigate('/');
+      } else {
+        console.log('signinResult:', signinResult);
+        localStorage.setItem('isLogin', '0');
+        alert(
+          'Google 계정으로 접속에 실패하였습니다. 새로고침 후 다시 시도해주세요.'
+        );
+      }
     } catch (error) {
-      console.log(error.message);
+      console.log('error.message', error.message);
+      alert('서버와 통신에 실패하였습니다. 새로고침 후 재 시도 해주세요.');
     }
   };
 
@@ -191,7 +234,7 @@ function SignInCompo({ isLogin }) {
           <div>
             <button
               name="google"
-              onClick={onClick}
+              onClick={googleOnClick}
               className={styles.googleBtn}
             >
               구글 아이디로 시작
