@@ -14,8 +14,8 @@ body {
 }
 .container {
   margin-top: 60px;
-  width: 750px;
-  height: 750px;
+  width: 675px;
+  height: 675px;
   border: 1px solid lightgray;
   border-radius: 20px;
   backdrop-filter: blur(15px);
@@ -26,8 +26,8 @@ body {
 
   .gridContainer {
     position: relative;
-    width: 660px;
-    height: 660px;
+    width: 594px;
+    height: 594px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
@@ -129,7 +129,7 @@ body {
   }
 
   .btnContainer {
-    width: 660px;
+    width: 594px;
     height: auto;
     display: flex;
     justify-content: space-between;
@@ -139,14 +139,14 @@ body {
     .prevBtn,
     .completeBtn {
       width: 130px;
-      font-size: 20px;
+      font-size: 18px;
       margin-top: 20px;
     }
 
     .selectContiner {
       display: flex;
       justify-content: space-between;
-      height: 40px;
+      height: 36px;
       margin-top: 20px;
       background-color: #116a7b;
       align-items: center;
@@ -155,7 +155,7 @@ body {
 
       p {
         color: #fff;
-        font-size: 20px;
+        font-size: 16px;
       }
 
       .selectBtn {
@@ -163,7 +163,7 @@ body {
         justify-content: center;
         align-items: center;
         width: 35px;
-        font-size: 20px;
+        font-size: 18px;
         margin-left: 5px;
       }
     }
@@ -176,7 +176,7 @@ body {
       background: #116a7b;
       color: #fff;
       border: none;
-      height: 40px;
+      height: 36px;
       cursor: pointer;
       transition: 400ms ease all;
       outline: none;
