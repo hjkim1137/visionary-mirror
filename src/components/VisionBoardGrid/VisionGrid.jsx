@@ -294,7 +294,7 @@ export default function VisionGrid() {
           ))}
         </form>
         <div className={styles.selectContiner}>
-          <p>이미지 개수</p>
+          <p>개수</p>
           <select
             className={styles.selectBtn}
             value={selectedOption}
