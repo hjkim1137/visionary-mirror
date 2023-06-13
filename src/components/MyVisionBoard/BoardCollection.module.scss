@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'KBO-Dia-Gothic_bold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_bold.woff')
+    format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
 .wrapper {
   margin-top: 35px;
   width: 65%;
@@ -28,6 +36,7 @@
 .loadingText {
   color: white;
   font-size: 1.5em;
+  font-family: 'KBO-Dia-Gothic_bold';
 }
 
 .noCollection {
@@ -128,6 +137,7 @@
   left: 20px;
   bottom: 20px;
   right: 20px;
+  font-family: 'KBO-Dia-Gothic_bold';
 
   display: flex;
   align-items: center;
@@ -181,12 +191,23 @@
   cursor: pointer;
 }
 
+// 버튼 눌림 효과
+.deleteButton,
+.detailButton {
+  transition: transform 0.1s ease-in-out;
+}
+
+.deleteButton:active,
+.detailButton:active {
+  transform: scale(0.95);
+}
+
 // 버튼 섹션 끝
 
 .dotWrapper {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin: 20px auto 20px auto;
 }
 
 .dot {
@@ -195,7 +216,11 @@
   background-color: #bbb;
   border-radius: 50%;
   display: inline-block;
-  margin: 5px 10px 5px 0;
+}
+
+// 첫번째 dot에만 오른쪽 마진 적용해 정중앙 처리
+.dot:first-of-type {
+  margin-right: 10px;
 }
 
 .dot.active {
