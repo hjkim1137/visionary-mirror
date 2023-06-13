@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
 
@@ -12,43 +12,42 @@ export default function MyVisionGrid() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const id = location.pathname.split('/')[2];
 
-    // 목록으로 돌아가기 버튼
-    const handleBackToMyCollection = useCallback(() => {
-        navigate('/myvisionboard/list')
-    }, [])
-    // 비전보드 삭제 버튼
-    const handleCollectionDelete = useCallback(() => {
-        if (window.confirm('현재 열람중인 비전보드를 삭제하시겠습니까?')) {
-            deleteApi(id);
-            handleBackToMyCollection();
-        }
-    }, [])
+
+    const id = useMemo(() => {
+        return location.pathname.split('/')[2];
+    })
+    const [gridItems, setGridItems] = useState([])
+    const [selectedItemIndex, setSelectedItemIndex] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedOption, setSelectedOption] = useState('1');
+    const [uploadedText, setUploadedText] = useState(null);
+    const [isUploadComplete, setIsUploadComplete] = useState(false);
+    const [uploadCount, setUploadCount] = useState(0);
+    const [readOnly, setReadOnly] = useState(true);
+    const [boardName, setBoardName] = useState('');
+
     // 내 비전보드 페이지 접속시 데이터 패칭
     useEffect(() => {
         const fetchingData = async () => {
             try {
                 const result = await getApi(id);
                 if (result) {
-                    // Array.from(result)
                     const fetchedData = result.data.visionboardcontentSequence;
-                    const reunion = [
+                    const fetchedGrid = [
                         { id: fetchedData[0].sequence, img: fetchedData[0].imagePath, text: fetchedData[0].description, isChecked: false },
-                        { id: fetchedData[1].sequence, img: fetchedData[1].imagePath, text: fetchedData[1].description, isChecked: false },
+                        { id: fetchedData[1].sequence, img: fetchedData[0].imagePath, text: fetchedData[1].description, isChecked: false },
                         { id: fetchedData[2].sequence, img: fetchedData[2].imagePath, text: fetchedData[2].description, isChecked: false },
                         { id: fetchedData[3].sequence, img: fetchedData[3].imagePath, text: fetchedData[3].description, isChecked: false },
-                        { id: 'name', text : result.data.title },
+                        { id: result.data.title },
                         { id: fetchedData[4].sequence, img: fetchedData[4].imagePath, text: fetchedData[4].description, isChecked: false },
                         { id: fetchedData[5].sequence, img: fetchedData[5].imagePath, text: fetchedData[5].description, isChecked: false },
                         { id: fetchedData[6].sequence, img: fetchedData[6].imagePath, text: fetchedData[6].description, isChecked: false },
                         { id: fetchedData[7].sequence, img: fetchedData[7].imagePath, text: fetchedData[7].description, isChecked: false },
                     ]
-                    setGridItems(reunion)
+                    setGridItems(fetchedGrid)
                     console.log(`받아온 데이터 확인`, fetchedData);
-                    console.log('fetchedData[0].sequence :', fetchedData[0].sequence)
-                    console.log('fetchedData[0].imagePath :', fetchedData[0].imagePath)
-                    console.log('fetchedData[0].description :', fetchedData[0].description)
+
                 } else {
                     throw new Error('유저 비전 보드 그리드 가져오기 실패')
                 }
@@ -59,13 +58,38 @@ export default function MyVisionGrid() {
         fetchingData();
     }, []);
 
-    const [gridItems, setGridItems] = useState([])
-    console.log('패치 외부 gridItems 확인 :', gridItems)
-    const [selectedItemIndex, setSelectedItemIndex] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState('1');
-    const [uploadedText, setUploadedText] = useState(null);
-    const [readOnly, setReadOnly] = useState(true);
+    useEffect(() => {
+        checkUploadComplete();
+    }, [gridItems, selectedOption]);
+
+    // 목록으로 돌아가기 버튼
+    const handleBackToMyCollection = useCallback(() => {
+        navigate('/myvisionboard/list')
+    }, [])
+    // 비전보드 삭제 버튼
+    const handleBoardDelete = useCallback(() => {
+        if (window.confirm('현재 열람중인 비전보드를 삭제하시겠습니까?')) {
+            deleteApi(id);
+            handleBackToMyCollection();
+        }
+    }, [])
+
+    const checkUploadComplete = () => {
+        const requiredUploadCount = getRequiredUploadCount();
+        let count = 0;
+
+        for (const item of gridItems) {
+            if (item.img && item.text) {
+                count++;
+            }
+        }
+        setUploadCount(count);
+        setIsUploadComplete(count === requiredUploadCount);
+    };
+
+    const getRequiredUploadCount = () => {
+        return selectedOption === '1' ? 8 : 4;
+    };
 
     const handleGridItemClick = (index) => {
         if (gridItems[index].id !== 'name') {
@@ -79,13 +103,17 @@ export default function MyVisionGrid() {
         }
     };
 
-    const handleImageAndTextSelect = (imgData, textData) => {
+    const handleImageAndTextSelect = (imgData, textData, imgPreview) => {
         setGridItems((prevGridItems) => {
             const updatedGridItems = [...prevGridItems];
-            updatedGridItems[selectedItemIndex].img = imgData;
-            updatedGridItems[selectedItemIndex].text = textData;
+            const selectedItem = updatedGridItems[selectedItemIndex];
+            selectedItem.img = imgData;
+            selectedItem.text = textData;
+            selectedItem.imgPreview = imgPreview;
+            selectedItem.isChecked = false;
             return updatedGridItems;
         });
+
         setUploadedText(textData);
         setIsModalOpen(false);
     };
@@ -113,25 +141,96 @@ export default function MyVisionGrid() {
         });
     };
 
-    const handleOptionChange = (event) => {
-        setSelectedOption(event.target.value);
+    const handleOptionChange = (e) => {
+        const newSelectedOption = e.target.value;
+
+        if (newSelectedOption === '2') {
+            const skippedGridIds = ['name', '2', '4', '5', '7'];
+            const hasUploadedImages = gridItems
+                .filter((item) => !skippedGridIds.includes(item.id))
+                .some((item) => item.img !== null);
+
+            if (hasUploadedImages) {
+                const confirmed = window.confirm(
+                    '기존에 업로드한 이미지는 삭제됩니다. 변경하시겠습니까?'
+                );
+                if (!confirmed) {
+                    return;
+                }
+            }
+
+            setGridItems((prevGridItems) => {
+                const updatedGridItems = [...prevGridItems];
+
+                for (let i = 0; i < updatedGridItems.length; i += 2) {
+                    if (!skippedGridIds.includes(updatedGridItems[i].id)) {
+                        updatedGridItems[i].img = null;
+                        updatedGridItems[i].text = null;
+                        updatedGridItems[i].isChecked = false;
+                    }
+                }
+
+                return updatedGridItems;
+            });
+        }
+
+        setSelectedOption(newSelectedOption);
+    };
+
+    const handlePutCompleteButtonClick = async (e) => {
+        e.preventDefault();
+        if (selectedOption === '2') {
+            if (uploadCount < 4) {
+                alert('4개의 텍스트와 이미지를 업로드해야 합니다.');
+                return;
+            }
+        } else if (selectedOption === '1') {
+            if (uploadCount < 8) {
+                alert('8개의 텍스트와 이미지를 업로드해야 합니다.');
+                return;
+            }
+        }
+
+        const formData = new FormData();
+        let imageIndex = 1;
+        let descriptionIndex = 1;
+
+        console.log(Array.from(formData.entries()));
+        console.log(formData);
+
+        for (const item of gridItems) {
+            console.log(item, item.img);
+            if (item.img) {
+                formData.append(`image${imageIndex}`, item.img);
+                imageIndex++;
+            }
+            if (item.text) {
+                formData.append(`description${descriptionIndex}`, item.text);
+                descriptionIndex++;
+            }
+        }
+
+        formData.append('title', gridItems[4].id);
+
+        putApi(formData, id)
+
     };
 
     return (
         <div className={styles.container}>
-          <div className={styles.gridContainer}>
-            {gridItems.map((item, index) => {
-              const isHidden =
-                selectedOption === '2' && [0, 2, 6, 8].includes(index);
-              const gridItemClassName = `${styles.gridItem} ${isHidden ? styles.hidden : ''
-                } ${item.img ? styles.hiddenBorder : ''}`;
-              if (item.id === 'name') {
-                return (
-                  <div className={styles.gridBoardName}>
-                    <div>{gridItems[4].text}</div>
-                  </div>
-                );
-              }
+            <div className={styles.gridContainer}>
+                {gridItems.map((item, index) => {
+                    const isHidden =
+                        selectedOption === '2' && [0, 2, 6, 8].includes(index);
+                    const gridItemClassName = `${styles.gridItem} ${isHidden ? styles.hidden : ''
+                        } ${item.img ? styles.hiddenBorder : ''}`;
+                    if (item.id === gridItems[4].id) {
+                        return (
+                            <div className={styles.gridBoardName}>
+                                <div>{gridItems[4].id}</div>
+                            </div>
+                        );
+                    }
                     return (
                         <div
                             key={item.id}
@@ -140,16 +239,14 @@ export default function MyVisionGrid() {
                                     ? styles.gridItemName
                                     : `${gridItemClassName} ${styles.hoverable}`
                             }
-                            onClick={() => handleGridItemClick(index)}
+                            onClick={() => {
+                                handleGridItemClick(index)
+                            }}
                         >
                             {item.id !== 'name' && (
                                 <>
-                                    {item.img && (
-                                        <img
-                                            src={item.img}
-                                            alt="Selected"
-                                            style={{ maxWidth: '210px', maxHeight: '210px' }}
-                                        />
+                                    {item.imgPreview && (
+                                        <img src={item.imgPreview} alt="Selected" />
                                     )}
                                     {item.text && (
                                         <div className={styles.gridItemText}>
@@ -175,13 +272,13 @@ export default function MyVisionGrid() {
             {
                 readOnly ?
                     <div className={styles.btnContainer}>
-                        <button className={styles.deleteBtn} onClick={handleBackToMyCollection}>
+                        <button className={styles.deleteBtn} onClick={() => handleBackToMyCollection}>
                             비전보드 목록
                         </button>
                         <button className={styles.deleteBtn} onClick={() => setReadOnly(false)}>
                             수정하기
                         </button>
-                        <button className={styles.deleteBtn} onClick={handleCollectionDelete}>
+                        <button className={styles.deleteBtn} onClick={() => handleBoardDelete}>
                             보드 삭제
                         </button>
 
@@ -194,9 +291,9 @@ export default function MyVisionGrid() {
                         <button className={styles.prevBtn} onClick={() => setReadOnly(true)}>
                             이전
                         </button>
-                        <button className={styles.completeBtn} onClick={() => {
-                            putApi(gridItems, id, gridItems[4].id.name)
-                        }}>완료</button>
+                        <button className={styles.completeBtn} onClick={handlePutCompleteButtonClick}>
+                            완료
+                        </button>
                         <select
                             className={styles.selectBtn}
                             value={selectedOption}

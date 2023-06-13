@@ -9,7 +9,6 @@ export default function CreateVisionBoardModal({
   isOpen,
   closeModal,
   handleImageAndTextSelect,
-  readOnly,
 }) {
   const [imgFile, setImgFile] = useState('');
   const [text, setText] = useState('');
@@ -104,7 +103,6 @@ export default function CreateVisionBoardModal({
                 accept="image/*"
                 ref={imgRef}
                 onChange={saveImgFile}
-                disabled={readOnly}
               />
               <div className={styles.modalPostWrite}>
                 <textarea
@@ -112,7 +110,6 @@ export default function CreateVisionBoardModal({
                   value={text}
                   onChange={handleTextChange}
                   onKeyDown={handleKeyDown}
-                  readOnly={readOnly}
                 />
                 <p>
                   {characterCount}/{characterLimit} 글자수

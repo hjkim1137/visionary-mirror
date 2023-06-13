@@ -18,7 +18,7 @@ export const getApi = async (id) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-    
+
     if (response.status >= 200 && response.status < 300) {
       const data = await response.json();
       console.log('get 성공 data', data)
@@ -33,30 +33,25 @@ export const getApi = async (id) => {
   }
 };
 
-export const putApi = async (formData, id, title) => {
-
+export const putApi = async (formData, id) => {
   try {
-
     const response = await fetch(`/api/v1/visionboard?id=${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-      body: JSON.stringify({ formData })
+      body: {formData} 
     })
 
     if (response.status >= 200 && response.status < 300) {
       const data = await response.json();
       console.log('data:', data);
     } else {
-
       throw new Error('Network response was not successful');
-
     }
 
   } catch (error) {
     console.error(error);
-    //에러 처리 로직 필요
   }
 }
 
@@ -70,7 +65,7 @@ export const modalPutApi = async (formData, prevImgName) => {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-      body: JSON.stringify({ formData })
+      body: {formData}
     })
 
     if (response.status >= 200 && response.status < 300) {

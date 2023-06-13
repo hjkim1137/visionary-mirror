@@ -4,7 +4,6 @@ import arrowBack from './assets/arrow_back_icon.svg';
 import media from './assets/media_icon.svg';
 
 import styles from './CreateVisionBoardModal.module.scss';
-import imageCompression from 'browser-image-compression';
 
 import { modalPutApi } from '../MyVisionBoardGrid/Api'
 
@@ -19,6 +18,7 @@ export default function EditVisionBoardModal({
 
   const [imgFile, setImgFile] = useState('');
   const [text, setText] = useState('');
+  const [selectedImg, setSelectedImg] = useState('');
 
   const imgRef = useRef(null);
 
@@ -28,67 +28,26 @@ export default function EditVisionBoardModal({
     }
   };
 
-  const saveImgFile = async () => {
-    const uploadedFile = imgRef.current.files[0];
-
-    const options = {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 1920,
-      useWebWorker: true,
+  const saveImgFile = () => {
+    const file = imgRef.current.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setImgFile(reader.result);
+      setSelectedImg(reader.result);
     };
-
-    try {
-      //파일 크기 압축
-      const compressedFile = await imageCompression(uploadedFile, options);
-
-
-      //미리보기 및 imgFile 상태 변경
-      const reader = new FileReader();
-      reader.readAsDataURL(compressedFile);
-      reader.onloadend = () => {
-        setImgFile(reader.result);
-      };
-
-      //압축파일 폼 데이터 화
-      const formData = new FormData();
-      formData.append('image', compressedFile, uploadedFile.name);
-
-      return formData.get('image');
-      
-
-      
-      // let gridImgIndex = 1;
-      // let gridTextIndex = 1;
-  
-      // for (const item of gridItems) {
-      //   if (item.img) {
-      //     formData.append(`image${gridImgIndex}`, item.img);
-      //     gridImgIndex++;
-      //   }
-      //   if (item.text) {
-      //     formData.append(`description${gridTextIndex}`, item.text);
-      //     gridTextIndex++;
-      //   }
-      // }
-    } catch (err) {
-      console.error(err);
-    }
   };
+
 
   const handleSelect = () => {
     if (imgFile && text) {
-      // 이미지와 문구 모두 등록되어 있는지 확인
       const file = imgRef.current.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        var selectedImg = reader.result;
-        handleImageAndTextSelect(selectedImg, text);
-      };
+
+      handleImageAndTextSelect(file, text, selectedImg);
 
       closeModal();
     } else {
-      alert('이미지와 문구를 모두 등록해 주세요.'); // 경고 메시지 표시
+      alert('이미지와 문구를 모두 등록해 주세요.');
     }
   };
 
@@ -178,8 +137,8 @@ export default function EditVisionBoardModal({
                 </p>
               </div>
               <button className={styles.modalPostButton} onClick={() => {
-                savedImgToModalPutApi()
                 handleSelect()
+                console.log(gridItems[1].img )   
               }}>
                 이미지 선택 완료
               </button>
