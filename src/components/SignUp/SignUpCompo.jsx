@@ -1,3 +1,5 @@
+// 최종수정 2023-06-10 23:37
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -5,7 +7,7 @@ import { auth } from '../../firebase/firebase';
 import styles from './SignUpCompo.module.scss';
 
 function SignUpCompo() {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState(''); // nickname
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -77,20 +79,19 @@ function SignUpCompo() {
     try {
       const data = await createUserWithEmailAndPassword(auth, email, password);
       if (data) {
+        // 사용자 등록 성공 시 data 객체 반환
         // const { user } = data;
-        const username = 'username'; // nickname
         // const token = await user.getIdToken(); // Backend로 넘겨줘야될 토큰
 
         const {
           user: { uid },
         } = data;
 
-        auth.signOut();
+        auth.signOut(); //firebase 로그아웃
 
         console.log('uid', uid);
         console.log('username', username);
 
-        // ********** [api/v1/accounts] api 완성되면 주석 제거. ********** //
         const createUserResult = await fetch(`/api/v1/accounts`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -99,27 +100,30 @@ function SignUpCompo() {
             username: username,
           }),
         })
-          .then((res) => res.json())
+          .then((res) => res.json()) // 서버에서 응답 없거나 json 아닌 다른 형태 응답일 경우 unexpected end of JSON imput 같은 오류 발생 가능함
           .catch((err) => {
-            console.log({ err });
+            // console.log({ err });
+            console.log('통신 에러', err.message);
+            alert(
+              '서버와 통신에 실패하였습니다. 새로고침 후 다시 시도해주세요.'
+            );
             return null;
           });
-
         if (createUserResult && !createUserResult.err) {
-          // 회원가입 성공
-          navigate('/');
+          // 회원가입 성공 후 홈('/') 리다이렉트
+          alert('회원가입에 성공하였습니다. 로그인 해주세요.');
+          navigate('/login');
         } else {
           // 회원가입 실패
-          alert('회원가입 실패');
+          console.log('createUserResult', createUserResult);
+          alert('회원가입에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
         }
-        alert('회원가입에 성공하였습니다.');
       }
-    } catch (error) {
-      console.log(error.message);
-      alert('회원가입 실패, 새로고침 해주세요.');
+    } catch (err) {
+      console.log('err.message', err.message);
+      alert('인증에 실패하였습니다. 새로고침 후 다시 시도해주세요.'); //firebase 오류 등(이미 존재하는 이메일 등)
     }
   };
-
   const onChange = (e) => {
     const {
       target: { name, value },

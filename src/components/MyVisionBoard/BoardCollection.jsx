@@ -1,34 +1,12 @@
+//최종 수정 시간 : 2023-06-11 14:14
+
 import { useState, useEffect } from 'react';
 import styles from './BoardCollection.module.scss';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import useDeleteCollection from './DeleteCollection';
 import useCarousel from './Carousel';
-// import usePublicCollection from './PublicCollection';
-
-// const myvisioboardAPI = 'http://localhost:9999/data';
-// api 구축 완료 시 교체
-const myvisioboardAPI = '/api/v1/myvisionboard';
-// delete = /api/api/v1/myvisionboard?id={}
-
-// example response
-// {
-//   "error": null,
-//   "data": [
-//   {
-//   "visionboardId": 1,
-//   "title": "title\n",
-//   "imagePath": "/home/bbde1861/elice_2st_project_BE/back_end/images/ecb97c1849475fe5e3d82962e87dd8f4.jpg",'
-//   "imageName": "ecb97c1849475fe5e3d82962e87dd8f4.jpg", "created_at": "2023-06-08T09:16:16.000Z"
-//       },
-// {
-//   "visionboardId": 2,
-//   "title": "title\n",
-//   "imagePath": "/home/bbde1861/elice_2st_project_BE/back_end/images/ecb97c1849475fe5e3d82962e87dd8f4.jpg",'
-//   "imageName": "ecb97c1849475fe5e3d82962e87dd8f4.jpg", "created_at": "2023-06-08T09:16:16.000Z"
-//       }
-//     ]
-//   }
+import { myvisioboardGetAPI } from './Api';
 
 function BoardCollection() {
   const [collection, setCollection] = useState({
@@ -37,38 +15,57 @@ function BoardCollection() {
     id: [],
   });
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    try {
-      fetch(`${myvisioboardAPI}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'applicattion/json' },
-      })
-        .then((response) => {
-          console.log('1.최초 response:', response);
-          if (!response.ok) {
-            throw new Error('네트워크 응답이 정상적이지 않습니다');
-          }
-          return response.json();
-        })
-        .then((items) => {
-          console.log('2.GET으로 받아온 items:', items);
-          const imgPaths = items.map((item) => item.imagePath);
-          const titles = items.map((item) => item.title);
-          const visionboardIds = items.map((item) => item.visionboardId);
-          setCollection({
-            img: imgPaths,
-            title: titles,
-            id: visionboardIds,
-          });
+    const fetchData = async () => {
+      const fetchResult = await myvisioboardGetAPI({ navigate });
+
+      if (fetchResult && !fetchResult.error) {
+        console.log('api 통신 결과:', fetchResult); // {error: null} 이면 통신성공
+
+        // items는 객체를 포함하는 배열 시작 ---
+        const items = fetchResult.data;
+        console.log('get으로 받아온 datas들의 data(array)', items);
+
+        const titles = items.map((item) => item.title);
+        const visionboardIds = items.map((item) => item.visionboardId);
+        // const imgPaths = items.map((item) => item.imagePath);
+
+        // 이미지 파일을 base64 문자열로 변환
+        //지금은 서버 파일 시스템 기반 절대 경로 가져오고 있음. 클라이언트에서 접근 가능한 웹 서버의 URL을 DB에 저장하거나 변환하는 방식 사용해야함
+        const imgPaths = await Promise.all(
+          items.map(async (item) => {
+            const response = await fetch(item.imagePath);
+            console.log('response:', response); // type: basic, url: 'http://localhost:3000/home/elice/projects/deploy-test/images/1398f149f515cf4f3259d3d1d88d4fd9.jpg'
+
+            const blob = await response.blob();
+            console.log('blob:', blob); // size: 572, type: text/html (이미지 타입을 찾을 수 없어 404 에러 페이지 반환했을 가능성)
+
+            return new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.readAsDataURL(blob);
+              reader.onloadend = () => resolve(reader.result);
+              console.log('reader.result:', reader.result); // null
+              reader.onerror = reject;
+            });
+          })
+        );
+
+        setCollection({
+          title: titles,
+          id: visionboardIds,
+          img: imgPaths,
         });
-    } catch (err) {
-      console.error('비동기 처리 중 오류가 발생했습니다:', err);
-    }
+        // items 객체를 포함하는 배열 끝 ---
+      }
+    };
+    fetchData();
   }, []);
-  // console.log('컬렉션:', collection);
+
+  // console.log('컬렉션 정보:', collection);
 
   // 컬렉션 상세보기 페이지 넘어가기
-  const navigate = useNavigate();
   const handleBtnForBoardDetail = (id) => {
     navigate(`/myvisionboardgrid/${id}`);
     console.log('상세보기클릭', id);
@@ -94,14 +91,6 @@ function BoardCollection() {
     setCollection,
     setIndex
   );
-
-  //usePublicCollection 커스텀 훅
-  // const [
-  //   handleBtnForPublicOpen,
-  //   handleBtnForPublicClose,
-  //   handleBtnForPublicPage,
-  //   // ] = usePublicCollection(setCollection, collection);
-  // ] = usePublicCollection(setCollection, collection);
 
   // 리턴
   return (
@@ -162,7 +151,6 @@ function BoardCollection() {
             {/* 현재 슬라이드 시작 */}
             <div className={styles.imgWrapper}>
               <img className={styles.img} src={collection.img[index]}></img>
-
               {/* 이미지 설명 박스 */}
               <div className={styles.imgDes}>
                 <div className={styles.title}>{collection.title[index]}</div>
@@ -186,7 +174,6 @@ function BoardCollection() {
               ></img>
             </div>
           </div>
-
           {/* 가로 정렬 등 전체 스타일 끝  */}
 
           {/* 현재 슬라이드 위치 표시 */}
@@ -214,45 +201,9 @@ function BoardCollection() {
               className={styles.detailButton}
               onClick={() => handleBtnForBoardDetail(collection.id[index])}
             >
-              컬렉션 상세보기
+              컬렉션 상세
             </button>
-
-            {/* <button
-              className={styles.publicOpenButton}
-              onClick={() =>
-                handleBtnForPublicOpen(
-                  collection.id[index],
-                  collection.title[index],
-                  collection.img[index]
-                )
-              }
-            >
-              컬렉션 공개
-            </button>
-
-            <button
-              className={styles.publicCloseButton}
-              onClick={() =>
-                handleBtnForPublicClose(
-                  collection.id[index],
-                  collection.title[index],
-                  collection.img[index]
-                )
-              }
-            >
-              컬렉션 비공개
-            </button> */}
           </div>
-
-          {/* 현재 공개 컬렉션 정보 */}
-          {/* <div className={styles.buttonBox2}>
-            <div className={styles.publicCollectionInfo}>
-              공개 설정한 컬렉션 :<div id="collectionInfo"></div>
-            </div>
-          </div>
-          <div className={styles.publicCollectionInfo2}>
-            *공개 컬렉션은 최대 1개까지 설정 가능
-          </div> */}
         </>
       )}
     </div>
