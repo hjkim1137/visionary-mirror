@@ -145,47 +145,76 @@ function SignInCompo({ isLogin }) {
       const {
         user: { uid, displayName },
       } = data;
-      console.log('displayName:', displayName);
+
+      console.log('displayName:', displayName); // 구글 계정 이름
       console.log('uid', uid);
 
-      // 회원가입
-      const createUserResult = await fetch(`/api/v1/accounts`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uid, username: displayName }),
-      });
+      try {
+        // 회원가입 api 통신 시작
+        const createUserResult = await fetch(`/api/v1/accounts`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ uid, username: displayName }),
+        }).then((res) => res.json());
 
-      const resultJson = await createUserResult.json();
-      console.log('resultJson:', resultJson);
+        if (createUserResult && !createUserResult.err) {
+          console.log('회원가입 요청 결과:', createUserResult); // error: null 이면 성공
+          alert(
+            'Google 계정으로 회원가입에 성공하였습니다. 자동 로그인을 시도합니다.'
+          );
+        } else {
+          // 회원가입 실패
+          console.log('회원가입 요청 결과:', createUserResult);
+          alert(
+            'Google 계정으로 회원가입에 실패하였습니다. 새로고침 후 다시 시도해주세요.'
+          );
+        }
+      } catch (err) {
+        console.log('회원가입 요청 결과:', err.message);
+        alert(
+          '회원가입을 위한 서버와 통신이 실패했습니다. 새로고침 후 다시 시도해주세요.'
+        );
+        return null;
+      }
 
-      // 회원가입 성공 후 토큰 받아오기
+      // 로그인 api 통신 시작
+      // 토큰 받아오기
       const token = await getIdToken(auth.currentUser);
       console.log('token', token);
 
-      // 로그인 시도
-      const signinResult = await fetch(`/api/v1/accounts/signin`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token }),
-      }).then((res) => res.json());
+      try {
+        const signinResult = await fetch(`/api/v1/accounts/signin`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token }),
+        }).then((res) => res.json());
 
-      console.log('signinResult:', signinResult);
+        // 로그인 요청 결과
+        if (signinResult && !signinResult.error) {
+          console.log('로그인 요청결과:', signinResult); // {isLogin:true} 이면 성공
 
-      // 한 번 만들면 세션 저장돼서 이후에는 바로 로그인 됨
-      if (signinResult && !signinResult.error) {
-        localStorage.setItem('isLogin', '1');
-        alert('Google 계정으로 접속에 성공하였습니다.');
-        data && navigate('/');
-      } else {
-        console.log('signinResult:', signinResult);
-        localStorage.setItem('isLogin', '0');
+          localStorage.setItem('isLogin', '1');
+          alert('Google 계정으로 로그인에 성공하였습니다.');
+          navigate('/');
+        } else {
+          // 로그인 실패
+          console.log('signinResult:', signinResult); // {isLogin:false}
+          localStorage.setItem('isLogin', '0');
+          alert(
+            'Google 계정으로 로그인에 실패하였습니다. 새로고침 후 다시 시도해주세요.'
+          );
+          await auth.signOut(); // 로그인 실패 시 Firebase 로그아웃
+        }
+      } catch (error) {
+        console.log('error.message', error.message);
         alert(
-          'Google 계정으로 접속에 실패하였습니다. 새로고침 후 다시 시도해주세요.'
+          '로그인을 위한 서버와 통신이 실패하였습니다. 새로고침 후 재 시도 해주세요.'
         );
+        await auth.signOut(); // 통신 실패 시 Firebase 로그아웃
       }
     } catch (error) {
-      console.log('error.message', error.message);
-      alert('서버와 통신에 실패하였습니다. 새로고침 후 재 시도 해주세요.');
+      console.log('인증 오류:', error.message);
+      alert('구글 계정 인증에 실패하였습니다. 새로고침 후 재 시도 해주세요.');
     }
   };
 
@@ -237,7 +266,7 @@ function SignInCompo({ isLogin }) {
               onClick={googleOnClick}
               className={styles.googleBtn}
             >
-              구글 아이디로 시작
+              Google 계정으로 간편 시작
             </button>
           </div>
         </div>
