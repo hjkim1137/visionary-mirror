@@ -30,27 +30,27 @@ function BoardCollection() {
 
         const titles = items.map((item) => item.title);
         const visionboardIds = items.map((item) => item.visionboardId);
-        // const imgPaths = items.map((item) => item.imagePath);
+        const imgPaths = items.map((item) => item.imagePath);
 
         // 이미지 파일을 base64 문자열로 변환
         //지금은 서버 파일 시스템 기반 절대 경로 가져오고 있음. 클라이언트에서 접근 가능한 웹 서버의 URL을 DB에 저장하거나 변환하는 방식 사용해야함
-        const imgPaths = await Promise.all(
-          items.map(async (item) => {
-            const response = await fetch(item.imagePath);
-            console.log('response:', response); // type: basic, url: 'http://localhost:3000/home/elice/projects/deploy-test/images/1398f149f515cf4f3259d3d1d88d4fd9.jpg'
+        // const imgPaths = await Promise.all(
+        //   items.map(async (item) => {
+        //     const response = await fetch(item.imagePath);
+        //     console.log('response:', response); // type: basic, url: 'http://localhost:3000/home/elice/projects/deploy-test/images/1398f149f515cf4f3259d3d1d88d4fd9.jpg'
 
-            const blob = await response.blob();
-            console.log('blob:', blob); // size: 572, type: text/html (이미지 타입을 찾을 수 없어 404 에러 페이지 반환했을 가능성)
+        //     const blob = await response.blob();
+        //     console.log('blob:', blob); // size: 572, type: text/html (이미지 타입을 찾을 수 없어 404 에러 페이지 반환했을 가능성)
 
-            return new Promise((resolve, reject) => {
-              const reader = new FileReader();
-              reader.readAsDataURL(blob);
-              reader.onloadend = () => resolve(reader.result);
-              console.log('reader.result:', reader.result); // null
-              reader.onerror = reject;
-            });
-          })
-        );
+        //     return new Promise((resolve, reject) => {
+        //       const reader = new FileReader();
+        //       reader.readAsDataURL(blob);
+        //       reader.onloadend = () => resolve(reader.result);
+        //       console.log('reader.result:', reader.result); // null
+        //       reader.onerror = reject;
+        //     });
+        //   })
+        // );
 
         setCollection({
           title: titles,
