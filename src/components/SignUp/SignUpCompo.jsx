@@ -33,16 +33,16 @@ function SignUpCompo() {
 
     if (
       password.length < 6 ||
-      password.length > 16 ||
-      password === username ||
-      password === email
+      password.length > 16
+      // password === username ||
+      // password === email
     ) {
       setPasswordError(
         <div className={styles.spanWrapper}>
-          <span className={styles.span}>
+          {/* <span className={styles.span}>
             비밀번호는 닉네임이나 이메일과 다르며,
-          </span>
-          <span className={styles.span}>6~16자 사이여야 합니다.</span>
+          </span> */}
+          <span className={styles.span}>비밀번호는 6자 이상이어야 합니다.</span>
         </div>
       );
     } else {
@@ -78,7 +78,6 @@ function SignUpCompo() {
       const data = await createUserWithEmailAndPassword(auth, email, password);
       if (data) {
         // const { user } = data;
-        const username = 'username'; // nickname
         // const token = await user.getIdToken(); // Backend로 넘겨줘야될 토큰
 
         const {
@@ -87,6 +86,8 @@ function SignUpCompo() {
 
         // 로그아웃. 그러나 Firebase에 로그아웃을 시키는 명령만을 보내고,
         // 실제로 어플리케이션의 라우팅을 변경하진 않음
+
+        // Firebase의 signOut() 메서드는 Promise를 반환하는 비동기 함수라 await 권장
         await auth.signOut();
         console.log('User signed out');
 
@@ -102,25 +103,21 @@ function SignUpCompo() {
             username: username,
           }),
         });
-        const resultJson = await createUserResult.json();
+
+        const resultJson = await createUserResult.json(); // 응답
         console.log('resultJson:', resultJson); // fetch의 반환값 출력. 호출 후 응답 제대로?
-        // .then((res) => res.json())
-        // .catch((err) => {
-        //   console.log({ err });
-        //   return null;
-        // });
 
         // 회원가입 성패 여부
         if (resultJson && !resultJson.err) {
-          alert('회원가입에 성공하였습니다.');
+          alert('회원가입에 성공하였습니다. 로그인 해주세요.');
           navigate('/login');
         } else {
-          alert('회원가입 실패');
+          alert('회원가입 실패. 새로고침 후 다시 시도해주세요.');
         }
       }
     } catch (error) {
       console.log(error.message);
-      alert('회원가입 실패, 새로고침 해주세요.');
+      alert('인증에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
     }
   };
 
