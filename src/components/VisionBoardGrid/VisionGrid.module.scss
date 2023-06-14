@@ -181,17 +181,36 @@ body {
       }
 
       .deleteBtn,
+      .prevBtn,
+      .completeBtn,
+      .selectBtn,
+      p {
+        transition: 400ms ease all;
+      }
+
+      .deleteBtn,
       .prevBtn {
         background: #116a7b;
         color: #fff;
         border: none;
         height: 36px;
         cursor: pointer;
-        transition: 400ms ease all;
+
         outline: none;
         position: relative;
         border-radius: 10px;
       }
+
+      // .completeBtn {
+      //   background: #116a7b;
+      //   color: #fff;
+      //   border: none;
+      //   height: 36px;
+      //   cursor: pointer;
+      //   outline: none;
+      //   position: relative;
+      //   border-radius: 10px;
+      // }
 
       form {
         background: #116a7b;
@@ -199,7 +218,6 @@ body {
         border: none;
         height: 36px;
         cursor: pointer;
-        transition: 400ms ease all;
         outline: none;
         position: relative;
         border-radius: 10px;
@@ -209,7 +227,6 @@ body {
           border: inherit;
           height: inherit;
           cursor: inherit;
-          transition: inherit;
           outline: inherit;
           position: inherit;
           border-radius: inherit;
