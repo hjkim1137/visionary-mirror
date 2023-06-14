@@ -139,6 +139,7 @@ export default function VisionGrid() {
 
         for (let i = 0; i < updatedGridItems.length; i += 2) {
           if (!skippedGridIds.includes(updatedGridItems[i].id)) {
+            updatedGridItems[i].imgPreview = null;
             updatedGridItems[i].img = null;
             updatedGridItems[i].text = null;
             updatedGridItems[i].isChecked = false;

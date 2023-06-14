@@ -1,5 +1,3 @@
-//최종 수정 시간 : 2023-06-11 14:14
-
 import { useState, useEffect } from 'react';
 import styles from './BoardCollection.module.scss';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
@@ -28,14 +26,25 @@ function BoardCollection() {
         const items = fetchResult.data;
         console.log('get으로 받아온 datas들의 data(array)', items);
 
-        const imgPaths = items.map((item) => item.imagePath);
         const titles = items.map((item) => item.title);
         const visionboardIds = items.map((item) => item.visionboardId);
+        // const imgPaths = items.map((item) => item.imagePath);
+
+        // 이미지 파일 경로를 웹 서버의 URL로 바꾸기
+        const imgPaths = items.map((item) => {
+          const visionaryIp = process.env.REACT_APP_VISIONARY_IP; // ip 주소 불러오기
+          const imagePath = item.imagePath.replace(
+            '/home/elice/projects/visionary', // 전체 경로에서 이 부분 제거
+            visionaryIp
+          );
+          console.log('visionaryIp', visionaryIp);
+          return imagePath;
+        });
 
         setCollection({
-          img: imgPaths,
           title: titles,
           id: visionboardIds,
+          img: imgPaths,
         });
         // items 객체를 포함하는 배열 끝 ---
       }
@@ -113,46 +122,54 @@ function BoardCollection() {
           {/* 가로 정렬 등 전체 스타일 시작  */}
           <div className={styles.row} key={index}>
             {/* 전전 슬라이드에 적용 */}
-            <div className={styles.container}>
-              <img
-                className={styles.priviewImg}
-                src={collection.img[morePrevImg]}
-              ></img>
-            </div>
-
+            {collection.img.length > 2 && collection.img[morePrevImg] && (
+              <div className={styles.container}>
+                <img
+                  className={styles.priviewImg}
+                  src={collection.img[morePrevImg]}
+                ></img>
+              </div>
+            )}
             {/* 전 슬라이드에 적용 */}
+            {collection.img.length > 1 && collection.img[PrevImg] && (
+              <div className={styles.container}>
+                <img
+                  className={styles.priviewImg}
+                  src={collection.img[PrevImg]}
+                ></img>
+              </div>
+            )}
+            {/* 현재 슬라이드 시작 */}
             <div className={styles.container}>
               <img
-                className={styles.priviewImg}
-                src={collection.img[PrevImg]}
+                className={styles.img}
+                src={collection.img[index]}
+                alt="현재 슬라이드"
               ></img>
-            </div>
-
-            {/* 현재 슬라이드 시작 */}
-            <div className={styles.imgWrapper}>
-              <img className={styles.img} src={collection.img[index]}></img>
               {/* 이미지 설명 박스 */}
               <div className={styles.imgDes}>
                 <div className={styles.title}>{collection.title[index]}</div>
               </div>
             </div>
             {/* 현재 슬라이드  끝 */}
-
             {/* 다음 슬라이드에 적용 */}
-            <div className={styles.container}>
-              <img
-                className={styles.priviewImg}
-                src={collection.img[NextImg]}
-              ></img>
-            </div>
-
+            {collection.img.length > 1 && collection.img[NextImg] && (
+              <div className={styles.container}>
+                <img
+                  className={styles.priviewImg}
+                  src={collection.img[NextImg]}
+                ></img>
+              </div>
+            )}
             {/* 다다음 슬라이드에 적용 */}
-            <div className={styles.container}>
-              <img
-                className={styles.priviewImg}
-                src={collection.img[moreNextImg]}
-              ></img>
-            </div>
+            {collection.img.length > 2 && collection.img[moreNextImg] && (
+              <div className={styles.container}>
+                <img
+                  className={styles.priviewImg}
+                  src={collection.img[moreNextImg]}
+                ></img>
+              </div>
+            )}
           </div>
           {/* 가로 정렬 등 전체 스타일 끝  */}
 
@@ -174,14 +191,14 @@ function BoardCollection() {
               className={styles.deleteButton}
               onClick={() => handleDeleteButtonClick(index)}
             >
-              컬렉션 삭제
+              비전보드 삭제
             </button>
 
             <button
               className={styles.detailButton}
               onClick={() => handleBtnForBoardDetail(collection.id[index])}
             >
-              컬렉션 상세
+              보드 상세보기
             </button>
           </div>
         </>

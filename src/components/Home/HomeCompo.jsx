@@ -1,5 +1,3 @@
-// export default HomeCompo;
-
 import styles from './Home.module.scss';
 
 function HomeCompo() {
