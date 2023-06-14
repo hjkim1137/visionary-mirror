@@ -1,6 +1,6 @@
 .container {
-  width: 600px;
-  height: 600px;
+  width: 500px;
+  height: 500px;
   display: flex;
   overflow-x: hidden;
   align-items: center;
@@ -11,7 +11,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-style: italic;
-  font-size: 76px;
+  font-size: 63px;
   font-weight: 700;
   border: none;
   border-radius: 500px;
@@ -20,8 +20,8 @@
 }
 
 .container2 {
-  width: 640px;
-  height: 640px;
+  width: 540px;
+  height: 540px;
   display: flex;
   overflow-x: hidden;
   align-items: center;
