@@ -19,24 +19,24 @@
 }
 
 .inputBox {
-  width: 400px;
-  height: 60px;
+  width: 350px;
+  height: 55px;
   margin-top: 10px;
 
   border-radius: 5px;
-  font-size: 28px;
+  font-size: 23px;
 }
 
 .inputBox:focus {
   background-color: rgb(214, 222, 247);
-  font-size: 28px;
+  font-size: 23px;
 }
 
 .loginBtn {
   width: 100%;
-  height: 70px;
+  height: 60px;
   margin-top: 30px;
-  font-size: 28px;
+  font-size: 23px;
   text-align: center;
   background-color: #116a7b;
   justify-content: center;
@@ -49,10 +49,10 @@
 }
 
 .registerBtn {
-  width: 400px;
-  height: 70px;
+  width: 350px;
+  height: 60px;
   margin-top: 50px;
-  font-size: 25px;
+  font-size: 23px;
   text-align: center;
   background-color: #c2dedc;
   border: none;
@@ -68,10 +68,10 @@
 }
 
 .googleBtn {
-  width: 400px;
-  height: 70px;
+  width: 350px;
+  height: 60px;
   margin-top: 15px;
-  font-size: 25px;
+  font-size: 23px;
   text-align: center;
   background-color: #c2dedc;
   border: none;
@@ -89,6 +89,6 @@
 .error {
   color: #116a7b;
   font-weight: 500;
-  font-size: 20px;
+  font-size: 18px;
   margin-bottom: 10px;
 }
