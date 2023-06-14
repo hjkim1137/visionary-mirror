@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import {
+  getAuth,
+  onAuthStateChanged,
+  reauthenticateWithCredential,
+} from 'firebase/auth';
 
 import Logo from './Logo';
 import Hamburger from './Hamburger';
@@ -9,13 +13,15 @@ import styles from './Header.module.scss';
 
 function Header() {
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // 햄버거 메뉴 떠있는지 여부
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 체크하여 useState에 설정
   const auth = getAuth();
 
+  // console.log(reauthenticateWithCredential);
+
   // Nav 열림 조절
   const handleMenu = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(!isOpen); // 햄버거 메뉴 떠있는지 여부 조절
   };
 
   const navigateHome = () => {
@@ -64,6 +70,7 @@ function Header() {
   const handleLogout = () => {
     if (window.confirm('로그아웃 하시겠습니까?')) {
       logout();
+      navigate('/');
     }
   };
 
@@ -78,6 +85,7 @@ function Header() {
                 clickHandler={handleMenu}
               />
               <Nav isOpen={isOpen} isLoggedIn={isLoggedIn} />
+              {/* <Nav isOpen={true} isLoggedIn={isLoggedIn} /> 햄버거 항상 나오게*/}
             </li>
             <li onClick={navigateHome}>
               <Link to="/" className={styles.iconWrapper}>
