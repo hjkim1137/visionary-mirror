@@ -53,7 +53,7 @@ export default function VisionGrid() {
     let count = 0;
 
     for (const item of gridItems) {
-      if (item.img && item.text) {
+      if (item.img || item.text) {
         count++;
       }
     }
@@ -193,19 +193,21 @@ export default function VisionGrid() {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      if (response.ok) {
+      if (response.status === 201) {
         console.log('Images and descriptions uploaded successfully');
         console.log(response);
+        alert('비전보드 생성이 완료되었습니다.');
       } else if (response.status === 401) {
         console.log('401: 인증되지 않음');
         localStorage.removeItem('isLogin');
         navigate('/');
       } else if (response.status === 500) {
         console.log('500: 내부 서버 오류');
-      } else {
-        console.log('기타 상태');
-        alert('오류가 발생했습니다.');
       }
+      // else {
+      //   console.log('기타 상태');
+      //   alert('오류가 발생했습니다.');
+      // }
     } catch (error) {
       console.error('에러:', error);
     }
