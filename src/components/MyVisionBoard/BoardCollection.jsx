@@ -191,14 +191,14 @@ function BoardCollection() {
               className={styles.deleteButton}
               onClick={() => handleDeleteButtonClick(index)}
             >
-              컬렉션 삭제
+              비전보드 삭제
             </button>
 
             <button
               className={styles.detailButton}
               onClick={() => handleBtnForBoardDetail(collection.id[index])}
             >
-              컬렉션 상세
+              비전보드 상세보기
             </button>
           </div>
         </>
