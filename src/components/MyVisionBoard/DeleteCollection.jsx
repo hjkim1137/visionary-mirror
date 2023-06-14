@@ -12,7 +12,7 @@ const useDeleteCollection = (collection, setCollection, setIndex) => {
     async (index) => {
       const itemTitle = collection.title[index];
       const confirmDelete = window.confirm(
-        `${itemTitle} 컬렉션을 삭제하시겠습니까?`
+        `'${itemTitle}' 비전보드를 삭제하시겠습니까?`
       );
       if (!confirmDelete) {
         return;
@@ -26,7 +26,7 @@ const useDeleteCollection = (collection, setCollection, setIndex) => {
         const fetchResult = await myvisioboardDeleteAPI({ navigate, id });
 
         if (fetchResult && !fetchResult.error) {
-          alert(`${itemTitle} 컬렉션이 정상적으로 삭제되었습니다.`);
+          alert(`'${itemTitle}' 비전보드가 정상적으로 삭제되었습니다.`);
           console.log('api 통신 결과:', fetchResult); // {error: null} 이면 통신성공
 
           const remainingItems = {
