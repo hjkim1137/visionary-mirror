@@ -4,12 +4,13 @@ import styles from './AccountsCompo.module.scss';
 
 function AccountsCompo() {
   const navigate = useNavigate();
-  useEffect(() => {
-    if (isLogin) {
-      navigate('/');
-    }
-  }, [isLogin, navigate]);
-  console.log('formState: ', formState);
+  const [user, setUser] = useState({ username: '', email: '', password: '' });
+  const [editedUser, setEditedUser] = useState({
+    username: '',
+    email: '',
+    password: '',
+    passwordConfirm: '',
+  });
 
   // 로그인한 유저 정보 불러오기
   useEffect(() => {
@@ -45,7 +46,7 @@ function AccountsCompo() {
           alert('서버 오류가 발생했습니다.');
           throw new Error('서버 오류가 발생했습니다.');
         } else {
-          // alert('알 수 없는 오류가 발생했습니다.');
+          alert('알 수 없는 오류가 발생했습니다.');
           throw new Error('알 수 없는 오류가 발생했습니다.');
         }
       } catch (error) {
@@ -75,10 +76,15 @@ function AccountsCompo() {
   };
 
   // 회원정보 수정 기능
-  const handleUpdate = async () => {
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+
+    // 회원정보 수정할 때 회원가입 형식이랑(3자~12자) 맞아야 수정됨 아니면 400번 에러 뜸.
+    // 갱신한 정보로 로그인 되는 것 확인 완료
+
     if (window.confirm('회원 정보를 수정하시겠습니까?')) {
       try {
-        const response = await fetch('/api/v1/accounts', {
+        const response = await fetch(`/api/v1/accounts`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -90,14 +96,16 @@ function AccountsCompo() {
           }),
         });
 
+        console.log('회원정보 수정 요청 응답:', response);
+
         if (!response.ok) {
-          throw new Error('Failed to update user.');
+          throw new Error('회원정보 수정에 실패하였습니다.');
         }
         alert('회원 정보 수정이 완료 되었습니다.');
         setUser(editedUser);
         console.log('editedUser', editedUser);
       } catch (error) {
-        console.error('회원 정보 수정에 실패하였습니다', error);
+        console.error('서버와 통신에 실패하였습니다', error.message);
       }
     }
   };
@@ -131,55 +139,61 @@ function AccountsCompo() {
 
   return (
     <div>
-      <div>
-        {/* 닉네임 칸 */}
-        <input
-          type="text"
-          name="username"
-          value={editedUser.username}
-          onChange={handleChange}
-          className={styles.mypageInput}
-          placeholder="닉네임"
-        />
-      </div>
-      <div>
-        {/* 이메일 칸 */}
-        <input
-          type="text"
-          name="email"
-          value={editedUser.email}
-          onChange={handleChange}
-          className={styles.mypageInput}
-          placeholder="이메일"
-        />
-      </div>
-      <div>
-        {/* 비밀번호 칸 */}
-        <input
-          type="password"
-          name="password"
-          value={editedUser.password}
-          onChange={handleChange}
-          className={styles.mypageInput}
-          placeholder="비밀번호"
-        />
-      </div>
-      <div>
-        {/* 비밀번호 확인 칸 */}
-        <input
-          type="password"
-          name="passwordConfirm"
-          value={editedUser.passwordConfirm}
-          onChange={handleChange} // 사용자가 입력한 값을 상태에 저장
-          className={styles.mypageInput}
-          placeholder="비밀번호 확인"
-        />
-      </div>
-      <div className={styles.buttonBox}>
-        <button onClick={handleUpdate}>수정완료하기</button>
-        <button onClick={handleReset}>수정취소하기</button>
-        <button onClick={handleDelete}>탈퇴하기</button>
-      </div>
+      <form onSubmit={handleUpdate}>
+        <div>
+          {/* 닉네임 칸*/}
+          <input
+            type="text"
+            name="username"
+            value={editedUser.username}
+            onChange={handleChange}
+            className={styles.mypageInput}
+            placeholder="닉네임"
+            autoComplete="username"
+          />
+        </div>
+        <div>
+          {/* 이메일 칸 */}
+          <input
+            type="text"
+            name="email"
+            value={editedUser.email}
+            onChange={handleChange}
+            className={styles.mypageInput}
+            placeholder="이메일"
+          />
+        </div>
+        <div>
+          {/* 비밀번호 칸 */}
+          <input
+            type="password"
+            name="password"
+            value={editedUser.password}
+            onChange={handleChange}
+            className={styles.mypageInput}
+            placeholder="비밀번호"
+            autoComplete="new-password" // 자동완성 비활성화
+          />
+        </div>
+        <div>
+          {/* 비밀번호 확인 칸 */}
+          <input
+            type="password"
+            name="passwordConfirm"
+            value={editedUser.passwordConfirm}
+            onChange={handleChange}
+            className={styles.mypageInput}
+            placeholder="비밀번호 확인"
+          />
+        </div>
+        <div className={styles.buttonBox}>
+          <button type="submit">수정완료하기</button>
+          <button type="reset" onClick={handleReset}>
+            수정취소하기
+          </button>
+          <button onClick={handleDelete}>탈퇴하기</button>
+        </div>
+      </form>
     </div>
   );
 }
