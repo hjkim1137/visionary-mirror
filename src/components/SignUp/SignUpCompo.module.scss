@@ -12,20 +12,20 @@
 }
 
 .inputBox {
-  width: 300px;
+  width: 500px;
+  height: 70px;
   margin-top: 10px;
-  height: 35px;
   border-radius: 5px;
-  font-size: 15px;
+  font-size: 32px;
 }
 
 .inputBox:focus {
   background-color: rgb(214, 222, 247);
-  font-size: 15px;
+  font-size: 32px;
 }
 
 .title {
-  font-size: 25px;
+  font-size: 43px;
   color: #116a7b;
   font-weight: 600;
   margin-bottom: 15px;
@@ -33,6 +33,7 @@
 
 .registerBtn {
   width: 100%;
+  height: 70px;
   margin-top: 30px;
   font-size: 25px;
   text-align: center;
@@ -42,7 +43,7 @@
   padding: 10px;
   color: white;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 32px;
   cursor: pointer;
 }
 
@@ -59,4 +60,6 @@ span {
 .error {
   color: #116a7b;
   font-weight: 500;
+  font-size: 25px;
+  margin-bottom: 10px;
 }
