@@ -1,5 +1,3 @@
-// 최종수정 2023-06-13 00:51
-
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {

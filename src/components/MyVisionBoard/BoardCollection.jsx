@@ -1,5 +1,3 @@
-//최종 수정 시간 : 2023-06-11 14:14
-
 import { useState, useEffect } from 'react';
 import styles from './BoardCollection.module.scss';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
@@ -132,7 +130,6 @@ function BoardCollection() {
                 ></img>
               </div>
             )}
-
             {/* 전 슬라이드에 적용 */}
             {collection.img.length > 1 && collection.img[PrevImg] && (
               <div className={styles.container}>
@@ -142,7 +139,6 @@ function BoardCollection() {
                 ></img>
               </div>
             )}
-
             {/* 현재 슬라이드 시작 */}
             <div className={styles.imgWrapper}>
               <img
@@ -156,7 +152,6 @@ function BoardCollection() {
               </div>
             </div>
             {/* 현재 슬라이드  끝 */}
-
             {/* 다음 슬라이드에 적용 */}
             {collection.img.length > 1 && collection.img[NextImg] && (
               <div className={styles.container}>
@@ -166,7 +161,6 @@ function BoardCollection() {
                 ></img>
               </div>
             )}
-
             {/* 다다음 슬라이드에 적용 */}
             {collection.img.length > 2 && collection.img[moreNextImg] && (
               <div className={styles.container}>

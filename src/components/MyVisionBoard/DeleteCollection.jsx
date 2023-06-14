@@ -1,5 +1,3 @@
-//최종 수정 2023-06-11 14:11
-
 // 컬렉션 삭제 커스텀 훅
 
 import { useCallback, useState } from 'react';

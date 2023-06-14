@@ -1,5 +1,3 @@
-// 최종수정 2023-06-10 23:37
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
