@@ -40,15 +40,15 @@ export default function MyVisionGrid() {
 
                     if (dataLength === 8) {
                         fetchedGrid = [
-                            { key: fetchedData[0].sequence, id: fetchedData[0].sequence, img: fetchedData[0].imagePath, text: fetchedData[0].description, isChecked: false },
-                            { key: fetchedData[1].sequence, id: fetchedData[1].sequence, img: fetchedData[0].imagePath, text: fetchedData[1].description, isChecked: false },
-                            { key: fetchedData[2].sequence, id: fetchedData[2].sequence, img: fetchedData[2].imagePath, text: fetchedData[2].description, isChecked: false },
-                            { key: fetchedData[3].sequence, id: fetchedData[3].sequence, img: fetchedData[3].imagePath, text: fetchedData[3].description, isChecked: false },
+                            { key: 1, id: 1, img: fetchedData[0].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[0].description, isChecked: false },
+                            { key: 2, id: 2, img: fetchedData[1].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[1].description, isChecked: false },
+                            { key: 3, id: 3, img: fetchedData[2].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[2].description, isChecked: false },
+                            { key: 4, id: 4, img: fetchedData[3].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[3].description, isChecked: false },
                             { key: 'title', id: result.data.title },
-                            { key: fetchedData[4].sequence, id: fetchedData[4].sequence, img: fetchedData[4].imagePath, text: fetchedData[4].description, isChecked: false },
-                            { key: fetchedData[5].sequence, id: fetchedData[5].sequence, img: fetchedData[5].imagePath, text: fetchedData[5].description, isChecked: false },
-                            { key: fetchedData[6].sequence, id: fetchedData[6].sequence, img: fetchedData[6].imagePath, text: fetchedData[6].description, isChecked: false },
-                            { key: fetchedData[7].sequence, id: fetchedData[7].sequence, img: fetchedData[7].imagePath, text: fetchedData[7].description, isChecked: false },
+                            { key: 5, id: 5, img: fetchedData[4].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[4].description, isChecked: false },
+                            { key: 6, id: 6, img: fetchedData[5].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[5].description, isChecked: false },
+                            { key: 7, id: 7, img: fetchedData[6].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[6].description, isChecked: false },
+                            { key: 8, id: 8, img: fetchedData[7].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[7].description, isChecked: false },
                         ];
                     } else if (dataLength === 4) {
 
