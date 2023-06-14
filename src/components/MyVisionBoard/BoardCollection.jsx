@@ -140,7 +140,7 @@ function BoardCollection() {
               </div>
             )}
             {/* 현재 슬라이드 시작 */}
-            <div className={styles.imgWrapper}>
+            <div className={styles.container}>
               <img
                 className={styles.img}
                 src={collection.img[index]}
@@ -198,7 +198,7 @@ function BoardCollection() {
               className={styles.detailButton}
               onClick={() => handleBtnForBoardDetail(collection.id[index])}
             >
-              비전보드 상세보기
+              보드 상세보기
             </button>
           </div>
         </>
