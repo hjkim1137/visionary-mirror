@@ -6,3 +6,12 @@ function Accounts() {
 }
 
 export default Accounts;
+
+// import React from 'react';
+// import AccountsSet from '../components/Accounts/AccountsSet';
+
+// function Accounts() {
+//   return <AccountsSet></AccountsSet>;
+// }
+
+// export default Accounts;

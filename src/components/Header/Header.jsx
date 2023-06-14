@@ -17,7 +17,7 @@ function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 체크하여 useState에 설정
   const auth = getAuth();
 
-  console.log(reauthenticateWithCredential);
+  // console.log(reauthenticateWithCredential);
 
   // Nav 열림 조절
   const handleMenu = () => {

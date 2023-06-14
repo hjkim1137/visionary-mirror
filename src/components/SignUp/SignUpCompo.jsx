@@ -39,9 +39,6 @@ function SignUpCompo() {
     ) {
       setPasswordError(
         <div className={styles.spanWrapper}>
-          {/* <span className={styles.span}>
-            비밀번호는 닉네임이나 이메일과 다르며,
-          </span> */}
           <span className={styles.span}>비밀번호는 6자 이상이어야 합니다.</span>
         </div>
       );
@@ -109,7 +106,7 @@ function SignUpCompo() {
 
         // 회원가입 성패 여부
         if (resultJson && !resultJson.err) {
-          alert('회원가입에 성공하였습니다. 로그인 해주세요.');
+          alert('회원가입에 성공하였습니다. 로그인을 해주세요.');
           navigate('/login');
         } else {
           alert('회원가입 실패. 새로고침 후 다시 시도해주세요.');
