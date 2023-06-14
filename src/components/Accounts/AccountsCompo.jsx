@@ -385,7 +385,7 @@ function AccountsCompo({ isLogin }) {
               type="submit"
               value="수정 완료하기"
               onClick={onSubmit}
-              className={styles.registerBtn}
+              className={styles.registerBtn1}
               disabled={
                 originalState?.username === formState.username.value ||
                 !formState.username.valid
@@ -398,7 +398,7 @@ function AccountsCompo({ isLogin }) {
               type="submit"
               value="수정 취소하기"
               onClick={CancelAccountChange}
-              className={styles.registerBtn}
+              className={styles.registerBtn2}
             />
           </div>
 
@@ -407,7 +407,7 @@ function AccountsCompo({ isLogin }) {
               type="submit"
               value="탈퇴하기"
               onClick={DeleteAccount}
-              className={styles.registerBtn}
+              className={styles.registerBtn3}
             />
           </div>
         </form>
