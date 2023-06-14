@@ -150,7 +150,7 @@ body {
 
       .selectContiner {
         display: flex;
-        width: 23%;
+        width: 18%;
         justify-content: space-between;
         height: 36px;
         margin-top: 20px;
@@ -165,7 +165,7 @@ body {
           align-items: center;
           color: #fff;
           font-size: 0.9vw;
-          margin-left: 7px;
+          margin-left: 23px;
           margin-bottom: 3px;
         }
 
@@ -175,9 +175,17 @@ body {
           align-items: center;
           width: 35px;
           font-size: 0.9vw;
-          margin-left: 5px;
+          margin-right: 4px;
           border-radius: 10px;
         }
+      }
+
+      .deleteBtn,
+      .prevBtn,
+      .completeBtn,
+      .selectBtn,
+      p {
+        transition: 400ms ease all;
       }
 
       .deleteBtn,
@@ -187,11 +195,22 @@ body {
         border: none;
         height: 36px;
         cursor: pointer;
-        transition: 400ms ease all;
+
         outline: none;
         position: relative;
         border-radius: 10px;
       }
+
+      // .completeBtn {
+      //   background: #116a7b;
+      //   color: #fff;
+      //   border: none;
+      //   height: 36px;
+      //   cursor: pointer;
+      //   outline: none;
+      //   position: relative;
+      //   border-radius: 10px;
+      // }
 
       form {
         background: #116a7b;
@@ -199,7 +218,6 @@ body {
         border: none;
         height: 36px;
         cursor: pointer;
-        transition: 400ms ease all;
         outline: none;
         position: relative;
         border-radius: 10px;
@@ -209,7 +227,6 @@ body {
           border: inherit;
           height: inherit;
           cursor: inherit;
-          transition: inherit;
           outline: inherit;
           position: inherit;
           border-radius: inherit;
