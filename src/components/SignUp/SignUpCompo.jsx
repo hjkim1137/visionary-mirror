@@ -18,13 +18,13 @@ function SignUpCompo() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (username.length < 3 || username.length > 10) {
-      setUsernameError('닉네임은 3~10자 사이여야 합니다.');
+    if (username.length < 3 || username.length > 12) {
+      setUsernameError('닉네임은 3~12자 사이여야 합니다.');
     } else {
       setUsernameError('');
     }
 
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
       setEmailError('이메일 형식이 올바르지 않습니다.');
     } else {
@@ -33,13 +33,16 @@ function SignUpCompo() {
 
     if (
       password.length < 6 ||
-      password.length > 16
-      // password === username ||
-      // password === email
+      password.length > 16 ||
+      password === username ||
+      password === email
     ) {
       setPasswordError(
         <div className={styles.spanWrapper}>
-          <span className={styles.span}>비밀번호는 6자 이상이어야 합니다.</span>
+          <span className={styles.span}>
+            비밀번호는 닉네임이나 이메일과 다르며,
+          </span>
+          <span className={styles.span}>6~16자 사이여야 합니다.</span>
         </div>
       );
     } else {
@@ -63,7 +66,7 @@ function SignUpCompo() {
       passwordError ||
       confirmPasswordError ||
       username.length < 3 ||
-      username.length > 10 ||
+      username.length > 12 ||
       password.length < 6 ||
       password.length > 16 ||
       password !== confirmPassword
@@ -82,12 +85,7 @@ function SignUpCompo() {
           user: { uid },
         } = data;
 
-        // 로그아웃. 그러나 Firebase에 로그아웃을 시키는 명령만을 보내고,
-        // 실제로 어플리케이션의 라우팅을 변경하진 않음
-
-        // Firebase의 signOut() 메서드는 Promise를 반환하는 비동기 함수라 await 권장
-        await auth.signOut();
-        console.log('User signed out');
+        auth.signOut(); //firebase 로그아웃
 
         console.log('uid', uid);
         console.log('username', username);
@@ -99,22 +97,29 @@ function SignUpCompo() {
             uid,
             username: username,
           }),
-        });
-
-        const resultJson = await createUserResult.json(); // 응답
-        console.log('resultJson:', resultJson); // fetch의 반환값 출력. 호출 후 응답 제대로?
-
-        // 회원가입 성패 여부
-        if (resultJson && !resultJson.err) {
-          alert('회원가입에 성공하였습니다. 로그인을 해주세요.');
+        })
+          .then((res) => res.json()) // 서버에서 응답 없거나 json 아닌 다른 형태 응답일 경우 unexpected end of JSON imput 같은 오류 발생 가능함
+          .catch((err) => {
+            // console.log({ err });
+            console.log('통신 에러', err.message);
+            alert(
+              '서버와 통신에 실패하였습니다. 새로고침 후 다시 시도해주세요.'
+            );
+            return null;
+          });
+        if (createUserResult && !createUserResult.err) {
+          // 회원가입 성공 후 홈('/') 리다이렉트
+          alert('회원가입에 성공하였습니다. 로그인 해주세요.');
           navigate('/login');
         } else {
-          alert('회원가입 실패. 새로고침 후 다시 시도해주세요.');
+          // 회원가입 실패
+          console.log('createUserResult', createUserResult);
+          alert('회원가입에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
         }
       }
-    } catch (error) {
-      console.log(error.message);
-      alert('인증에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
+    } catch (err) {
+      console.log('err.message', err.message);
+      alert('인증에 실패하였습니다. 새로고침 후 다시 시도해주세요.'); //firebase 오류 등(이미 존재하는 이메일 등)
     }
   };
   const onChange = (e) => {

@@ -16,13 +16,8 @@ function SignInCompo({ isLogin }) {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-
   // 로그인 되어있으면 홈('/')으로 이동
   const navigate = useNavigate();
-
-  // 로그인 내부 유효성 검사
 
   // 로그인 내부 유효성 검사
   useEffect(() => {
@@ -48,25 +43,6 @@ function SignInCompo({ isLogin }) {
     const isPasswordValid = (loginPassword) => {
       return loginPassword.length >= 6;
     };
-    // 이메일 검사
-    if (!isEmailValid(email)) {
-      setEmailError('올바른 이메일 형식이 아닙니다.');
-    } else {
-      setEmailError('');
-    }
-
-    // 비밀번호 길이 체크 함수
-    const isPasswordValid = (loginPassword) => {
-      return loginPassword.length >= 6;
-    };
-
-    // 비밀번호 길이 검사
-    if (!isPasswordValid(password)) {
-      setPasswordError('비밀번호는 6글자 이상이어야 합니다.');
-    } else {
-      setPasswordError('');
-    }
-  }, [isLogin, email, password, navigate]);
 
     // 비밀번호 길이 검사
     if (!isPasswordValid(password)) {
@@ -87,7 +63,6 @@ function SignInCompo({ isLogin }) {
     }
 
     // 로그인 firebase 시작
-    // 로그인 firebase 시작
     try {
       const data = await signInWithEmailAndPassword(auth, email, password);
       console.log(data); // data : {user: {accessToken: "tokentoken" } }
@@ -102,7 +77,6 @@ function SignInCompo({ isLogin }) {
         console.log(uid);
         console.log('token', token);
 
-        // 로그인 api 통신 시작
         // 로그인 api 통신 시작
         try {
           const signinResult = await fetch(`/api/v1/accounts/signin`, {
@@ -119,28 +93,19 @@ function SignInCompo({ isLogin }) {
             localStorage.setItem('isLogin', '1'); // "1" = 로그인 / "0" = 로그아웃상태
             alert('로그인에 성공하였습니다.');
             navigate('/');
-            alert('로그인에 성공하였습니다.');
-            navigate('/');
           } else {
             // 로그인 실패
             console.log('signinResult:', signinResult); // {isLogin:false}
             localStorage.setItem('isLogin', '0');
             alert('로그인에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
-            alert('로그인에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
           }
         } catch (err) {
-          console.log('통신 에러', err.message);
-          alert('서버와 통신에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
           console.log('통신 에러', err.message);
           alert('서버와 통신에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
           return null;
         }
       }
       data && navigate('/'); // 로그인 완료 후 홈('/') 리다이렉트
-    } catch (err) {
-      // firebase 오류 등
-      console.log('인증 에러', err.message);
-      alert('인증에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
     } catch (err) {
       // firebase 오류 등
       console.log('인증 에러', err.message);
@@ -261,13 +226,11 @@ function SignInCompo({ isLogin }) {
               name="email"
               type="text"
               placeholder="email@test.com"
-              placeholder="email@test.com"
               value={email}
               onChange={onChange}
               required
               className={styles.inputBox}
             />
-            {emailError && <div className={styles.error}>{emailError}</div>}
             {emailError && <div className={styles.error}>{emailError}</div>}
           </div>
           <div>
@@ -275,15 +238,11 @@ function SignInCompo({ isLogin }) {
               name="password"
               type="password"
               placeholder="6글자 이상 입력해주세요."
-              placeholder="6글자 이상 입력해주세요."
               value={password}
               onChange={onChange}
               required
               className={styles.inputBox}
             />
-            {passwordError && (
-              <div className={styles.error}>{passwordError}</div>
-            )}
             {passwordError && (
               <div className={styles.error}>{passwordError}</div>
             )}
@@ -302,7 +261,6 @@ function SignInCompo({ isLogin }) {
           <div>
             <button
               name="google"
-              onClick={googleOnClick}
               onClick={googleOnClick}
               className={styles.googleBtn}
             >
