@@ -65,12 +65,12 @@ function AccountsCompo({ isLogin }) {
           alert('서버 오류가 발생했습니다.');
           throw new Error('서버 오류가 발생했습니다.');
         } else {
-          alert('알 수 없는 오류가 발생했습니다.');
+          // alert('알 수 없는 오류가 발생했습니다.');
           throw new Error('알 수 없는 오류가 발생했습니다.');
         }
       } catch (error) {
         console.log('회원정보 요청 실패', error.message);
-        alert('알 수 없는 오류가 발생했습니다.다시 시도해 보세요.');
+        // alert('알 수 없는 오류가 발생했습니다.다시 시도해 보세요.');
         window.location.reload();
       }
     };
