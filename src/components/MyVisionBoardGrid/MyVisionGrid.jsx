@@ -6,13 +6,14 @@ import EditVisionBoardModal from '../VisionBoardModal/EditVisionBoardModal'
 import styles from '../VisionBoardGrid/VisionGrid.module.scss';
 
 import { getApi, putApi, deleteApi } from './Api';
-import { initGridItmes } from './InitGridItems'
+
+
+
 
 export default function MyVisionGrid() {
     const navigate = useNavigate();
     const location = useLocation();
-
-
+    const visionaryIp = process.env.REACT_APP_VISIONARY_IP;
 
     const id = useMemo(() => {
         return location.pathname.split('/')[2];
@@ -25,7 +26,7 @@ export default function MyVisionGrid() {
     const [isUploadComplete, setIsUploadComplete] = useState(false);
     const [uploadCount, setUploadCount] = useState(0);
     const [readOnly, setReadOnly] = useState(true);
-    const [boardName, setBoardName] = useState('');
+ 
 
     // 내 비전보드 페이지 접속시 데이터 패칭
     useEffect(() => {
@@ -34,29 +35,50 @@ export default function MyVisionGrid() {
                 const result = await getApi(id);
                 if (result) {
                     const fetchedData = result.data.visionboardcontentSequence;
-                    const fetchedGrid = [
-                        { id: fetchedData[0].sequence, img: fetchedData[0].imagePath, text: fetchedData[0].description, isChecked: false },
-                        { id: fetchedData[1].sequence, img: fetchedData[0].imagePath, text: fetchedData[1].description, isChecked: false },
-                        { id: fetchedData[2].sequence, img: fetchedData[2].imagePath, text: fetchedData[2].description, isChecked: false },
-                        { id: fetchedData[3].sequence, img: fetchedData[3].imagePath, text: fetchedData[3].description, isChecked: false },
-                        { id: result.data.title },
-                        { id: fetchedData[4].sequence, img: fetchedData[4].imagePath, text: fetchedData[4].description, isChecked: false },
-                        { id: fetchedData[5].sequence, img: fetchedData[5].imagePath, text: fetchedData[5].description, isChecked: false },
-                        { id: fetchedData[6].sequence, img: fetchedData[6].imagePath, text: fetchedData[6].description, isChecked: false },
-                        { id: fetchedData[7].sequence, img: fetchedData[7].imagePath, text: fetchedData[7].description, isChecked: false },
-                    ]
-                    setGridItems(fetchedGrid)
-                    console.log(`받아온 데이터 확인`, fetchedData);
+                    const dataLength = fetchedData.length;
+                    let fetchedGrid = [];
 
+                    if (dataLength === 8) {
+                        fetchedGrid = [
+                            { key: fetchedData[0].sequence, id: fetchedData[0].sequence, img: fetchedData[0].imagePath, text: fetchedData[0].description, isChecked: false },
+                            { key: fetchedData[1].sequence, id: fetchedData[1].sequence, img: fetchedData[0].imagePath, text: fetchedData[1].description, isChecked: false },
+                            { key: fetchedData[2].sequence, id: fetchedData[2].sequence, img: fetchedData[2].imagePath, text: fetchedData[2].description, isChecked: false },
+                            { key: fetchedData[3].sequence, id: fetchedData[3].sequence, img: fetchedData[3].imagePath, text: fetchedData[3].description, isChecked: false },
+                            { key: 'title', id: result.data.title },
+                            { key: fetchedData[4].sequence, id: fetchedData[4].sequence, img: fetchedData[4].imagePath, text: fetchedData[4].description, isChecked: false },
+                            { key: fetchedData[5].sequence, id: fetchedData[5].sequence, img: fetchedData[5].imagePath, text: fetchedData[5].description, isChecked: false },
+                            { key: fetchedData[6].sequence, id: fetchedData[6].sequence, img: fetchedData[6].imagePath, text: fetchedData[6].description, isChecked: false },
+                            { key: fetchedData[7].sequence, id: fetchedData[7].sequence, img: fetchedData[7].imagePath, text: fetchedData[7].description, isChecked: false },
+                        ];
+                    } else if (dataLength === 4) {
+
+                        fetchedGrid = [
+                            { key: 1, id: 1, img: '', text: '', isChecked: false },
+                            { key: 2, id: 2, img: fetchedData[0].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[0].description, isChecked: false },
+                            { key: 3, id: 3, img: '', text: '', isChecked: false },
+                            { key: 4, id: 4, img: fetchedData[1].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[1].description, isChecked: false },
+                            { key: 'title', id: result.data.title },
+                            { key: 5, id: 5, img: fetchedData[2].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[2].description, isChecked: false },
+                            { key: 6, id: 6, img: '', text: '', isChecked: false },
+                            { key: 7, id: 7, img: fetchedData[3].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[3].description, isChecked: false },
+                            { key: 8, id: 8, img: '', text: '', isChecked: false },
+                        ];
+                    }
+
+                    setGridItems(fetchedGrid);
+                    console.log('받아온 데이터 확인', fetchedData);
+                    console.log('데이터 그리드 배치', fetchedGrid)                    
                 } else {
-                    throw new Error('유저 비전 보드 그리드 가져오기 실패')
+                    throw new Error('유저 비전 보드 그리드 가져오기 실패');
                 }
             } catch (error) {
-                console.error(error)
+                console.error(error);
             }
-        }
+        };
+
         fetchingData();
     }, []);
+
 
     useEffect(() => {
         checkUploadComplete();
@@ -69,8 +91,9 @@ export default function MyVisionGrid() {
     // 비전보드 삭제 버튼
     const handleBoardDelete = useCallback(() => {
         if (window.confirm('현재 열람중인 비전보드를 삭제하시겠습니까?')) {
-            deleteApi(id);
-            handleBackToMyCollection();
+            console.log('삭제됨')
+            deleteApi(id)
+            handleBackToMyCollection()
         }
     }, [])
 
@@ -212,7 +235,7 @@ export default function MyVisionGrid() {
 
         formData.append('title', gridItems[4].id);
 
-        putApi(formData, id)
+        putApi(formData, id);
 
     };
 
@@ -226,14 +249,14 @@ export default function MyVisionGrid() {
                         } ${item.img ? styles.hiddenBorder : ''}`;
                     if (item.id === gridItems[4].id) {
                         return (
-                            <div className={styles.gridBoardName}>
+                            <div key={item.key} className={styles.gridBoardName}>
                                 <div>{gridItems[4].id}</div>
                             </div>
                         );
                     }
                     return (
                         <div
-                            key={item.id}
+                            key={item.key}
                             className={
                                 item.id === 'name'
                                     ? styles.gridItemName
@@ -245,9 +268,13 @@ export default function MyVisionGrid() {
                         >
                             {item.id !== 'name' && (
                                 <>
-                                    {item.imgPreview && (
-                                        <img src={item.imgPreview} alt="Selected" />
-                                    )}
+                                    {
+                                        item.imgPreview ? (
+                                            <img src={item.imgPreview} alt="Selected" />
+                                        ) : (
+                                            gridItems[index].img && <img src={gridItems[index].img} alt="Selected" />
+                                        )
+                                    }
                                     {item.text && (
                                         <div className={styles.gridItemText}>
                                             {item.text}
@@ -272,13 +299,17 @@ export default function MyVisionGrid() {
             {
                 readOnly ?
                     <div className={styles.btnContainer}>
-                        <button className={styles.deleteBtn} onClick={() => handleBackToMyCollection}>
+                        <button className={styles.deleteBtn} onClick={() => {
+                            handleBackToMyCollection()
+                        }}>
                             비전보드 목록
                         </button>
                         <button className={styles.deleteBtn} onClick={() => setReadOnly(false)}>
                             수정하기
                         </button>
-                        <button className={styles.deleteBtn} onClick={() => handleBoardDelete}>
+                        <button className={styles.deleteBtn} onClick={() => {
+                            handleBoardDelete()
+                        }}>
                             보드 삭제
                         </button>
 

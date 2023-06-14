@@ -1,8 +1,8 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
-const visionaryIp = process.env.VISIONARY_IP;
+const visionaryIp = process.env.REACT_APP_VISIONARY_IP;
 
 module.exports = function (app) {
-  console.log(app);
+  console.log('app', app);
   app.use(
     '/api', // 백엔드에 프록시를 적용할 경로 나열 (path parameter), api 공통
 
