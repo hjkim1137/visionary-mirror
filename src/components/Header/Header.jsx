@@ -43,8 +43,6 @@ function Header() {
 
   // 로그아웃 함수
   const logout = async () => {
-    // 로그아웃 시 Firebase auth signOut 함수 호출
-    auth.signOut();
     localStorage.setItem('isLogin', '0'); // 로그아웃 후 로컬스토리지의 isLogin 값을 0으로 설정
 
     try {
@@ -89,7 +87,7 @@ function Header() {
             </li>
             <li onClick={navigateHome}>
               <Link to="/" className={styles.iconWrapper}>
-                <Logo />
+                <Logo className="logoImage" />
               </Link>
             </li>
             <li>

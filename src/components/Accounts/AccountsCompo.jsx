@@ -21,7 +21,6 @@ function AccountsCompo({ isLogin }) {
       navigate('/');
     }
   }, [isLogin, navigate]);
-  console.log('formState: ', formState);
 
   //GET: (input 입력 전)회원정보 받기 요청: password는 없음
   useEffect(() => {
@@ -78,7 +77,7 @@ function AccountsCompo({ isLogin }) {
 
     fetchAccountInfo();
   }, [navigate]);
-  console.log('formState: ', formState);
+  // console.log(newState);
 
   // 입력 시 값 갱신, 유효성 검사
   const onChange = (e) => {
@@ -93,6 +92,7 @@ function AccountsCompo({ isLogin }) {
         value: value,
         touched: true,
       };
+      console.log('formState after setFormState in onChange: ', formState);
 
       // 닉네임이 3~10자인지 확인 (가입버튼 누르기 전)
       if (name === 'username') {
@@ -175,7 +175,6 @@ function AccountsCompo({ isLogin }) {
       }
     });
   };
-  console.log('formState: ', formState);
 
   ////////////////////////////////////////////////////////
   //////////// 버튼들: 정보 수정, 취소, 탈퇴
@@ -240,13 +239,13 @@ function AccountsCompo({ isLogin }) {
       window.location.reload();
     }
   };
-  console.log('formState: ', formState);
 
   // 회원정보 수정 취소
   const CancelAccountChange = () => {
     if (originalState) {
       setFormState(originalState);
       alert('수정이 취소되었습니다.');
+      console.log('2', formState.password.value);
     } else {
       alert('아직 초기 데이터를 받지 못했습니다. 잠시 후 다시 시도해주세요.');
     }
@@ -274,11 +273,13 @@ function AccountsCompo({ isLogin }) {
 
       //http 응답 본문을 json으로 파싱: 서버의 데이터를 JS객체로 변환
       const data = await response.json();
-
+      console.log('data: ', data);
       if (response.status === 200) {
         console.log('회원 탈퇴 성공');
         alert('탈퇴에 성공하였습니다.');
+        localStorage.setItem('isLogin', '0'); // 탈퇴 후 로컬스토리지의 isLogin 값을 0으로 설정
         navigate('/');
+        window.location.reload();
 
         // 상태 초기화
         setFormState({
