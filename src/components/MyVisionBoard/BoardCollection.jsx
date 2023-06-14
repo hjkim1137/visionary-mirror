@@ -30,13 +30,16 @@ function BoardCollection() {
 
         const titles = items.map((item) => item.title);
         const visionboardIds = items.map((item) => item.visionboardId);
+        // const imgPaths = items.map((item) => item.imagePath);
 
         // 이미지 파일 경로를 웹 서버의 URL로 바꾸기
         const imgPaths = items.map((item) => {
+          const visionaryIp = process.env.REACT_APP_VISIONARY_IP; // ip 주소 불러오기
           const imagePath = item.imagePath.replace(
-            '/home/elice/projects/visionary', // url 경로에서 제거
-            'http://34.64.137.163'
+            '/home/elice/projects/visionary', // 전체 경로에서 이 부분 제거
+            visionaryIp
           );
+          console.log('visionaryIp', visionaryIp);
           return imagePath;
         });
 
