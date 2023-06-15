@@ -138,63 +138,77 @@ function AccountsCompo() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleUpdate}>
-        <div>
-          {/* 닉네임 칸*/}
-          <input
-            type="text"
-            name="username"
-            value={editedUser.username}
-            onChange={handleChange}
-            className={styles.mypageInput}
-            placeholder="닉네임"
-            autoComplete="username"
-          />
-        </div>
-        <div>
-          {/* 이메일 칸 */}
-          <input
-            type="text"
-            name="email"
-            value={editedUser.email}
-            onChange={handleChange}
-            className={styles.mypageInput}
-            placeholder="이메일"
-          />
-        </div>
-        <div>
-          {/* 비밀번호 칸 */}
-          <input
-            type="password"
-            name="password"
-            value={editedUser.password}
-            onChange={handleChange}
-            className={styles.mypageInput}
-            placeholder="비밀번호"
-            autoComplete="new-password" // 자동완성 비활성화
-          />
-        </div>
-        <div>
-          {/* 비밀번호 확인 칸 */}
-          <input
-            type="password"
-            name="passwordConfirm"
-            value={editedUser.passwordConfirm}
-            onChange={handleChange}
-            className={styles.mypageInput}
-            placeholder="비밀번호 확인"
-          />
-        </div>
-        <div className={styles.buttonBox}>
-          <button type="submit">수정완료하기</button>
-          <button type="reset" onClick={handleReset}>
-            수정취소하기
-          </button>
-          <button onClick={handleDelete}>탈퇴하기</button>
-        </div>
-      </form>
-    </div>
+    <>
+      <div className={styles.container}>
+        <div className={styles.title}>마이페이지</div>
+        <form onSubmit={handleUpdate}>
+          <div>
+            {/* 닉네임 칸*/}
+            <input
+              type="text"
+              name="username"
+              value={editedUser.username}
+              onChange={handleChange}
+              className={styles.mypageInput}
+              placeholder="닉네임"
+              autoComplete="username"
+            />
+          </div>
+          <div>
+            {/* 이메일 칸 */}
+            <input
+              type="text"
+              name="email"
+              value={editedUser.email}
+              onChange={handleChange}
+              className={styles.mypageInput}
+              placeholder="이메일"
+            />
+          </div>
+          <div>
+            {/* 비밀번호 칸 */}
+            <input
+              type="password"
+              name="password"
+              value={editedUser.password}
+              onChange={handleChange}
+              className={styles.mypageInput}
+              placeholder="비밀번호"
+              autoComplete="new-password" // 자동완성 비활성화
+            />
+          </div>
+          <div>
+            {/* 비밀번호 확인 칸 */}
+            <input
+              type="password"
+              name="passwordConfirm"
+              value={editedUser.passwordConfirm}
+              onChange={handleChange}
+              className={styles.mypageInput}
+              placeholder="비밀번호 확인"
+            />
+          </div>
+
+          <div className={styles.buttonBoxWrapper}>
+            <div className={styles.buttonBox}>
+              <button type="submit" className={styles.correctBtn}>
+                수정완료하기
+              </button>
+              <button
+                type="reset"
+                onClick={handleReset}
+                className={styles.cancelBtn}
+              >
+                수정취소하기
+              </button>
+            </div>
+            <button onClick={handleDelete} className={styles.secessionBtn}>
+              탈퇴하기
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
   );
 }
 

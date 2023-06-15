@@ -1,80 +1,125 @@
-// .container {
-//   width: 65%;
-//   display: flex;
-//   overflow-x: hidden;
-//   align-items: center;
-//   flex-direction: column;
-//   justify-content: center;
-//   position: absolute;
-//   top: 50%;
-//   left: 50%;
-//   transform: translate(-50%, -50%);
-// }
+.container {
+  width: 65%;
+  display: flex;
+  overflow-x: hidden;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
-// .inputBox {
-//   width: 250px;
-//   margin-top: 10px;
-//   height: 35px;
-//   border-radius: 5px;
-//   font-size: 15px;
-// }
+.title {
+  font-size: 36px;
+  color: #116a7b;
+  font-weight: 600;
+  margin-bottom: 22px;
+}
 
-// .inputBox:focus {
-//   background-color: rgb(214, 222, 247);
-//   font-size: 15px;
-// }
-
-// .title {
-//   font-size: 25px;
-//   color: #116a7b;
-//   font-weight: 600;
-//   margin-bottom: 15px;
-// }
-
-// .registerBtn {
-//   width: 100%;
-//   margin-top: 30px;
-//   font-size: 25px;
-//   text-align: center;
-//   background-color: #116a7b;
-//   border: none;
-//   border-radius: 5px;
-//   padding: 10px;
-//   color: white;
-//   font-weight: 700;
-//   font-size: 15px;
-//   cursor: pointer;
-// }
-
+form,
+.buttonBoxWrapper,
 .buttonBox {
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+
+  align-items: center;
+  justify-content: center;
 }
 
-.buttonBox > button {
-  margin-top: 20px;
-  height: 35px;
-  border: 1px solid black;
-  background-color: lightyellow;
+.inputBox,
+.loginBtn,
+.registerBtn,
+.googleBtn {
+  margin: auto 0;
 }
 
 .mypageInput {
-  height: 35px;
-  margin-bottom: 15px;
-  width: 300px;
+  width: 400px;
+  height: 60px;
+  margin-top: 10px;
+
+  border-radius: 5px;
+  font-size: 28px;
 }
 
-.registerBtn1 {
+.mypageInput:focus {
+  background-color: rgb(214, 222, 247);
+  font-size: 28px;
+}
+
+.correctBtn {
+  width: 100%;
+  margin-top: 30px;
+  font-size: 25px;
+  text-align: center;
+  background-color: #116a7b;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.mypageInput {
+  width: 350px;
+  height: 55px;
+  margin-top: 10px;
+
+  border-radius: 5px;
+  font-size: 23px;
+}
+
+.correctBtn,
+.cancelBtn {
+  width: 360px;
+  height: 70px;
+  margin-top: 50px;
+  margin-left: 0;
+  font-size: 25px;
+  text-align: center;
+  background-color: #116a7b;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.secessionBtn {
+  width: 360px;
+  height: 70px;
+  margin-top: 50px;
+  margin-left: 0;
+  font-size: 25px;
+  text-align: center;
+  background-color: #c2dedc;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.correctBtn {
   margin-top: 40px;
 }
 
-.registerBtn2 {
+.cancelBtn {
   margin-top: 20px;
 }
 
-.registerBtn1,
-.registerBtn2,
-.registerBtn3:hover {
+.correctBtn:hover,
+.cancelBtn:hover {
+  background-color: #c2dedc;
+  color: rgb(45, 92, 79);
+}
+
+.secessionBtn:hover {
   background-color: #116a7b;
 }
