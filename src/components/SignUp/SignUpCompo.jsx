@@ -155,7 +155,10 @@ function SignUpCompo() {
               className={styles.inputBox}
             />
             {passwordError && (
-              <div className={styles.error}>{passwordError}</div>
+              <div>
+                <div className={styles.error}>{passwordError.line1}</div>
+                <div className={styles.error}>{passwordError.line2}</div>
+              </div>
             )}
           </div>
           <div>

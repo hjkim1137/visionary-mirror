@@ -31,11 +31,12 @@ export const useSignUpValidation = (
       password === username ||
       password === email
     ) {
-      setPasswordError(
-        '비밀번호는 닉네임이나 이메일과 다르며, 6~16자 사이여야 합니다.'
-      );
+      setPasswordError({
+        line1: '비밀번호는 닉네임이나 이메일과 다르며,',
+        line2: '6~16자 사이여야 합니다.',
+      });
     } else {
-      setPasswordError('');
+      setPasswordError({ line1: '', line2: '' });
     }
 
     if (password !== confirmPassword) {
