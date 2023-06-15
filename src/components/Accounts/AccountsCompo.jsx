@@ -13,7 +13,7 @@ function AccountsCompo() {
     confirmPassword: '',
   });
   // username 항목의 수정 여부 판단 상태
-  const [usernameEdited, setUsernameEdited] = useState(false);
+  // const [usernameEdited, setUsernameEdited] = useState(false);
 
   // 회원정보수정(마이페이지) 유효성 검사 커스텀 훅 불러오기
   const { usernameError, emailError, passwordError, confirmPasswordError } =
@@ -43,6 +43,7 @@ function AccountsCompo() {
 
         if (response.status === 200) {
           const { username, email } = data.data;
+          console.log({ username, email });
           setEditedUser({
             ...editedUser,
             username: username,
@@ -74,15 +75,6 @@ function AccountsCompo() {
   // 입력 상태 변경
   const handleChange = (e) => {
     setEditedUser({ ...editedUser, [e.target.name]: e.target.value });
-
-    if (e.target.name === 'username' && e.target.value !== user.username) {
-      setUsernameEdited(true);
-    } else if (
-      e.target.name === 'username' &&
-      e.target.value === user.username
-    ) {
-      setUsernameEdited(false);
-    }
   };
 
   // 회원 정보 수정 취소 기능
@@ -170,7 +162,7 @@ function AccountsCompo() {
 
         if (response.status === 200) {
           alert('회원 탈퇴가 완료되었습니다.');
-          setEditedUser({ ...editedUser, password: '', passwordConfirm: '' });
+          setEditedUser({ ...editedUser, password: '', confirmPassword: '' });
           navigate('/');
           window.location.reload();
           localStorage.setItem('isLogin', 0); // ui 변경을 위해 상태 수동으로 제거
@@ -199,11 +191,8 @@ function AccountsCompo() {
 
   const isSignUpButtonDisabled = () => {
     const disabled =
-      usernameError ||
-      emailError ||
-      passwordError ||
-      confirmPasswordError ||
-      !usernameEdited;
+      usernameError || emailError || passwordError || confirmPasswordError;
+    // !usernameEdited;
     return disabled;
   };
 
