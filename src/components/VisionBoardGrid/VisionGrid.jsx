@@ -197,6 +197,7 @@ export default function VisionGrid() {
         console.log('Images and descriptions uploaded successfully');
         console.log(response);
         alert('비전보드 생성이 완료되었습니다.');
+        navigate('/myvisionboard/list');
       } else if (response.status === 401) {
         console.log('401: 인증되지 않음');
         localStorage.removeItem('isLogin');
@@ -219,8 +220,9 @@ export default function VisionGrid() {
         {gridItems.map((item, index) => {
           const isHidden =
             selectedOption === '2' && [0, 2, 6, 8].includes(index);
-          const gridItemClassName = `${styles.gridItem} ${isHidden ? styles.hidden : ''
-            } ${item.img ? styles.hiddenBorder : ''}`;
+          const gridItemClassName = `${styles.gridItem} ${
+            isHidden ? styles.hidden : ''
+          } ${item.img ? styles.hiddenBorder : ''}`;
           if (item.id === 'name') {
             return (
               <div className={styles.gridBoardName}>
@@ -316,4 +318,3 @@ export default function VisionGrid() {
     </div>
   );
 }
-

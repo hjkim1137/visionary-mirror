@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   GoogleAuthProvider,
@@ -57,6 +57,7 @@ function SignInCompo({ isLogin }) {
         console.log('uid', uid);
         console.log('token', token);
 
+        auth.signOut(); // authSignOut
         // 로그인 api 통신 시작
         try {
           const signinResult = await fetch(`/api/v1/accounts/signin`, {
