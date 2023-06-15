@@ -69,15 +69,15 @@ export default function MyVisionGrid() {
 
                     } else if (dataLength === 4) {
                         fetchedGrid = [
-                            { key: 1},
+                            { key: 1 },
                             { key: 2, id: fetchedData[0].sequence, img: fetchedData[0].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[0].description, isChecked: false },
-                            { key: 3},
+                            { key: 3 },
                             { key: 4, id: fetchedData[1].sequence, img: fetchedData[1].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[1].description, isChecked: false },
                             { key: 9, id: result.data.title },
                             { key: 5, id: fetchedData[2].sequence, img: fetchedData[2].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[2].description, isChecked: false },
-                            { key: 6},
+                            { key: 6 },
                             { key: 7, id: fetchedData[3].sequence, img: fetchedData[3].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[3].description, isChecked: false },
-                            { key: 8},
+                            { key: 8 },
                         ];
                         setGridTitle(result.data.title)
                         prevImg = [
@@ -241,7 +241,8 @@ export default function MyVisionGrid() {
             <div className={styles.gridContainer}>
                 {gridItems.map((item, index) => {
                     const isHidden =
-                        selectedOption === '2' && [0, 2, 6, 8].includes(index);
+                        dataLength === 4 && [0, 2, 6, 8].includes(index);
+
                     const gridItemClassName = `${styles.gridItem} ${isHidden ? styles.hidden : ''
                         } ${item.img ? styles.hiddenBorder : ''}`;
                     if (item.id === gridTitle) {
@@ -314,7 +315,6 @@ export default function MyVisionGrid() {
                                 완료
                             </button>
                         </form>
-
                     </div>
             }
             {isModalOpen && (

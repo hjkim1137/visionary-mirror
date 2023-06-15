@@ -294,7 +294,7 @@ export default function VisionGrid() {
             </>
           ))}
         </form>
-        <div className={styles.selectContiner}>
+        <div className={styles.selectContainer}>
           <p>개수</p>
           <select
             className={styles.selectBtn}
