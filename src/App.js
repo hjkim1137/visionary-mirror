@@ -13,21 +13,41 @@ import NAPage from './pages/NaPage';
 import Layout from './pages/Layout';
 
 function App() {
-  const [isLogin, setIsLogin] = useState(false); // 현재 유저로그인(O: true, X: false)
+  const [isLogin, setIsLogin] = useState(false);
 
   const location = useLocation();
 
   useEffect(() => {
-    console.log('App Mounted');
     if (localStorage.getItem('isLogin') == 1) {
+      console.log('App mounted');
       setIsLogin(true);
     } else {
       setIsLogin(false);
     }
   }, [location.pathname]);
 
+  useEffect(() => {
+    const checkLogin = () => {
+      if (localStorage.getItem('isLogin') == 1) {
+        setIsLogin(true);
+      } else {
+        setIsLogin(false);
+      }
+    };
+
+    // 초기 로그인 상태 설정
+    checkLogin();
+
+    // localStorage가 변경될 때마다 로그인 상태 재설정
+    window.addEventListener('storage', checkLogin);
+
+    return () => {
+      window.removeEventListener('storage', checkLogin);
+    };
+  }, []);
+
   return (
-    <Layout>
+    <Layout isLogin={isLogin} setIsLogin={setIsLogin}>
       <Routes>
         <Route path="/" element={<Home />} />
         {!isLogin && (
@@ -55,4 +75,5 @@ function App() {
     </Layout>
   );
 }
+
 export default App;

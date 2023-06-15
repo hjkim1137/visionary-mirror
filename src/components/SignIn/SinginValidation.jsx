@@ -18,13 +18,13 @@ const useSigninValidation = (initialEmail, initialPassword) => {
 
   // 비밀번호 길이 체크 함수
   const isPasswordValid = (loginPassword) => {
-    return loginPassword.length >= 6;
+    return loginPassword.length >= 6 && loginPassword.length <= 16;
   };
 
   useEffect(() => {
     // 이메일 검사
     if (!isEmailValid(email)) {
-      setEmailError('올바른 이메일 형식이 아닙니다.');
+      setEmailError('이메일 형식이 올바르지 않습니다.');
     } else {
       setEmailError('');
     }

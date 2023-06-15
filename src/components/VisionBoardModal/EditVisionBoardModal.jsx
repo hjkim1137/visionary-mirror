@@ -4,8 +4,7 @@ import arrowBack from './assets/arrow_back_icon.svg';
 import media from './assets/media_icon.svg';
 
 import styles from './CreateVisionBoardModal.module.scss';
-
-import { modalPutApi } from '../MyVisionBoardGrid/Api'
+import axios from 'axios';
 
 export default function EditVisionBoardModal({
   isOpen,
@@ -13,13 +12,17 @@ export default function EditVisionBoardModal({
   handleImageAndTextSelect,
   readOnly,
   gridItems,
-  setGridItems
+  selectedGrid,
+  prevImgGrid,
+  id,
+  dataLength
 }) {
 
   const [imgFile, setImgFile] = useState('');
   const [text, setText] = useState('');
   const [selectedImg, setSelectedImg] = useState('');
 
+  const textRef = useRef(null);
   const imgRef = useRef(null);
 
   const handleModalClose = () => {
@@ -36,8 +39,8 @@ export default function EditVisionBoardModal({
       setImgFile(reader.result);
       setSelectedImg(reader.result);
     };
-  };
 
+  };
 
   const handleSelect = () => {
     if (imgFile && text) {
@@ -65,18 +68,68 @@ export default function EditVisionBoardModal({
     }
   };
 
-  const savedImgToModalPutApi = async () => {
-    // 넘겨야 할 폼 데이터
-    const formData = await saveImgFile();
-    // 폼 데이터에서 확장자 뗀 파일 이름
-    // const trimedDataName = formData.name.split('.')[0]
-    console.log('savedImgToModalPut ~ formData:', formData)
-    // console.log('trimedDataName', trimedDataName)
-    // console.log('prevImgName', prevImgName)
+  const modalImgPutApi = async () => {
+    const formData = new FormData();
+    formData.append('image', imgRef.current.files[0]);
 
-    // modalPutApi(formData, prevImgName)
+    try {
+      const response = await axios.put(`/api/v1/images?name=${prevImgGrid[selectedGrid].fileName}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
 
+      if (response.status >= 200 && response.status < 300) {
+        console.log('img put data 전송 완료', response);
+      } else {
+        throw new Error('Network response was not successful');
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
+
+  const modalTextPutApi = async () => {
+    const gridNumber = selectedGrid + 0;
+    let sequence = {};
+
+    switch (dataLength) {
+      case 8:
+        sequence = {
+          number: gridNumber <= 4 ? gridNumber + 1 : gridNumber,
+          description: textRef.current.value
+        }
+        break;
+      case 4:
+        sequence = {
+          number: parseInt((gridNumber + 1) / 2),
+          description: textRef.current.value
+        }
+        break;
+      default:
+        console.log('modalPutApi default')
+    }
+
+    const requestData = {
+      title: gridItems[4].id,
+      sequence: sequence,
+    }
+
+    try {
+      const response = await axios.put(`/api/v1/visionboard?id=${id}`, requestData, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (response.status >= 200 && response.status < 300) {
+        console.log('text put data 전송 완료', response);
+
+      } else {
+        throw new Error('Network response was not successful');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
   const characterCount = text.length;
   const characterLimit = 70;
 
@@ -128,6 +181,7 @@ export default function EditVisionBoardModal({
                 <textarea
                   placeholder={'문구입력...'}
                   value={text}
+                  ref={textRef}
                   onChange={handleTextChange}
                   onKeyDown={handleKeyDown}
                   readOnly={readOnly}
@@ -138,7 +192,12 @@ export default function EditVisionBoardModal({
               </div>
               <button className={styles.modalPostButton} onClick={() => {
                 handleSelect()
-                console.log(gridItems[1].img )   
+                modalImgPutApi()
+                modalTextPutApi()
+                // console.log('gridItems[4].id', gridItems[4].id)
+                console.log('prevImgGrid[selectedGrid].fileName', prevImgGrid[selectedGrid].fileName)
+
+                console.log('gridItems', gridItems)
               }}>
                 이미지 선택 완료
               </button>

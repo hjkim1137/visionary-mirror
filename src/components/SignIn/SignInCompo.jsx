@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   GoogleAuthProvider,
   signInWithPopup,
   signInWithEmailAndPassword,
   getIdToken,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
 import styles from './SignInCompo.module.scss';
@@ -24,6 +25,12 @@ function SignInCompo({ isLogin }) {
   // 로그인 내부 유효성 검사 커스텀 훅 불러오기
   const { email, setEmail, password, setPassword, emailError, passwordError } =
     useSigninValidation('', '');
+
+  // 비밀번호 찾기 버튼 아래 인풋을 보여줄지 말지 결정하는 상태
+  const [showReset, setShowReset] = useState(false);
+
+  // 비밀번호 찾기 이메일 입력 상태
+  const [resetEmail, setResetEmail] = useState('');
 
   // 로그인 기능 수행
   const onSubmit = async (e) => {
@@ -50,6 +57,7 @@ function SignInCompo({ isLogin }) {
         console.log('uid', uid);
         console.log('token', token);
 
+        auth.signOut(); // authSignOut
         // 로그인 api 통신 시작
         try {
           const signinResult = await fetch(`/api/v1/accounts/signin`, {
@@ -88,16 +96,35 @@ function SignInCompo({ isLogin }) {
     }
   };
 
-  /** 필드 입력시 해당 값 갱신 */
+  // 상태 업데이트
   const onChange = (e) => {
-    const {
-      target: { name, value },
-    } = e;
+    const { name, value } = e.target;
 
     if (name === 'email') {
       setEmail(value);
     } else if (name === 'password') {
       setPassword(value);
+    } else if (name === 'resetEmail') {
+      // 비밀번호 재설정 이메일 상태 업데이트
+      setResetEmail(value);
+    }
+  };
+
+  // 비밀번호 재설정 이메일 전송
+  const onResetPassword = async (e) => {
+    e.preventDefault();
+    const userConfirmed = window.confirm(
+      '비밀번호 재설정 이메일을 전송하시겠습니까?'
+    );
+    if (userConfirmed) {
+      try {
+        await sendPasswordResetEmail(auth, resetEmail);
+        alert(
+          '비밀번호 재설정 이메일이 성공적으로 전송되었습니다. 메일함을 확인해주세요.'
+        );
+      } catch (err) {
+        alert(`비밀번호 재설정 이메일 전송 실패: ${err.message}`);
+      }
     }
   };
 
@@ -234,6 +261,37 @@ function SignInCompo({ isLogin }) {
         </form>
 
         <div className={styles.buttonBox}>
+          {/* 비밀번호 찾기 시작 */}
+          <button
+            onClick={() => setShowReset(!showReset)}
+            className={styles.resetPasswordBtn}
+          >
+            비밀번호 찾기
+          </button>
+          {showReset && (
+            <div className={styles.resetPWtitle}>
+              <div>가입한 이메일 주소를 입력하세요.</div>
+              <form onSubmit={onResetPassword}>
+                <div className={styles.resetBox}>
+                  <input
+                    name="resetEmail"
+                    type="text"
+                    placeholder="email@test.com"
+                    value={resetEmail}
+                    onChange={onChange}
+                    required
+                    className={styles.resetPWinput}
+                  />
+                  <input
+                    type="submit"
+                    value="전송"
+                    className={styles.resetPWBtn}
+                  />
+                </div>
+              </form>
+            </div>
+          )}
+          {/* 비밀번호 찾기 끝 */}
           <div>
             <Link to="/register">
               <button className={styles.registerBtn}>회원가입</button>
