@@ -175,8 +175,7 @@ function AccountsCompo() {
   };
 
   const isSignUpButtonDisabled = () => {
-    const disabled =
-      usernameError || emailError || passwordError || confirmPasswordError;
+    const disabled = usernameError || emailError;
     return disabled;
   };
 
