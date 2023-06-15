@@ -359,7 +359,7 @@ function AccountsCompo() {
         });
 
         if (!response.ok) {
-          throw new Error('Failed to delete user.');
+          throw new Error('회원 탈퇴에 실패하였습니다.');
         }
 
         if (response.status === 200) {
