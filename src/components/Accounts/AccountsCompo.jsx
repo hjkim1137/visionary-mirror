@@ -194,7 +194,9 @@ function AccountsCompo() {
           <button type="reset" onClick={handleReset}>
             수정취소하기
           </button>
-          <button onClick={handleDelete}>탈퇴하기</button>
+          <button type="button" onClick={handleDelete}>
+            탈퇴하기
+          </button>
         </div>
       </form>
     </div>
