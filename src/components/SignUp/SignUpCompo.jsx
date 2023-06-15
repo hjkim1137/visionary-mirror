@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
 import styles from './SignUpCompo.module.scss';
 import { useSignUpValidation } from './SignupValidation';
@@ -32,12 +35,12 @@ function SignUpCompo() {
       password.length > 16 ||
       password !== confirmPassword
     ) {
-      console.log('Form validation failed'); // 추가
       return;
     }
 
     try {
       const data = await createUserWithEmailAndPassword(auth, email, password);
+      await sendEmailVerification(auth.currentUser); // 이메일 인증 추가
       if (data) {
         // 사용자 등록 성공 시 data 객체 반환
         // const { user } = data;
@@ -71,7 +74,8 @@ function SignUpCompo() {
           });
         if (createUserResult && !createUserResult.err) {
           // 회원가입 성공 후 홈('/') 리다이렉트
-          alert('회원가입에 성공하였습니다. 로그인 해주세요.');
+          // 회원가입 인증 메일 발송
+          alert('회원가입 인증 메일이 발송되었습니다. 메일함을 확인해주세요.');
           navigate('/login');
         } else {
           // 회원가입 실패

@@ -99,45 +99,50 @@
   margin-bottom: 10px;
 }
 
-// .resetPasswordBtn {
-//   color: #116a7b;
-//   margin: 10px 0 10px 0;
-//   font-size: 20px;
-//   font-weight: 700;
-// }
+.resetPWtitle {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: 600;
+}
 
-// .resetPWtitle {
-//   margin-top: 20px;
-//   font-size: 18px;
-//   font-weight: 600;
-// }
+.resetBox {
+  display: flex;
+}
 
-// .resetPWinput {
-//   width: 80%;
-//   height: 55px;
-//   margin-top: 10px;
+.resetPWinput {
+  width: 80%;
+  height: 55px;
+  margin-top: 10px;
 
-//   border-radius: 5px;
-//   font-size: 23px;
-// }
+  border-radius: 5px;
+  font-size: 23px;
+}
 
-// .resetPWinput:focus {
-//   background-color: rgb(214, 222, 247);
-//   font-size: 23px;
-// }
+.resetPasswordBtn {
+  color: #116a7b;
+  margin: 10px 0 10px 0;
+  font-size: 20px;
+  font-weight: 700;
+}
 
-// .resetPWBtn {
-//   height: 60px;
-//   margin-top: 10px;
-//   margin-left: 5px;
-//   font-size: 18px;
-//   text-align: center;
-//   background-color: #116a7b;
-//   justify-content: center;
-//   border: none;
-//   border-radius: 5px;
-//   padding: 10px;
-//   color: white;
-//   font-weight: 700;
-//   cursor: pointer;
-// }
+.resetPWinput:focus {
+  background-color: rgb(214, 222, 247);
+  font-size: 23px;
+}
+
+.resetPWBtn {
+  width: 20%;
+  height: 60px;
+  margin-top: 10px;
+  margin-left: 5px;
+  font-size: 18px;
+  text-align: center;
+  background-color: #116a7b;
+  justify-content: center;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
