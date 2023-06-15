@@ -212,7 +212,7 @@ function AccountsCompo() {
       <div className={styles.container}>
         <div className={styles.title}>마이페이지</div>
         <form onSubmit={handleUpdate}>
-          <div>
+          <div className={styles.input}>
             {/* 닉네임 칸*/}
             <input
               type="text"
@@ -227,7 +227,7 @@ function AccountsCompo() {
               <div className={styles.error}>{usernameError}</div>
             )}
           </div>
-          <div>
+          <div className={styles.input}>
             {/* 이메일 칸 */}
             <input
               type="text"
@@ -239,7 +239,7 @@ function AccountsCompo() {
             />
             {emailError && <div className={styles.error}>{emailError}</div>}
           </div>
-          <div>
+          <div className={styles.input2}>
             {/* 비밀번호 칸 */}
             <input
               type="password"
@@ -257,7 +257,7 @@ function AccountsCompo() {
               </div>
             )}
           </div>
-          <div>
+          <div className={styles.input}>
             {/* 비밀번호 확인 칸 */}
             <input
               type="password"

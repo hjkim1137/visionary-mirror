@@ -123,3 +123,22 @@ form,
 .secessionBtn:hover {
   background-color: #116a7b;
 }
+
+.input {
+  height: 100px;
+}
+
+.input2 {
+  height: 150px;
+}
+
+.error {
+  color: #116a7b;
+  font-weight: 500;
+  font-size: 18px;
+  width: 100%;
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
