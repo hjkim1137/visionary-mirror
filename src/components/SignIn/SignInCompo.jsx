@@ -247,7 +247,7 @@ function SignInCompo({ isLogin }) {
               <div className={styles.error}>{passwordError}</div>
             )}
           </div>
-          <div>
+          <div className={styles.loginBtnBox}>
             <input type="submit" value="로그인" className={styles.loginBtn} />
           </div>
         </form>

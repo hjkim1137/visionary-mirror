@@ -210,7 +210,7 @@ function SignUpCompo() {
               <div className={styles.error}>{confirmPasswordError}</div>
             )}
           </div>
-          <div>
+          <div className={styles.registerBtnBox}>
             <input
               type="submit"
               value="회원가입"
