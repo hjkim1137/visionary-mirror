@@ -8,12 +8,12 @@ export const useSignUpValidation = (
 ) => {
   const [usernameError, setUsernameError] = useState('');
   const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState(null);
+  const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
   useEffect(() => {
-    if (username.length < 3 || username.length > 12) {
-      setUsernameError('닉네임은 3~12자 사이여야 합니다.');
+    if (username.length < 3 || username.length > 10) {
+      setUsernameError('닉네임은 3~10자 사이여야 합니다.');
     } else {
       setUsernameError('');
     }
@@ -25,18 +25,10 @@ export const useSignUpValidation = (
       setEmailError('');
     }
 
-    if (
-      password.length < 6 ||
-      password.length > 16 ||
-      password === username ||
-      password === email
-    ) {
-      setPasswordError({
-        line1: '비밀번호는 닉네임이나 이메일과 다르며,',
-        line2: '6~16자 사이여야 합니다.',
-      });
+    if (password.length < 6 || password.length > 16) {
+      setPasswordError('비밀번호는 6~16자 사이여야 합니다.');
     } else {
-      setPasswordError(null);
+      setPasswordError('');
     }
 
     if (password !== confirmPassword) {

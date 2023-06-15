@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   GoogleAuthProvider,
   signInWithPopup,
   signInWithEmailAndPassword,
   getIdToken,
+  // sendPasswordResetEmail,
 } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
 import styles from './SignInCompo.module.scss';
@@ -24,6 +25,12 @@ function SignInCompo({ isLogin }) {
   // 로그인 내부 유효성 검사 커스텀 훅 불러오기
   const { email, setEmail, password, setPassword, emailError, passwordError } =
     useSigninValidation('', '');
+
+  // 비밀번호 찾기 버튼 아래 인풋을 보여줄지 말지 결정하는 상태
+  // const [showReset, setShowReset] = useState(false);
+
+  // // 비밀번호 찾기 이메일 입력 상태
+  // const [resetEmail, setResetEmail] = useState('');
 
   // 로그인 기능 수행
   const onSubmit = async (e) => {
@@ -89,6 +96,7 @@ function SignInCompo({ isLogin }) {
   };
 
   /** 필드 입력시 해당 값 갱신 */
+  // 기존 안
   const onChange = (e) => {
     const {
       target: { name, value },
@@ -100,6 +108,38 @@ function SignInCompo({ isLogin }) {
       setPassword(value);
     }
   };
+
+  // 변경 안 - 비밀번호 재설정 상태 업데이트
+  // const onChange = (e) => {
+  //   const { name, value } = e.target;
+
+  //   if (name === 'email') {
+  //     setEmail(value);
+  //   } else if (name === 'password') {
+  //     setPassword(value);
+  //   } else if (name === 'resetEmail') {
+  //     // 비밀번호 재설정 이메일 상태 업데이트
+  //     setResetEmail(value);
+  //   }
+  // };
+
+  // 비밀번호 재설정 이메일 전송
+  // const onResetPassword = async (e) => {
+  //   e.preventDefault();
+
+  //   const userConfirmed = window.confirm(
+  //     '비밀번호 재설정 이메일을 전송하시겠습니까?'
+  //   );
+
+  //   if (userConfirmed) {
+  //     try {
+  //       await sendPasswordResetEmail(resetEmail);
+  //       alert('비밀번호 재설정 이메일이 성공적으로 전송되었습니다.');
+  //     } catch (err) {
+  //       alert(`이메일 전송 실패: ${err.message}`);
+  //     }
+  //   }
+  // };
 
   /** 구글 계정으로 가입 및 로그인 시작 */
   const googleOnClick = async (e) => {
@@ -234,6 +274,35 @@ function SignInCompo({ isLogin }) {
         </form>
 
         <div className={styles.buttonBox}>
+          {/* 비밀번호 찾기 시작 */}
+          {/* <button
+            onClick={() => setShowReset(!showReset)}
+            className={styles.resetPasswordBtn}
+          >
+            비밀번호 찾기
+          </button>
+          {showReset && (
+            <div className={styles.resetPWtitle}>
+              <div>가입한 이메일 주소를 입력하세요.</div>
+              <form onSubmit={onResetPassword}>
+                <input
+                  name="resetEmail"
+                  type="text"
+                  placeholder="email@test.com"
+                  value={resetEmail}
+                  onChange={onChange}
+                  required
+                  className={styles.resetPWinput}
+                />
+                <input
+                  type="submit"
+                  value="전송"
+                  className={styles.resetPWBtn}
+                />
+              </form>
+            </div>
+          )} */}
+          {/* 비밀번호 찾기 끝 */}
           <div>
             <Link to="/register">
               <button className={styles.registerBtn}>회원가입</button>
