@@ -71,30 +71,20 @@ function AccountsCompo() {
     fetchUser();
   }, []);
 
-  // 입력 상태 변경
   const handleChange = (e) => {
     setEditedUser({ ...editedUser, [e.target.name]: e.target.value });
-
-    if (e.target.name === 'username' && e.target.value !== user.username) {
-      setEditedUser(true);
-    } else if (
-      e.target.name === 'username' &&
-      e.target.value === user.username
-    ) {
-      setEditedUser(false);
-    }
   };
 
   // 회원 정보 수정 취소 기능
-  const handleReset = () => {
-    if (user) {
-      setEditedUser({
-        ...user,
-        password: '',
-        confirmPassword: '',
-      });
-    }
-  };
+  // const handleReset = () => {
+  //   if (user) {
+  //     setEditedUser({
+  //       ...user,
+  //       password: '',
+  //       confirmPassword: '',
+  //     });
+  //   }
+  // };
 
   // 회원정보 수정 기능
   const handleUpdate = async (e) => {
@@ -278,13 +268,13 @@ function AccountsCompo() {
               >
                 수정완료하기
               </button>
-              <button
+              {/* <button
                 type="reset"
                 onClick={handleReset}
                 className={styles.cancelBtn}
               >
                 수정취소하기
-              </button>
+              </button> */}
             </div>
             <button
               type="button"
