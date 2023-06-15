@@ -27,6 +27,7 @@ export default function MyVisionGrid() {
     const [readOnly, setReadOnly] = useState(true);
     const [prevImgGrid, setPrevImgGrid] = useState([]);
     const [gridTitle, setGridTitle] = useState('')
+    const [dataLength, setDataLength] = useState('')
 
 
     // 내 비전보드 페이지 접속시 데이터 패칭
@@ -37,34 +38,22 @@ export default function MyVisionGrid() {
                 if (result) {
                     const fetchedData = result.data.visionboardcontentSequence;
                     const dataLength = fetchedData.length;
+                    setDataLength(dataLength);
                     let fetchedGrid = [];
                     let prevImg = [];
+
                     if (dataLength === 8) {
                         fetchedGrid = [
-                            
-                            { key: 0, id: fetchedData[0].sequence, img: fetchedData[0].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[0].description, isChecked: false },
-                            { key: 1, id: fetchedData[1].sequence, img: fetchedData[1].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[1].description, isChecked: false },
-                            { key: 2, id: fetchedData[2].sequence, img: fetchedData[2].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[2].description, isChecked: false },
-                            { key: 3, id: fetchedData[3].sequence, img: fetchedData[3].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[3].description, isChecked: false },
-                            { key: 8, id: result.data.title },
-                            { key: 4, id: fetchedData[4].sequence, img: fetchedData[5].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[5].description, isChecked: false },
-                            { key: 5, id: fetchedData[5].sequence, img: fetchedData[6].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[6].description, isChecked: false },
-                            { key: 6, id: fetchedData[6].sequence, img: fetchedData[7].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[7].description, isChecked: false },
-                            { key: 7, id: fetchedData[7].sequence, img: fetchedData[7].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[7].description, isChecked: false },
+                            { key: 1, id: fetchedData[0].sequence, img: fetchedData[0].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[0].description, isChecked: false },
+                            { key: 2, id: fetchedData[1].sequence, img: fetchedData[1].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[1].description, isChecked: false },
+                            { key: 3, id: fetchedData[2].sequence, img: fetchedData[2].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[2].description, isChecked: false },
+                            { key: 4, id: fetchedData[3].sequence, img: fetchedData[3].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[3].description, isChecked: false },
+                            { key: 9, id: result.data.title },
+                            { key: 5, id: fetchedData[4].sequence, img: fetchedData[4].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[4].description, isChecked: false },
+                            { key: 6, id: fetchedData[5].sequence, img: fetchedData[5].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[5].description, isChecked: false },
+                            { key: 7, id: fetchedData[6].sequence, img: fetchedData[6].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[6].description, isChecked: false },
+                            { key: 8, id: fetchedData[7].sequence, img: fetchedData[7].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[7].description, isChecked: false },
                         ];
-                        // if (dataLength === 8) {
-                        //     fetchedGrid = [
-                        //         { key: 1, id: fetchedData[0].sequence, img: fetchedData[0].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[0].description, isChecked: false },
-                        //         { key: 2, id: fetchedData[1].sequence, img: fetchedData[1].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[1].description, isChecked: false },
-                        //         { key: 3, id: fetchedData[2].sequence, img: fetchedData[2].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[2].description, isChecked: false },
-                        //         { key: 4, id: fetchedData[3].sequence, img: fetchedData[3].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[3].description, isChecked: false },
-                        //         { key: 9, id: result.data.title },
-                        //         { key: 5, id: fetchedData[4].sequence, img: fetchedData[4].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[4].description, isChecked: false },
-                        //         { key: 6, id: fetchedData[5].sequence, img: fetchedData[5].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[5].description, isChecked: false },
-                        //         { key: 7, id: fetchedData[6].sequence, img: fetchedData[6].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[6].description, isChecked: false },
-                        //         { key: 8, id: fetchedData[7].sequence, img: fetchedData[7].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[7].description, isChecked: false },
-
-                        //     ];
                         setGridTitle(result.data.title)
                         prevImg = [
                             { id: 1, fileName: fetchedData[0].fileName },
@@ -76,20 +65,19 @@ export default function MyVisionGrid() {
                             { id: 6, fileName: fetchedData[5].fileName },
                             { id: 7, fileName: fetchedData[6].fileName },
                             { id: 8, fileName: fetchedData[7].fileName },
-
                         ];
 
                     } else if (dataLength === 4) {
                         fetchedGrid = [
-                            { key: 1, id: 1, img: '', text: '', isChecked: false },
-                            { key: 2, id: 2, img: fetchedData[0].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[0].description, isChecked: false },
-                            { key: 3, id: 3, img: '', text: '', isChecked: false },
-                            { key: 4, id: 4, img: fetchedData[1].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[1].description, isChecked: false },
-                            { key: 'title', id: result.data.title },
-                            { key: 5, id: 5, img: fetchedData[2].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[2].description, isChecked: false },
-                            { key: 6, id: 6, img: '', text: '', isChecked: false },
-                            { key: 7, id: 7, img: fetchedData[3].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[3].description, isChecked: false },
-                            { key: 8, id: 8, img: '', text: '', isChecked: false },
+                            { key: 1},
+                            { key: 2, id: fetchedData[0].sequence, img: fetchedData[0].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[0].description, isChecked: false },
+                            { key: 3},
+                            { key: 4, id: fetchedData[1].sequence, img: fetchedData[1].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[1].description, isChecked: false },
+                            { key: 9, id: result.data.title },
+                            { key: 5, id: fetchedData[2].sequence, img: fetchedData[2].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[2].description, isChecked: false },
+                            { key: 6},
+                            { key: 7, id: fetchedData[3].sequence, img: fetchedData[3].imagePath.replace('/home/elice/projects/visionary', visionaryIp), text: fetchedData[3].description, isChecked: false },
+                            { key: 8},
                         ];
                         setGridTitle(result.data.title)
                         prevImg = [
@@ -336,7 +324,7 @@ export default function MyVisionGrid() {
                     handleImageAndTextSelect={handleImageAndTextSelect}
                     readOnly={readOnly} setGridItems={setGridItems}
                     gridItems={gridItems} selectedGrid={selectedGrid}
-                    prevImgGrid={prevImgGrid} id={id}
+                    prevImgGrid={prevImgGrid} id={id} dataLength={dataLength}
                 />
             )}
         </div>

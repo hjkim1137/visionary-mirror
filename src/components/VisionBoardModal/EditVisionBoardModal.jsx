@@ -14,7 +14,8 @@ export default function EditVisionBoardModal({
   gridItems,
   selectedGrid,
   prevImgGrid,
-  id
+  id,
+  dataLength
 }) {
 
   const [imgFile, setImgFile] = useState('');
@@ -87,12 +88,28 @@ export default function EditVisionBoardModal({
   }
 
   const modalTextPutApi = async () => {
-    const sequence = {
-      number: selectedGrid <= 4 ? selectedGrid + 1 : selectedGrid,
-      description: textRef.current.value
+    const gridNumber = selectedGrid + 0;
+    let sequence = {};
+
+    switch (dataLength) {
+      case 8:
+        sequence = {
+          number: gridNumber <= 4 ? gridNumber + 1 : gridNumber,
+          description: textRef.current.value
+        }
+        break;
+      case 4:
+        sequence = {
+          number: parseInt((gridNumber + 1) / 2),
+          description: textRef.current.value
+        }
+        break;
+      default:
+        console.log('modalPutApi default')
     }
+
     const requestData = {
-      title: '왜안돼',
+      title: gridItems[4].id,
       sequence: sequence,
     }
 
@@ -178,7 +195,9 @@ export default function EditVisionBoardModal({
                 modalImgPutApi()
                 modalTextPutApi()
                 // console.log('gridItems[4].id', gridItems[4].id)
-                console.log('selectedGrid(숫자)', selectedGrid)
+                console.log('prevImgGrid[selectedGrid].fileName', prevImgGrid[selectedGrid].fileName)
+
+                console.log('gridItems', gridItems)
               }}>
                 이미지 선택 완료
               </button>
