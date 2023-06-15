@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
 import styles from './SignUpCompo.module.scss';
+import { useSignUpValidation } from './SignupValidation';
 
 function SignUpCompo() {
   const [username, setUsername] = useState(''); // nickname
@@ -10,51 +11,11 @@ function SignUpCompo() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [usernameError, setUsernameError] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState('');
-
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (username.length < 3 || username.length > 12) {
-      setUsernameError('닉네임은 3~12자 사이여야 합니다.');
-    } else {
-      setUsernameError('');
-    }
-
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(email)) {
-      setEmailError('이메일 형식이 올바르지 않습니다.');
-    } else {
-      setEmailError('');
-    }
-
-    if (
-      password.length < 6 ||
-      password.length > 16 ||
-      password === username ||
-      password === email
-    ) {
-      setPasswordError(
-        <div className={styles.spanWrapper}>
-          <span className={styles.span}>
-            비밀번호는 닉네임이나 이메일과 다르며,
-          </span>
-          <span className={styles.span}>6~16자 사이여야 합니다.</span>
-        </div>
-      );
-    } else {
-      setPasswordError('');
-    }
-
-    if (password !== confirmPassword) {
-      setConfirmPasswordError('비밀번호가 일치하지 않습니다.');
-    } else {
-      setConfirmPasswordError('');
-    }
-  }, [username, email, password, confirmPassword]);
+  // 회원가입 유효성 검사 커스텀 훅 불러오기
+  const { usernameError, emailError, passwordError, confirmPasswordError } =
+    useSignUpValidation(username, email, password, confirmPassword);
 
   /** 회원가입 기능 수행 */
   const onSubmit = async (e) => {
@@ -122,6 +83,7 @@ function SignUpCompo() {
       alert('인증에 실패하였습니다. 새로고침 후 다시 시도해주세요.'); //firebase 오류 등(이미 존재하는 이메일 등)
     }
   };
+
   const onChange = (e) => {
     const {
       target: { name, value },
