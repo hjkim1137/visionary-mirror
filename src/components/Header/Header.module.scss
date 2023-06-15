@@ -16,7 +16,7 @@
   align-items: center;
   position: fixed;
 
-  height: 60px;
+  height: 100px;
   width: 100%;
 
   list-style: none;
@@ -24,11 +24,19 @@
   padding: 5px 0;
 }
 
+.header li {
+  font-size: 20px;
+  margin: 20px 20px 20px 30px;
+}
+
 .header ul li:nth-child(1) {
   margin: 20px;
 }
 
 .header ul li:nth-child(3) {
+  display: flex;
+  justify-content: flex-end;
+
   margin: 20px;
 }
 
@@ -42,8 +50,9 @@
 }
 
 button {
-  font-size: 16px;
+  font-size: 27px;
   color: rgb(96, 96, 96);
+  margin-left: 16px;
 }
 
 button:hover {

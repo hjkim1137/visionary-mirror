@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import {
-  getAuth,
-  onAuthStateChanged,
-  reauthenticateWithCredential,
-} from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 import Logo from './Logo';
 import Hamburger from './Hamburger';
@@ -16,8 +12,6 @@ function Header() {
   const [isOpen, setIsOpen] = useState(false); // 햄버거 메뉴 떠있는지 여부
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 체크하여 useState에 설정
   const auth = getAuth();
-
-  // console.log(reauthenticateWithCredential);
 
   // Nav 열림 조절
   const handleMenu = () => {
@@ -43,8 +37,6 @@ function Header() {
 
   // 로그아웃 함수
   const logout = async () => {
-    // 로그아웃 시 Firebase auth signOut 함수 호출
-    auth.signOut();
     localStorage.setItem('isLogin', '0'); // 로그아웃 후 로컬스토리지의 isLogin 값을 0으로 설정
 
     try {
@@ -89,7 +81,7 @@ function Header() {
             </li>
             <li onClick={navigateHome}>
               <Link to="/" className={styles.iconWrapper}>
-                <Logo />
+                <Logo className="logoImage" />
               </Link>
             </li>
             <li>
@@ -112,3 +104,8 @@ function Header() {
 }
 
 export default Header;
+
+//
+//
+//
+// 고쳐본거

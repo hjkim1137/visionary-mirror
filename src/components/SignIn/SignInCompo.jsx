@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   GoogleAuthProvider,
@@ -8,49 +8,22 @@ import {
 } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
 import styles from './SignInCompo.module.scss';
+import useSigninValidation from './SinginValidation';
 
 function SignInCompo({ isLogin }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-
   // 로그인 되어있으면 홈('/')으로 이동
   const navigate = useNavigate();
 
-  // 로그인 내부 유효성 검사
+  // 로그인 상태에 따라 홈 페이지로 이동
   useEffect(() => {
-    isLogin && navigate('/');
-
-    // 이메일 형식 체크 함수
-    const isEmailValid = (loginEmail) => {
-      return String(loginEmail)
-        .toLowerCase()
-        .match(
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        );
-    };
-
-    // 이메일 검사
-    if (!isEmailValid(email)) {
-      setEmailError('올바른 이메일 형식이 아닙니다.');
-    } else {
-      setEmailError('');
+    if (isLogin) {
+      navigate('/');
     }
+  }, [isLogin, navigate]);
 
-    // 비밀번호 길이 체크 함수
-    const isPasswordValid = (loginPassword) => {
-      return loginPassword.length >= 6;
-    };
-
-    // 비밀번호 길이 검사
-    if (!isPasswordValid(password)) {
-      setPasswordError('비밀번호는 6글자 이상이어야 합니다.');
-    } else {
-      setPasswordError('');
-    }
-  }, [isLogin, email, password, navigate]);
+  // 로그인 내부 유효성 검사 커스텀 훅 불러오기
+  const { email, setEmail, password, setPassword, emailError, passwordError } =
+    useSigninValidation('', '');
 
   // 로그인 기능 수행
   const onSubmit = async (e) => {
@@ -65,7 +38,7 @@ function SignInCompo({ isLogin }) {
     // 로그인 firebase 시작
     try {
       const data = await signInWithEmailAndPassword(auth, email, password);
-      console.log(data); // data : {user: {accessToken: "tokentoken" } }
+      console.log('data:', data); // data : {user: {accessToken: "tokentoken" } }
       if (data) {
         // const { user } = data;
         // const token = user.getIdToken(user.uid);
@@ -74,7 +47,7 @@ function SignInCompo({ isLogin }) {
           user: { uid },
         } = data;
         const token = await getIdToken(auth.currentUser);
-        console.log(uid);
+        console.log('uid', uid);
         console.log('token', token);
 
         // 로그인 api 통신 시작
@@ -86,12 +59,14 @@ function SignInCompo({ isLogin }) {
               'Content-Type': 'application/json',
             },
           }).then((res) => res.json()); // cookie가 클라이언트에 탑재됨.
+
           if (signinResult && !signinResult.error) {
             console.log('signinResult:', signinResult); // {isLogin:true}
             // 정상 로그인 완료(= 에러 없음 err:null)
             // App.js에서 로그인상태 파악을 위해 localstorage에 isLogin 설정
             localStorage.setItem('isLogin', '1'); // "1" = 로그인 / "0" = 로그아웃상태
             alert('로그인에 성공하였습니다.');
+
             navigate('/');
           } else {
             // 로그인 실패
@@ -126,7 +101,7 @@ function SignInCompo({ isLogin }) {
     }
   };
 
-  /** 구글 계정으로 가입 및 로그인 */
+  /** 구글 계정으로 가입 및 로그인 시작 */
   const googleOnClick = async (e) => {
     const {
       target: { name },
@@ -139,7 +114,7 @@ function SignInCompo({ isLogin }) {
 
     try {
       const data = await signInWithPopup(auth, provider);
-      console.log(data);
+      console.log('data', data); // UserCredentialImpl {user: UserImpl, ProviderId:'google.com', _tokenResponse: 계정 정보}
       const {
         user: { uid, displayName },
       } = data;
@@ -177,8 +152,14 @@ function SignInCompo({ isLogin }) {
 
       // 로그인 api 통신 시작
       // 토큰 받아오기
-      const token = await getIdToken(auth.currentUser);
-      console.log('token', token);
+      let token;
+      if (auth.currentUser) {
+        token = await getIdToken(auth.currentUser); // auth.currentUser 받으려면 이때까지 auth 로그인 되어 있어야 함.
+        console.log('token', token);
+      } else {
+        console.log('현재 구글 계정으로 가입한 계정이 없습니다.');
+        return;
+      }
 
       try {
         const signinResult = await fetch(`/api/v1/accounts/signin`, {
@@ -201,7 +182,6 @@ function SignInCompo({ isLogin }) {
           alert(
             'Google 계정으로 로그인에 실패하였습니다. 새로고침 후 다시 시도해주세요.'
           );
-          await auth.signOut(); // 로그인 실패 시 Firebase 로그아웃
         }
       } catch (error) {
         console.log('error.message', error.message);
@@ -215,6 +195,7 @@ function SignInCompo({ isLogin }) {
       alert('구글 계정 인증에 실패하였습니다. 새로고침 후 재 시도 해주세요.');
     }
   };
+  /** 구글 계정으로 가입 및 로그인 끝*/
 
   return (
     <>
@@ -247,7 +228,7 @@ function SignInCompo({ isLogin }) {
               <div className={styles.error}>{passwordError}</div>
             )}
           </div>
-          <div>
+          <div className={styles.loginBtnBox}>
             <input type="submit" value="로그인" className={styles.loginBtn} />
           </div>
         </form>
