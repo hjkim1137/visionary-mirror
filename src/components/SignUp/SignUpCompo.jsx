@@ -32,6 +32,7 @@ function SignUpCompo() {
       password.length > 16 ||
       password !== confirmPassword
     ) {
+      console.log('Form validation failed'); // 추가
       return;
     }
 
@@ -101,7 +102,7 @@ function SignUpCompo() {
   };
 
   const isSignUpButtonDisabled = () => {
-    return (
+    const disabled =
       usernameError ||
       emailError ||
       passwordError ||
@@ -109,8 +110,8 @@ function SignUpCompo() {
       !username ||
       !email ||
       !password ||
-      !confirmPassword
-    );
+      !confirmPassword;
+    return disabled;
   };
 
   return (

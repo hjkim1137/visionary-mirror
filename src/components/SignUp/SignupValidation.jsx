@@ -8,7 +8,7 @@ export const useSignUpValidation = (
 ) => {
   const [usernameError, setUsernameError] = useState('');
   const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [passwordError, setPasswordError] = useState(null);
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export const useSignUpValidation = (
         line2: '6~16자 사이여야 합니다.',
       });
     } else {
-      setPasswordError({ line1: '', line2: '' });
+      setPasswordError(null);
     }
 
     if (password !== confirmPassword) {
