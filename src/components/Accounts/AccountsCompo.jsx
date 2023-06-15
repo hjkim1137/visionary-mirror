@@ -12,8 +12,6 @@ function AccountsCompo() {
     password: '',
     confirmPassword: '',
   });
-  // username 항목의 수정 여부 판단 상태
-  // const [usernameEdited, setUsernameEdited] = useState(false);
 
   // 회원정보수정(마이페이지) 유효성 검사 커스텀 훅 불러오기
   const { usernameError, emailError, passwordError, confirmPasswordError } =
@@ -64,7 +62,6 @@ function AccountsCompo() {
       } catch (error) {
         console.log('회원정보 요청 실패', error, error.message);
         alert('알 수 없는 오류가 발생했습니다. 다시 시도해 보세요.');
-        // window.location.reload();
       }
     }
 
@@ -74,17 +71,6 @@ function AccountsCompo() {
   const handleChange = (e) => {
     setEditedUser({ ...editedUser, [e.target.name]: e.target.value });
   };
-
-  // 회원 정보 수정 취소 기능
-  // const handleReset = () => {
-  //   if (user) {
-  //     setEditedUser({
-  //       ...user,
-  //       password: '',
-  //       confirmPassword: '',
-  //     });
-  //   }
-  // };
 
   // 회원정보 수정 기능
   const handleUpdate = async (e) => {
@@ -190,7 +176,6 @@ function AccountsCompo() {
   const isSignUpButtonDisabled = () => {
     const disabled =
       usernameError || emailError || passwordError || confirmPasswordError;
-    // !usernameEdited;
     return disabled;
   };
 
@@ -266,15 +251,8 @@ function AccountsCompo() {
                 className={styles.correctBtn}
                 disabled={isSignUpButtonDisabled()}
               >
-                수정완료하기
+                수정 완료하기
               </button>
-              {/* <button
-                type="reset"
-                onClick={handleReset}
-                className={styles.cancelBtn}
-              >
-                수정취소하기
-              </button> */}
             </div>
             <button
               type="button"
