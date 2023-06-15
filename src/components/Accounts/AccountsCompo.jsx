@@ -105,7 +105,10 @@ function AccountsCompo() {
         setUser(editedUser);
         console.log('editedUser', editedUser);
       } catch (error) {
-        console.error('서버와 통신에 실패하였습니다', error.message);
+        console.error(
+          '회원 정보 수정을 위한 서버와 통신에 실패하였습니다',
+          error.message
+        );
       }
     }
   };
@@ -123,7 +126,7 @@ function AccountsCompo() {
         });
 
         if (!response.ok) {
-          throw new Error('Failed to delete user.');
+          throw new Error('회원 탈퇴에 실패하였습니다.');
         }
 
         alert('회원 탈퇴가 완료되었습니다.');
@@ -132,7 +135,7 @@ function AccountsCompo() {
         window.location.reload();
         localStorage.setItem('isLogin', 0); // ui 변경을 위해 상태 수동으로 제거
       } catch (error) {
-        console.error('회원 탈퇴 요청이 실패하였습니다', error);
+        console.error('회원탈퇴를 위한 서버와 통신에 실패하였습니다.', error);
       }
     }
   };
