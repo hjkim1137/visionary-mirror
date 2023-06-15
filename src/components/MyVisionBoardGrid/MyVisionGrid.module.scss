@@ -34,7 +34,7 @@ body {
       
 
       .gridItem {
-        border: 1px solid black;
+        border: none;
         font-size: 2vw;
         display: flex;
         align-items: center;
@@ -124,6 +124,7 @@ body {
     }
 
     .btnContainer {
+      
       width: 85%;
       height: auto;
       display: flex;
@@ -135,6 +136,7 @@ body {
         width: 20%;
         font-size: 0.9vw;
         margin-top: 20px;
+        
       }
       form {
         width: 20%;
@@ -146,7 +148,7 @@ body {
         .completeBtn {
           width: 100%;
           font-size: inherit;
-        }
+        }       
       }
 
       .selectContiner {
