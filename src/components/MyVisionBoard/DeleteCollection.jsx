@@ -22,12 +22,12 @@ const useDeleteCollection = (collection, setCollection, setIndex) => {
 
       try {
         const id = collection.id[index]; // 현재 슬라이드 컬렉션 id 저장
-        console.log('삭제하려는 현재 컬렉션 id:', id);
+        // console.log('삭제하려는 현재 컬렉션 id:', id);
         const fetchResult = await myvisioboardDeleteAPI({ navigate, id });
 
         if (fetchResult && !fetchResult.error) {
           alert(`'${itemTitle}' 비전보드가 정상적으로 삭제되었습니다.`);
-          console.log('api 통신 결과:', fetchResult); // {error: null} 이면 통신성공
+          // console.log('api 통신 결과:', fetchResult); // {error: null} 이면 통신성공
 
           const remainingItems = {
             img: collection.img.filter((_, idx) => idx !== index),

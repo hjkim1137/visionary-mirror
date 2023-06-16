@@ -19,7 +19,7 @@ function App() {
 
   useEffect(() => {
     if (localStorage.getItem('isLogin') == 1) {
-      console.log('App mounted');
+      // console.log('App mounted');
       setIsLogin(true);
     } else {
       setIsLogin(false);

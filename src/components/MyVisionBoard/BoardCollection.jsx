@@ -20,11 +20,11 @@ function BoardCollection() {
       const fetchResult = await myvisioboardGetAPI({ navigate });
 
       if (fetchResult && !fetchResult.error) {
-        console.log('api 통신 결과:', fetchResult); // {error: null} 이면 통신성공
+        // console.log('api 통신 결과:', fetchResult); // {error: null} 이면 통신성공
 
         // items는 객체를 포함하는 배열 시작 ---
         const items = fetchResult.data;
-        console.log('get으로 받아온 datas들의 data(array)', items);
+        // console.log('get으로 받아온 datas들의 data(array)', items);
 
         const titles = items.map((item) => item.title);
         const visionboardIds = items.map((item) => item.visionboardId);
@@ -37,7 +37,7 @@ function BoardCollection() {
             '/home/elice/projects/visionary', // 전체 경로에서 이 부분 제거
             visionaryIp
           );
-          console.log('visionaryIp', visionaryIp);
+          // console.log('visionaryIp', visionaryIp);
           return imagePath;
         });
 
@@ -57,7 +57,7 @@ function BoardCollection() {
   // 컬렉션 상세보기 페이지 넘어가기
   const handleBtnForBoardDetail = (id) => {
     navigate(`/myvisionboardgrid/${id}`);
-    console.log('상세보기클릭', id);
+    // console.log('상세보기클릭', id);
   };
 
   // useCarousel 커스텀훅

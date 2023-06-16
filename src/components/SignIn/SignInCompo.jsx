@@ -45,7 +45,7 @@ function SignInCompo({ isLogin }) {
     // 로그인 firebase 시작
     try {
       const data = await signInWithEmailAndPassword(auth, email, password);
-      console.log('data:', data); // data : {user: {accessToken: "tokentoken" } }
+      // console.log('data:', data); // data : {user: {accessToken: "tokentoken" } }
       if (data) {
         // const { user } = data;
         // const token = user.getIdToken(user.uid);
@@ -54,10 +54,10 @@ function SignInCompo({ isLogin }) {
           user: { uid },
         } = data;
         const token = await getIdToken(auth.currentUser);
-        console.log('uid', uid);
-        console.log('token', token);
+        // console.log('uid', uid);
+        // console.log('token', token);
 
-        auth.signOut(); // authSignOut
+        await auth.signOut(); // authSignOut
         // 로그인 api 통신 시작
         try {
           const signinResult = await fetch(`/api/v1/accounts/signin`, {
@@ -69,7 +69,7 @@ function SignInCompo({ isLogin }) {
           }).then((res) => res.json()); // cookie가 클라이언트에 탑재됨.
 
           if (signinResult && !signinResult.error) {
-            console.log('signinResult:', signinResult); // {isLogin:true}
+            // console.log('signinResult:', signinResult); // {isLogin:true}
             // 정상 로그인 완료(= 에러 없음 err:null)
             // App.js에서 로그인상태 파악을 위해 localstorage에 isLogin 설정
             localStorage.setItem('isLogin', '1'); // "1" = 로그인 / "0" = 로그아웃상태
@@ -78,20 +78,19 @@ function SignInCompo({ isLogin }) {
             navigate('/');
           } else {
             // 로그인 실패
-            console.log('signinResult:', signinResult); // {isLogin:false}
+            // console.log('signinResult:', signinResult); // {isLogin:false}
             localStorage.setItem('isLogin', '0');
             alert('로그인에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
           }
         } catch (err) {
-          console.log('통신 에러', err.message);
+          // console.log('통신 에러', err.message);
           alert('서버와 통신에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
           return null;
         }
       }
-      data && navigate('/'); // 로그인 완료 후 홈('/') 리다이렉트
     } catch (err) {
       // firebase 오류 등
-      console.log('인증 에러', err.message);
+      // console.log('인증 에러', err.message);
       alert('인증에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
     }
   };
@@ -201,6 +200,7 @@ function SignInCompo({ isLogin }) {
 
           localStorage.setItem('isLogin', '1');
           alert('Google 계정으로 로그인에 성공하였습니다.');
+          await auth.signOut();
           navigate('/');
         } else {
           // 로그인 실패
