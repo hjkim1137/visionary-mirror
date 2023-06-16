@@ -22,6 +22,9 @@ function AccountsCompo() {
       editedUser.confirmPassword
     );
 
+  // 수정 완료 버튼이 눌렸는지 판단
+  const [CorrectBtn, setCorrectBtn] = useState(false);
+
   // 로그인한 유저 정보 불러오기
   useEffect(() => {
     async function fetchUser() {
@@ -76,6 +79,16 @@ function AccountsCompo() {
   // 회원정보 수정 기능
   const handleUpdate = async (e) => {
     e.preventDefault();
+    setCorrectBtn(true);
+
+    // 수정완료 에러 상태 업뎃
+    if (usernameError || emailError) {
+      setCorrectBtn('닉네임과 이메일 작성조건을 지켜주세요');
+      return;
+    }
+
+    // 오류가 없으면 오류 상태를 지움
+    setCorrectBtn(null);
 
     // 회원정보 수정할 때 회원가입 형식이랑(3자~10자) 맞아야 수정됨 아니면 400번 에러 뜸.
     // 갱신한 정보로 로그인 되는 것 확인 완료
@@ -100,12 +113,11 @@ function AccountsCompo() {
           throw new Error('회원정보 수정에 실패하였습니다.');
         }
 
-        // const data = await response.json(); // 응답을 JSON으로 파싱
-
         if (response.status === 200) {
           alert('회원 정보 수정이 완료 되었습니다.');
           setUser(editedUser);
           console.log('editedUser', editedUser);
+          navigate('/');
         } else if (response.status === 400) {
           alert('잘못된 요청입니다.');
           throw new Error('잘못된 요청입니다');
@@ -174,10 +186,10 @@ function AccountsCompo() {
     }
   };
 
-  const isSignUpButtonDisabled = () => {
-    const disabled = usernameError || emailError;
-    return disabled;
-  };
+  // const isSignUpButtonDisabled = () => {
+  //   const disabled = usernameError || emailError;
+  //   return disabled;
+  // };
 
   return (
     <>
@@ -249,10 +261,11 @@ function AccountsCompo() {
               <button
                 type="submit"
                 className={styles.correctBtn}
-                disabled={isSignUpButtonDisabled()}
+                // disabled={isSignUpButtonDisabled()}
               >
                 수정 완료하기
               </button>
+              {CorrectBtn && <div className={styles.error}>{CorrectBtn}</div>}
             </div>
             <button
               type="button"

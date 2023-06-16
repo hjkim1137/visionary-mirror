@@ -56,6 +56,10 @@ button {
   margin-left: 16px;
 }
 
+button:nth-child(1) {
+  margin: 0;
+}
+
 button:hover {
   cursor: pointer;
 }
@@ -64,10 +68,6 @@ button:hover {
   display: flex;
   align-items: center;
   letter-spacing: -0.05em;
-}
-
-.spacing > * {
-  padding-left: 8px;
 }
 
 .hamburger {
