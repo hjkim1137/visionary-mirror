@@ -1,11 +1,11 @@
+import homelogo_FIN from './homelogo_FIN.png';
 import styles from './Home.module.scss';
 
 function HomeCompo() {
   return (
-    <>
-      <div className={styles.container2}></div>;
-      <div className={styles.container}>___WELCOME TO VISIONARY______</div>;
-    </>
+    <div className={styles.container}>
+      <img src={homelogo_FIN}></img>;
+    </div>
   );
 }
 
