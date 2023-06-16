@@ -1,41 +1,4 @@
-.container {
+.container > img {
   width: 500px;
   height: 500px;
-  display: flex;
-  overflow-x: hidden;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-style: italic;
-  font-size: 63px;
-  font-weight: 700;
-  border: none;
-  border-radius: 500px;
-  background-color: #116a7b;
-  color: white;
-}
-
-.container2 {
-  width: 540px;
-  height: 540px;
-  display: flex;
-  overflow-x: hidden;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-style: italic;
-  font-size: 50px;
-  font-weight: 700;
-  border: none;
-  border-radius: 500px;
-  background-color: #c2dedc;
-  color: white;
 }
