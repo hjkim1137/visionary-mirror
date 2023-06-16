@@ -30,9 +30,9 @@ function Header({ isLogin, setIsLogin }) {
 
       const data = await res.json();
       if (data.error) {
-        console.log('Logout error:', data.error.message);
+        // console.log('Logout error:', data.error.message);
       } else {
-        console.log('Logout 성공');
+        // console.log('Logout 성공');
         setIsLogin(false);
         localStorage.setItem('isLogin', 0);
         navigate('/');
@@ -45,6 +45,7 @@ function Header({ isLogin, setIsLogin }) {
   const handleLogout = () => {
     if (window.confirm('로그아웃 하시겠습니까?')) {
       logout();
+      sessionStorage.removeItem('googleUser');
     }
   };
 

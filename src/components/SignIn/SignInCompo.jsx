@@ -140,13 +140,14 @@ function SignInCompo({ isLogin }) {
 
     try {
       const data = await signInWithPopup(auth, provider);
-      console.log('data', data); // UserCredentialImpl {user: UserImpl, ProviderId:'google.com', _tokenResponse: 계정 정보}
+      // console.log('data', data); // UserCredentialImpl {user: UserImpl, ProviderId:'google.com', _tokenResponse: 계정 정보}
+      // console.log('providerId', data.providerId); // "google.com"
       const {
         user: { uid, displayName },
       } = data;
 
-      console.log('displayName:', displayName); // 구글 계정 이름
-      console.log('uid', uid);
+      // console.log('displayName:', displayName); // 구글 계정 이름
+      // console.log('uid', uid);
 
       try {
         // 회원가입 api 통신 시작
@@ -157,19 +158,19 @@ function SignInCompo({ isLogin }) {
         }).then((res) => res.json());
 
         if (createUserResult && !createUserResult.err) {
-          console.log('회원가입 요청 결과:', createUserResult); // error: null 이면 성공
+          // console.log('회원가입 요청 결과:', createUserResult); // error: null 이면 성공
           alert(
             'Google 계정으로 회원가입에 성공하였습니다. 자동 로그인을 시도합니다.'
           );
         } else {
           // 회원가입 실패
-          console.log('회원가입 요청 결과:', createUserResult);
+          // console.log('회원가입 요청 결과:', createUserResult);
           alert(
             'Google 계정으로 회원가입에 실패하였습니다. 새로고침 후 다시 시도해주세요.'
           );
         }
       } catch (err) {
-        console.log('회원가입 요청 결과:', err.message);
+        // console.log('회원가입 요청 결과:', err.message);
         alert(
           '회원가입을 위한 서버와 통신이 실패했습니다. 새로고침 후 다시 시도해주세요.'
         );
@@ -181,9 +182,9 @@ function SignInCompo({ isLogin }) {
       let token;
       if (auth.currentUser) {
         token = await getIdToken(auth.currentUser); // auth.currentUser 받으려면 이때까지 auth 로그인 되어 있어야 함.
-        console.log('token', token);
+        // console.log('token', token);
       } else {
-        console.log('현재 구글 계정으로 가입한 계정이 없습니다.');
+        // console.log('현재 구글 계정으로 가입한 계정이 없습니다.');
         return;
       }
 
@@ -196,29 +197,35 @@ function SignInCompo({ isLogin }) {
 
         // 로그인 요청 결과
         if (signinResult && !signinResult.error) {
-          console.log('로그인 요청결과:', signinResult); // {isLogin:true} 이면 성공
+          // console.log('로그인 요청결과:', signinResult); // {isLogin:true} 이면 성공
 
           localStorage.setItem('isLogin', '1');
+
+          // displayName이 있으면 Google 계정으로 가입한 것이므로 세션 스토리지에 추가
+          if (displayName) {
+            sessionStorage.setItem('googleUser', '1');
+          }
+
           alert('Google 계정으로 로그인에 성공하였습니다.');
           await auth.signOut();
           navigate('/');
         } else {
           // 로그인 실패
-          console.log('signinResult:', signinResult); // {isLogin:false}
+          // console.log('signinResult:', signinResult); // {isLogin:false}
           localStorage.setItem('isLogin', '0');
           alert(
             'Google 계정으로 로그인에 실패하였습니다. 새로고침 후 다시 시도해주세요.'
           );
         }
       } catch (error) {
-        console.log('error.message', error.message);
+        // console.log('error.message', error.message);
         alert(
           '로그인을 위한 서버와 통신이 실패하였습니다. 새로고침 후 재 시도 해주세요.'
         );
         await auth.signOut(); // 통신 실패 시 Firebase 로그아웃
       }
     } catch (error) {
-      console.log('인증 오류:', error.message);
+      // console.log('인증 오류:', error.message);
       alert('구글 계정 인증에 실패하였습니다. 새로고침 후 재 시도 해주세요.');
     }
   };

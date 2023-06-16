@@ -13,6 +13,10 @@ function AccountsCompo() {
     confirmPassword: '',
   });
 
+  // 구글 계정으로 가입한 유저인 지 확인
+  const googleUser = sessionStorage.getItem('googleUser');
+  const isGoogleUser = googleUser === '1';
+
   // 회원정보수정(마이페이지) 유효성 검사 커스텀 훅 불러오기
   const { usernameError, emailError, passwordError, confirmPasswordError } =
     useAccountValidation(
@@ -41,7 +45,7 @@ function AccountsCompo() {
 
         if (response.status === 200) {
           const { username, email } = data.data;
-          console.log({ username, email });
+          // console.log({ username, email });
           setEditedUser({
             ...editedUser,
             username: username,
@@ -61,7 +65,7 @@ function AccountsCompo() {
           throw new Error('알 수 없는 오류가 발생했습니다.');
         }
       } catch (error) {
-        console.log('회원정보 요청 실패', error, error.message);
+        // console.log('회원정보 요청 실패', error, error.message);
         alert('알 수 없는 오류가 발생했습니다. 다시 시도해 보세요.');
       }
     }
@@ -94,7 +98,7 @@ function AccountsCompo() {
           }),
         });
 
-        console.log('회원정보 수정 요청 응답:', response);
+        // console.log('회원정보 수정 요청 응답:', response);
 
         if (!response.ok) {
           throw new Error('회원정보 수정에 실패하였습니다.');
@@ -105,7 +109,7 @@ function AccountsCompo() {
         if (response.status === 200) {
           alert('회원 정보 수정이 완료 되었습니다.');
           setUser(editedUser);
-          console.log('editedUser', editedUser);
+          // console.log('editedUser', editedUser);
         } else if (response.status === 400) {
           alert('잘못된 요청입니다.');
           throw new Error('잘못된 요청입니다');
@@ -208,6 +212,7 @@ function AccountsCompo() {
               onChange={handleChange}
               className={styles.mypageInput}
               placeholder="이메일"
+              disabled={isGoogleUser} // google 계정 사용자는 이메일 수정 불가
             />
             {emailError && <div className={styles.error}>{emailError}</div>}
           </div>
@@ -221,6 +226,7 @@ function AccountsCompo() {
               className={styles.mypageInput}
               placeholder="비밀번호"
               autoComplete="new-password" // 자동완성 비활성화
+              disabled={isGoogleUser} // google 계정 사용자는 비밀번호 수정 불가
             />
             {passwordError && (
               <div>
@@ -238,6 +244,7 @@ function AccountsCompo() {
               onChange={handleChange}
               className={styles.mypageInput}
               placeholder="비밀번호 확인"
+              disabled={isGoogleUser} // google 계정 사용자는 비밀번호 수정 불가
             />
             {confirmPasswordError && (
               <div className={styles.error}>{confirmPasswordError}</div>
