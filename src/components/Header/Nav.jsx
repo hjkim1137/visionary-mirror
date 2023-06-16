@@ -14,7 +14,7 @@ function Nav({ isOpen, isLoggedIn }) {
       <ul className={styles.navListWrapper}>
         <li>
           <Link to="/" className={styles.navLink}>
-            <AiFillHome size={45} />
+            <AiFillHome size={33} />
             <span className={styles.navText}>홈</span>
           </Link>
         </li>
@@ -22,13 +22,13 @@ function Nav({ isOpen, isLoggedIn }) {
           <>
             <li id={styles.navMake}>
               <Link to="/getsampleboard" className={styles.navLink}>
-                <MdDashboardCustomize size={45} />
+                <MdDashboardCustomize size={35} />
                 <span className={styles.navText}>비전보드 만들기</span>
               </Link>
             </li>
             <li>
               <Link to="/myvisionboard/list" className={styles.navLink}>
-                <IoImages size={45} />
+                <IoImages size={30} />
                 <span className={styles.navText}>내 비전보드</span>
               </Link>
             </li>
