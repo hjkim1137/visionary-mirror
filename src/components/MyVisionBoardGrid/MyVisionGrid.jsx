@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 
 import EditVisionBoardModal from '../VisionBoardModal/EditVisionBoardModal'
 import styles from './MyVisionGrid.module.scss';
-import axios from 'axios';
 
-import { getApi, putApi, deleteApi } from './Api';
+
+import { getApi, deleteApi } from './Api';
 
 export default function MyVisionGrid() {
     const navigate = useNavigate();

@@ -172,7 +172,7 @@ export default function EditVisionBoardModal({
               <input
                 type="file"
                 id="file"
-                accept="image/*"
+                accept="image/jpg, image/png, image/jpeg"
                 ref={imgRef}
                 onChange={saveImgFile}
                 disabled={readOnly}

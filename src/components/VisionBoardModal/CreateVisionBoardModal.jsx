@@ -100,7 +100,7 @@ export default function CreateVisionBoardModal({
               <input
                 type="file"
                 id="file"
-                accept="image/*"
+                accept="image/jpg, image/png, image/jpeg"
                 ref={imgRef}
                 onChange={saveImgFile}
               />
