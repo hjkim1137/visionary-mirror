@@ -57,7 +57,7 @@ function SignInCompo({ isLogin }) {
         // console.log('uid', uid);
         // console.log('token', token);
 
-        auth.signOut(); // authSignOut
+        await auth.signOut(); // authSignOut
         // 로그인 api 통신 시작
         try {
           const signinResult = await fetch(`/api/v1/accounts/signin`, {
