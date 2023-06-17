@@ -4,7 +4,7 @@ import styles from './Home.module.scss';
 function HomeCompo() {
   return (
     <div className={styles.container}>
-      <img src={homelogo_FIN}></img>;
+      <img src={homelogo_FIN}></img>
     </div>
   );
 }
