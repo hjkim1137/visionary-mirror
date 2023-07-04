@@ -1,12 +1,13 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
+const visionaryIp = process.env.REACT_APP_VISIONARY_IP;
 
 module.exports = function (app) {
-  console.log(app);
+  console.log('app', app);
   app.use(
     '/api', // 백엔드에 프록시를 적용할 경로 나열 (path parameter), api 공통
 
     createProxyMiddleware({
-      target: 'http://kdt-sw-4-team03.elicecoding.com', // 백엔드 서버 주소
+      target: visionaryIp, // 백엔드 서버 주소
       changeOrigin: true,
       secure: false,
 
