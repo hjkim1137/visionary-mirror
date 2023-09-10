@@ -1,11 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-  useLocation,
-} from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Accounts from './pages/Accounts';
@@ -15,58 +9,45 @@ import MakeBoardName from './pages/MakeBoardName';
 import MyVisionBoard from './pages/MyVisionBoard';
 import MyVisionBoardGrid from './pages/MyVisionBoardGrid';
 import VisionBoardGrid from './pages/VisionBoardGrid';
+import NAPage from './pages/NaPage';
 import Layout from './pages/Layout';
 
 function App() {
-  const [isLogin, setIsLogin] = useState(false); // 현재 유저로그인(O: true, X: false)
-  const navigate = useNavigate();
+  const [isLogin, setIsLogin] = useState(false);
 
   const location = useLocation();
 
   useEffect(() => {
-    console.log('App Mounted');
     if (localStorage.getItem('isLogin') == 1) {
+      // console.log('App mounted');
       setIsLogin(true);
     } else {
       setIsLogin(false);
     }
   }, [location.pathname]);
 
-  // 코치님이 작성 도와주신 파트 시작
-  // return (
-  //   <Layout>
-  //     <Routes>
-  //       <Route path="/" element={<Home />} />
-  //       {!isLogin && (
-  //         <>
-  //           <Route path="/login" element={<SignIn />} />
-  //           <Route path="/register" element={<SignUp />} />
-  //         </>
-  //       )}
-  //       {isLogin && ( // 로그인 했을 때만 렌더링
-  //         <>
-  //           {/* <Route path="/accountedit" element={<Accounts />} /> */}
-  //           <Route path="/accountedit" element={<Accounts />} />
-  //           <Route path="/getsampleboard" element={<GetSampleBoard />} />
-  //           <Route path="/makeboardName" element={<MakeBoardName />} />
-  //           <Route path="/myvisionboard/list" element={<MyVisionBoard />} />
-  //           <Route
-  //             path="/myvisionboardgrid/:id"
-  //             element={<MyVisionBoardGrid />}
-  //           />
-  //           <Route path="/visionboardgrid" element={<VisionBoardGrid />} />
-  //         </>
-  //       )}
-  //       <Route path="*" element={<div>404 not found</div>} />
-  //       {/* home으로 돌아가게 링크  */}
-  //     </Routes>
-  //   </Layout>
-  // );
-  // 코치님이 작성 도와주신 파트 끝
+  useEffect(() => {
+    const checkLogin = () => {
+      if (localStorage.getItem('isLogin') == 1) {
+        setIsLogin(true);
+      } else {
+        setIsLogin(false);
+      }
+    };
 
-  // 로그인 완성 아직 안 됐을 때 임시로 보이게 하는 상태
+    // 초기 로그인 상태 설정
+    checkLogin();
+
+    // localStorage가 변경될 때마다 로그인 상태 재설정
+    window.addEventListener('storage', checkLogin);
+
+    return () => {
+      window.removeEventListener('storage', checkLogin);
+    };
+  }, []);
+
   return (
-    <Layout>
+    <Layout isLogin={isLogin} setIsLogin={setIsLogin}>
       <Routes>
         <Route path="/" element={<Home />} />
         {!isLogin && (
@@ -75,16 +56,21 @@ function App() {
             <Route path="/register" element={<SignUp />} />
           </>
         )}
-        {/* <Route path="/accountedit" element={<Accounts />} /> */}
-        <Route path="/accountedit" element={<Accounts />} />
-        <Route path="/getsampleboard" element={<GetSampleBoard />} />
-        <Route path="/makeboardName" element={<MakeBoardName />} />
-        <Route path="/myvisionboard/list" element={<MyVisionBoard />} />
-        <Route path="/myvisionboardgrid/:id" element={<MyVisionBoardGrid />} />
-        <Route path="/visionboardgrid" element={<VisionBoardGrid />} />
-
-        <Route path="*" element={<div>404 not found</div>} />
-        {/* home으로 돌아가게 링크  */}
+        {isLogin && ( // 로그인 했을 때만 렌더링
+          <>
+            <Route path="/accountedit" element={<Accounts />} />
+            <Route path="/getsampleboard" element={<GetSampleBoard />} />
+            <Route path="/makeboardName" element={<MakeBoardName />} />
+            <Route path="/myvisionboard/list" element={<MyVisionBoard />} />
+            <Route
+              path="/myvisionboardgrid/:id"
+              element={<MyVisionBoardGrid />}
+            />
+            <Route path="/visionboardgrid" element={<VisionBoardGrid />} />
+          </>
+        )}
+        {/* 유효하지 않는 경로 요청 시  */}
+        <Route path="*" element={<NAPage />} />
       </Routes>
     </Layout>
   );

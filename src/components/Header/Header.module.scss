@@ -2,37 +2,22 @@
   margin: 0;
 }
 
-// .test {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   width: 100vw;
-//   height: 100vh;
-//   z-index: 1002;
-
-//   .test1 {
-//     margin-left: 250px;
-//     text-align: center;
-//     width: 1200px;
-//     height: 450px;
-//     font-size: 50px;
-//     color: black;
-//     border: 3px solid red;
-//   }
-// }
-
 .header {
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
   z-index: 1;
 }
 
 .header ul {
+  position: absolute;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: fixed;
 
-  height: 60px;
+  // header높이
+  height: 62px;
   width: 100%;
 
   list-style: none;
@@ -40,12 +25,20 @@
   padding: 5px 0;
 }
 
+.header li {
+  font-size: 20px;
+  margin: 20px 20px 20px 30px;
+}
+
 .header ul li:nth-child(1) {
-  margin: 20px;
+  margin: 10px;
 }
 
 .header ul li:nth-child(3) {
-  margin: 20px;
+  display: flex;
+  justify-content: flex-end;
+
+  margin: 20px 15px;
 }
 
 .iconWrapper {
@@ -58,8 +51,9 @@
 }
 
 button {
-  font-size: 16px;
+  font-size: 19px;
   color: rgb(96, 96, 96);
+  margin-left: 16px;
 }
 
 button:hover {
@@ -67,6 +61,8 @@ button:hover {
 }
 
 .spacing {
+  display: flex;
+  align-items: center;
   letter-spacing: -0.05em;
 }
 
