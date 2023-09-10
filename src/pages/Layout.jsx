@@ -1,10 +1,10 @@
-import Header from '../components/Header/Header';
 import React from 'react';
+import Header from '../components/Header/Header';
 
-function Layout({ children, isLogin, setIsLogin }) {
+function Layout({ children }) {
   return (
     <>
-      <Header isLogin={isLogin} setIsLogin={setIsLogin} />
+      <Header />
       {children}
     </>
   );

@@ -6,41 +6,35 @@
   flex-direction: column;
   justify-content: center;
   position: absolute;
-  top: 53%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
 .title {
-  font-size: 32px;
+  font-size: 25px;
   color: #116a7b;
   font-weight: 600;
   margin-bottom: 15px;
 }
 
-.loginBtnBox {
-  width: 100%;
-}
-
 .inputBox {
-  width: 300px;
-  height: 50px;
+  width: 250px;
   margin-top: 10px;
-
+  height: 35px;
   border-radius: 5px;
-  font-size: 20px;
+  font-size: 15px;
 }
 
 .inputBox:focus {
   background-color: rgb(214, 222, 247);
-  font-size: 20px;
+  font-size: 15px;
 }
 
 .loginBtn {
   width: 100%;
-  height: 50px;
   margin-top: 30px;
-  font-size: 20px;
+  font-size: 25px;
   text-align: center;
   background-color: #116a7b;
   justify-content: center;
@@ -49,15 +43,14 @@
   padding: 10px;
   color: white;
   font-weight: 700;
+  font-size: 15px;
   cursor: pointer;
 }
 
 .registerBtn {
-  width: 300px;
-  height: 50px;
-  margin-top: 40px;
-  margin-left: 0;
-  font-size: 20px;
+  width: 250px;
+  margin-top: 50px;
+  font-size: 25px;
   text-align: center;
   background-color: #c2dedc;
   border: none;
@@ -65,19 +58,14 @@
   padding: 10px;
   color: white;
   font-weight: 700;
+  font-size: 15px;
   cursor: pointer;
-}
-
-.registerBtn:hover {
-  background-color: #116a7b;
 }
 
 .googleBtn {
-  width: 300px;
-  height: 50px;
+  width: 250px;
   margin-top: 15px;
-  margin-left: 0;
-  font-size: 20px;
+  font-size: 25px;
   text-align: center;
   background-color: #c2dedc;
   border: none;
@@ -85,65 +73,6 @@
   padding: 10px;
   color: white;
   font-weight: 700;
-  cursor: pointer;
-}
-
-.googleBtn:hover {
-  background-color: #116a7b;
-}
-
-.error {
-  color: #116a7b;
-  font-weight: 500;
   font-size: 15px;
-  margin-bottom: 10px;
-}
-
-.resetPWtitle {
-  margin-top: 20px;
-  font-size: 15px;
-  font-weight: 600;
-}
-
-.resetBox {
-  display: flex;
-  width: 300px;
-}
-
-.resetPWinput {
-  width: 80%;
-  height: 50px;
-  margin-top: 10px;
-
-  border-radius: 5px;
-  font-size: 20px;
-}
-
-.resetPasswordBtn {
-  color: #116a7b;
-  margin: 10px 0 10px 0;
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.resetPWinput:focus {
-  background-color: rgb(214, 222, 247);
-  font-size: 20px;
-}
-
-.resetPWBtn {
-  width: 20%;
-  height: 55px;
-  margin-top: 10px;
-  margin-left: 5px;
-  font-size: 16px;
-  text-align: center;
-  background-color: #116a7b;
-  color: white;
-  justify-content: center;
-  border: none;
-  border-radius: 5px;
-  padding: 10px;
-  font-weight: 700;
   cursor: pointer;
 }

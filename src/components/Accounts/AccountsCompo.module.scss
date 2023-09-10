@@ -6,51 +6,32 @@
   flex-direction: column;
   justify-content: center;
   position: absolute;
-  top: 53%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
+.inputBox {
+  width: 250px;
+  margin-top: 10px;
+  height: 35px;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+.inputBox:focus {
+  background-color: rgb(214, 222, 247);
+  font-size: 15px;
+}
+
 .title {
-  font-size: 32px;
+  font-size: 25px;
   color: #116a7b;
   font-weight: 600;
   margin-bottom: 15px;
 }
 
-form,
-.buttonBoxWrapper,
-.buttonBox {
-  display: flex;
-  flex-direction: column;
-
-  width: 300px;
-  align-items: center;
-  justify-content: center;
-}
-
-.inputBox,
-.loginBtn,
-.registerBtn,
-.googleBtn {
-  margin: auto 0;
-}
-
-.mypageInput {
-  width: 300px;
-  height: 50px;
-  margin-top: 10px;
-
-  border-radius: 5px;
-  font-size: 28px;
-}
-
-// .mypageInput:focus {
-//   background-color: rgb(214, 222, 247);
-//   font-size: 28px;
-// }
-
-.correctBtn {
+.registerBtn {
   width: 100%;
   margin-top: 30px;
   font-size: 25px;
@@ -63,75 +44,4 @@ form,
   font-weight: 700;
   font-size: 15px;
   cursor: pointer;
-}
-
-.mypageInput {
-  width: 300px;
-  height: 50px;
-  margin-top: 10px;
-
-  border-radius: 5px;
-  font-size: 23px;
-}
-
-.correctBtn,
-.cancelBtn {
-  width: 300px;
-  height: 50px;
-  margin-top: 30px;
-  margin-left: 0;
-  font-size: 20px;
-  text-align: center;
-  background-color: #116a7b;
-  border: none;
-  border-radius: 5px;
-  padding: 10px;
-  color: white;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.secessionBtn {
-  width: 300px;
-  height: 50px;
-  margin-top: 30px;
-  margin-left: 0;
-  font-size: 20px;
-  text-align: center;
-  background-color: #c2dedc;
-  border: none;
-  border-radius: 5px;
-  padding: 10px;
-  color: white;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.correctBtn {
-  margin-top: 40px;
-}
-
-.cancelBtn {
-  margin-top: 20px;
-}
-
-.correctBtn:hover,
-.cancelBtn:hover {
-  background-color: #c2dedc;
-  color: rgb(45, 92, 79);
-}
-
-.secessionBtn:hover {
-  background-color: #116a7b;
-}
-
-.error {
-  color: #116a7b;
-  font-weight: 500;
-  font-size: 15px;
-  width: 100%;
-  margin-bottom: 5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }

@@ -29,7 +29,7 @@ function useCarousel(collection) {
     setX(-56);
     setIsSlide(true);
 
-    setTimeout(() => {
+    await setTimeout(() => {
       setIndex((prev) => prev + 1);
       setX(0);
       setIsSlide(false);
@@ -44,7 +44,7 @@ function useCarousel(collection) {
     setX(+56);
     setIsSlide(true);
 
-    setTimeout(() => {
+    await setTimeout(() => {
       setIndex((prev) => prev - 1);
       setX(0);
       setIsSlide(false);
