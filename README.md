@@ -1,11 +1,13 @@
-# 최종 브랜치 : `dev` 브랜치 pull 해서 진행하세요.
+# 담당 기능
 
-함수 작성 방법 : function Name(){}
+## 1. 마이페이지 수정,회원 탈퇴
+![마이페이지 수정,회원탈퇴](https://github.com/hjkim1137/visionary-mirror/assets/127932075/269a3c74-167e-4d9a-8ce0-f25f25fa597e)
 
-폴더 : 카멜 케이스 ex) authoController.jsx
+## 2. 비밀번호 찾기
+![비밀번호 찾기](https://github.com/hjkim1137/visionary-mirror/assets/127932075/e559d10f-ef14-4c04-8d8e-f39efdc22b6e)
 
-파일 -기본 : 카멜 케이스 ex) authoController.jsx -상수 관련 : 대문자 ex) COUNT.jsx
+## 3. 비전보드 생성, 조회, 삭제
 
--class : 파스칼 ex) CuteCat()
+## 4. 회원가입
+![회원가입](https://github.com/hjkim1137/visionary-mirror/assets/127932075/870ea37f-0611-4aed-91ce-d26dcaf8482d)
 
--id(css) : 카멜 케이스 ex) cuteCat
